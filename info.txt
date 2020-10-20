@@ -1,0 +1,12 @@
+optifine:true:preview_OptiFine_1.8.9_HD_U_L6_pre1.jar:Optifine L6
+patcher:true:Patcher-1.4_-_beta_8.jar:Patcher 1.4
+sba:true:SkyblockAddons-1.5.4-for-MC-1.8.9.jar:SkyblockAddons
+neu:true:NotEnoughUpdates-1.4.2-REL.jar:Not Enough Updates
+scrollabletooltips:true:Scrollable Tooltips-1.2 (1.8.9).jar:Scrollable Tooltips
+sidebarmod:true:1.8.9_Sidebar_Mod_Revamp.jar:Sidebar mod
+rpo:true:ResourcePackOrganizer_MC-1.8.9_v1.0.3.jar:Recource Pack Organizer
+hytilities:true:Hytilities-1.0_-_beta_4.jar:Hytilities
+togglesneak:false:[1.8.9] Powns ToggleSneak - 3.0.jar:Pown's Toggle Sneak
+ctjs:false:ctjs-1.3.0-1.8.9.jar:Chat Triggers
+discordrp:false:DiscordRP-1.2.4.jar:Discord Rich Pressence
+oldanim:false:Sk1er_Old_Animations-1.0_-_beta_5.jar:Old Animations
