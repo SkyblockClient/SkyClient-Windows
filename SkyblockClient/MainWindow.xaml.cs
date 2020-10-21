@@ -24,11 +24,11 @@ namespace SkyblockClient
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		//public string URL = "https://github.com/nacrt/SkyblockClient/blob/main/files";
-		public string URL = "http://localhost/files";
+		//public string URL = "https://github.com/nacrt/SkyblockClient/blob/main/files/";
+		public string URL = "http://localhost/files/";
 
 		public string exeLocation = Assembly.GetEntryAssembly().Location;
-		public string tempFolderLocation => exeLocation + ".temp/";
+		public string tempFolderLocation => exeLocation + @".temp\";
 		public string minecraftLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\.minecraft\";
 
 		public string skyblockResourceLocation => minecraftLocation + @"";
@@ -56,7 +56,8 @@ namespace SkyblockClient
 		private async void Button_Click(object sender, RoutedEventArgs e)
 		{
 			btnStartInstallation.IsEnabled = false;
-			Directory.Delete(tempFolderLocation, true);
+			if (Directory.Exists(tempFolderLocation))
+				Directory.Delete(tempFolderLocation, true);
 			Directory.CreateDirectory(tempFolderLocation);
 
 			List<Task> tasks = new List<Task>();
@@ -85,7 +86,7 @@ namespace SkyblockClient
 						lxFS.Write(lnByte, 0, lnByte.Length);
 					}
 				}
-			}
+			}	
 		}
 
 		private async Task ModsInstaller()
@@ -95,6 +96,25 @@ namespace SkyblockClient
 				Console.WriteLine("Downloading " + file.display);
 				await DownloadFileByte(file.fileName, tempFolderLocation + file.fileName);
 				Console.WriteLine("Finished Downloading " + file.display);
+			}
+
+			if (Directory.Exists(skyblockModsLocation))
+				Directory.Delete(skyblockModsLocation, true);
+			Directory.CreateDirectory(skyblockModsLocation);
+
+			string[] files = Directory.GetFiles(tempFolderLocation, "*.jar");
+			foreach (var file in downloadableFiles)
+			{
+				Console.WriteLine("Moving " + file.fileName);
+				try
+				{
+					File.Move(tempFolderLocation + file.fileName, skyblockModsLocation + file.fileName);
+					Console.WriteLine("Finished Moving " + file.fileName);
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine("ERROR: " + e.Message);
+				}
 			}
 		}
 
