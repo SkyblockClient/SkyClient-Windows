@@ -5,17 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SkyblockClient
 {
@@ -24,8 +16,8 @@ namespace SkyblockClient
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		//public string URL = "https://github.com/nacrt/SkyblockClient/blob/main/files/";
-		public string URL = "http://localhost/files/";
+		public string URL = "https://github.com/nacrt/SkyblockClient/blob/main/files/";
+		//public string URL = "http://localhost/files/";
 
 		public string exeLocation = Assembly.GetEntryAssembly().Location;
 		public string tempFolderLocation => exeLocation + @".temp\";
@@ -37,25 +29,44 @@ namespace SkyblockClient
 		public string skyblockModsLocation => skyblockResourceLocation + @"mods\";
 		public string skyblockTextureLocation => skyblockResourceLocation + @"ressourcepacks\";
 
+		public bool clearModsFolder => btnClearModsFolder.IsChecked ?? false;
 
-		public List<WebResponseInfo> downloadableFiles = new List<WebResponseInfo>();
+		public List<ModOption> modsList = new List<ModOption>();
+
+		public List<ModOption> enabledModsList => modsList.Where(mod => mod.enabled).ToList();
 
 		public MainWindow()
 		{
 			InitializeComponent();
 			PostConstruct();
-			Console.WriteLine(minecraftLocation);
 		}
 
 		public async void PostConstruct()
 		{
 			string response = await DownloadFileString("info.txt");
-			downloadableFiles = WebResponseInfo.Read(response);
+			modsList = ModOption.Read(response);
+
+			foreach (var mod in modsList)
+			{
+				CheckBox checkBox = new CheckBox();
+				checkBox.Content = mod.display;
+				checkBox.IsChecked = mod.enabled;
+				checkBox.Margin = new Thickness(5, 5, 0, 0);
+				checkBox.Tag = mod;
+				checkBox.Click += comboBoxIsChecked;
+				stpMods.Children.Add(checkBox);
+			}
 		}
 
-		private async void Button_Click(object sender, RoutedEventArgs e)
+		private void comboBoxIsChecked(object sender, RoutedEventArgs e)
 		{
-			btnStartInstallation.IsEnabled = false;
+			var cmb = (CheckBox)sender;
+			var tag = (ModOption)cmb.Tag;
+			tag.enabled = cmb.IsChecked ?? false;
+		}
+
+		public async void StartForgeAndModsInstaller()
+		{
 			if (Directory.Exists(tempFolderLocation))
 				Directory.Delete(tempFolderLocation, true);
 			Directory.CreateDirectory(tempFolderLocation);
@@ -65,7 +76,6 @@ namespace SkyblockClient
 			tasks.Add(ModsInstaller());
 			await Task.WhenAll(tasks.ToArray());
 
-			btnStartInstallation.IsEnabled = true;
 		}
 
 		public async Task<string> DownloadFileString(string file)
@@ -91,30 +101,53 @@ namespace SkyblockClient
 
 		private async Task ModsInstaller()
 		{
-			foreach (var file in downloadableFiles)
+			List<ModOption> mods = enabledModsList;
+			List<ModOption> firstHalf = mods.Take((mods.Count() + 1) / 2).ToList();
+			List<ModOption> secondHalf = mods.Skip((mods.Count() + 1) / 2).ToList();
+
+			List<Task> tasks = new List<Task>();
+			tasks.Add(DownloadIndividualMods(firstHalf));
+			tasks.Add(DownloadIndividualMods(secondHalf));
+			await Task.WhenAll(tasks.ToArray());
+
+			try
 			{
-				Console.WriteLine("Downloading " + file.display);
-				await DownloadFileByte(file.fileName, tempFolderLocation + file.fileName);
-				Console.WriteLine("Finished Downloading " + file.display);
+				bool skyblockModsLocationExists = Directory.Exists(skyblockModsLocation);
+				if (skyblockModsLocationExists)
+					Console.WriteLine("skyblock mods folder exists");
+				else
+					Console.WriteLine("skyblock mods folder does not exist");
+
+				if (clearModsFolder)
+				{
+					if (skyblockModsLocationExists)
+						Directory.Delete(skyblockModsLocation, true);
+					Directory.CreateDirectory(skyblockModsLocation);
+				}
+				else
+				{
+					if (!skyblockModsLocationExists)
+						Directory.CreateDirectory(skyblockModsLocation);
+				}
+
+				foreach (var file in enabledModsList)
+				{
+					Console.WriteLine("Moving " + file.fileName);
+					try
+					{
+						File.Move(tempFolderLocation + file.fileName, skyblockModsLocation + file.fileName);
+						Console.WriteLine("Finished Moving " + file.fileName);
+					}
+					catch (Exception e)
+					{
+						Console.WriteLine("ERROR: " + e.Message);
+					}
+				}
 			}
-
-			if (Directory.Exists(skyblockModsLocation))
-				Directory.Delete(skyblockModsLocation, true);
-			Directory.CreateDirectory(skyblockModsLocation);
-
-			string[] files = Directory.GetFiles(tempFolderLocation, "*.jar");
-			foreach (var file in downloadableFiles)
+			catch (Exception e)
 			{
-				Console.WriteLine("Moving " + file.fileName);
-				try
-				{
-					File.Move(tempFolderLocation + file.fileName, skyblockModsLocation + file.fileName);
-					Console.WriteLine("Finished Moving " + file.fileName);
-				}
-				catch (Exception e)
-				{
-					Console.WriteLine("ERROR: " + e.Message);
-				}
+				Console.WriteLine("Please close Minecraft or try again",ConsoleColor.Red);
+				Console.WriteLine(e.Message);
 			}
 		}
 
@@ -127,65 +160,51 @@ namespace SkyblockClient
 			
 			Process process = new Process();
 			ProcessStartInfo startInfo = new ProcessStartInfo();
-			startInfo.WindowStyle = ProcessWindowStyle.Normal;
+			startInfo.WindowStyle = ProcessWindowStyle.Hidden;
 			startInfo.FileName = "cmd.exe";
 			startInfo.Arguments = $"/C {tempFolderLocation}forge.exe";
 			process.StartInfo = startInfo;
 			process.Start();
 			process.WaitForExit();
 		}
-	}
 
-	public class WebResponseInfo
-	{
-		public static List<WebResponseInfo> Read(string text)
+		private async Task DownloadIndividualMods(List<ModOption> webResponseInfos)
 		{
-			var lines = new List<string>(text.Split(new string[1] { "\n" }, StringSplitOptions.None));
-			var result = new List<WebResponseInfo>();
-			foreach (var line in lines)
+			foreach (var file in webResponseInfos)
 			{
-				if (line != "")
-				{
-					var wri = new WebResponseInfo(line);
-					result.Add(wri);
-				}
+				Console.WriteLine("Downloading " + file.display);
+				await DownloadFileByte(file.fileName, tempFolderLocation + file.fileName);
+				Console.WriteLine("Finished Downloading " + file.display);
 			}
-			return result;
 		}
 
-		public string key = "";
-		public string fileName = "";
-		public bool defaultValue = true;
-		public string display = "";
-
-		public WebResponseInfo(string respLine)
+		private async Task InitializeInstall()
 		{
-			const int KEY_INDEX = 0, DEFAULT_INDEX = 1, FILE_NAME_INDEX = 2, DISPLAY_INDEX = 3;
+			bool exists = await Task.Run(() => Directory.Exists(tempFolderLocation));
+			if (exists)
+				Directory.Delete(tempFolderLocation, true);
+			Directory.CreateDirectory(tempFolderLocation);
+		}
 
-			var split = respLine.Split(':');
-			if (split.Length != 4)
-			{
-				throw new ArgumentException("Line is either malformed or Empty");
-			}
+		private async void BtnInstallModsClick(object sender, RoutedEventArgs e)
+		{
+			await InitializeInstall();
+			await ModsInstaller();
+		}
 
-			string boolpart = split[DEFAULT_INDEX].Trim().ToLower();
+		private async void BtnInstallForgeClick(object sender, RoutedEventArgs e)
+		{
+			await InitializeInstall();
+			await ForgeInstaller();
+		}
 
-			if(boolpart == "true")
-			{
-				defaultValue = true;
-			}
-			else if (boolpart == "false")
-			{
-				defaultValue = false;
-			}
-			else
-			{
-				throw new ArgumentException("Default Value is neither true or false");
-			}
-
-			key = split[KEY_INDEX].Trim().ToLower();
-			fileName = split[FILE_NAME_INDEX].Trim();
-			display = split[DISPLAY_INDEX].Trim();
+		private async void BtnInstallModsAndForgeClick(object sender, RoutedEventArgs e)
+		{
+			await InitializeInstall();
+			List<Task> tasks = new List<Task>();
+			tasks.Add(ForgeInstaller());
+			tasks.Add(ModsInstaller());
+			await Task.WhenAll(tasks.ToArray());
 		}
 	}
 }
