@@ -136,9 +136,9 @@ namespace SkyblockClient
 			{
 				bool skyblockModsLocationExists = Directory.Exists(skyblockModsLocation);
 				if (skyblockModsLocationExists)
-					Console.WriteLine("skyblock mods folder exists");
+					Utils.Info("skyblock mods folder exists");
 				else
-					Console.WriteLine("skyblock mods folder does not exist");
+					Utils.Info("skyblock mods folder does not exist");
 
 				if (clearModsFolder)
 				{
@@ -154,22 +154,23 @@ namespace SkyblockClient
 
 				foreach (var file in enabledModsList)
 				{
-					Console.WriteLine("Moving " + file.fileName);
+					Utils.Info("Moving " + file.fileName);
 					try
 					{
 						File.Move(tempFolderLocation + file.fileName, skyblockModsLocation + file.fileName);
-						Console.WriteLine("Finished Moving " + file.fileName);
+						Utils.Info("Finished Moving " + file.fileName);
 					}
 					catch (Exception e)
 					{
-						Console.WriteLine("ERROR: " + e.Message);
+						Utils.Error("Failed Moving " + file.display);
+						Utils.Log(e, "failed moving " + file.display);
 					}
 				}
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("Please close Minecraft or try again", ConsoleColor.Red);
-				Console.WriteLine(e.Message);
+				Utils.Error("An Unknown error occured, please submit the log file");
+				Utils.Log(e, "unkown error in ModsInstaller()");
 			}
 		}
 
