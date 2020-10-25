@@ -203,10 +203,20 @@ namespace SkyblockClient
 			{
 				using (BinaryReader reader = new BinaryReader(webResponse.GetResponseStream()))
 				{
-					byte[] lnByte = reader.ReadBytes(1 * 1024 * 1024 * 10);
-					using (FileStream lxFS = new FileStream(fileDestination, FileMode.CreateNew))
+					bool exists = File.Exists(fileDestination);
+					if (exists)
+						File.Delete(fileDestination);
+
+					while (true)
 					{
-						lxFS.Write(lnByte, 0, lnByte.Length);
+						byte[] lnByte = reader.ReadBytes(1024 * 1024); // 1 mb each package
+						if (lnByte.Length == 0)
+							break;
+
+						using (FileStream lxFS = new FileStream(fileDestination, FileMode.Append))
+						{
+							lxFS.Write(lnByte, 0, lnByte.Length);
+						}
 					}
 				}
 			}

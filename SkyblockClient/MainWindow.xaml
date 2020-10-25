@@ -30,6 +30,6 @@
             <Button x:Name="btnInstallModsAndForge" Content="Install Forge and mods" Click="BtnInstallModsAndForgeClick"/>
         </StackPanel>
         <CheckBox x:Name="btnClearModsFolder" Content="Clear mods folder on Install" HorizontalAlignment="Left" Margin="56,0,0,130" Width="214" IsChecked="True" Height="20" VerticalAlignment="Bottom" Background="#FF69BF2D" BorderBrush="#FF48702C"/>
-        <Button Content="Advanced Settings" VerticalAlignment="Top" Margin="10,43,10,0"/>
+        <Button Content="Advanced Settings (comming soon)" VerticalAlignment="Top" Margin="10,43,10,0"/>
     </Grid>
 </Window>
