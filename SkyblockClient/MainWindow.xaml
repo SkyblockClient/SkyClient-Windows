@@ -8,24 +8,25 @@
         Background="#25364D"
         FontFamily="Champagne &amp; Limousines" FontSize="18">
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="Button">
+                <Setter Property="BorderBrush" Value="#2c3e50"/>
+                <Setter Property="BorderThickness" Value="2,0,2,5"/>
+                <Setter Property="Background" Value="#FF587593"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontFamily" Value="Champagne &amp; Limousines"/>
+                <Setter Property="Margin" Value="10,0,10,10"/>
+            </Style>
+        </Grid.Resources>
         <Rectangle Fill="#ecf0f1" Margin="10,41,10,10"/>
         <Label Margin="10,0" Content="SkyClient" VerticalAlignment="Top" Background="White" Foreground="#DD000000" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontStyle="Italic" FontSize="24" FontFamily="Champagne &amp; Limousines" FontWeight="Bold"/>
-        <StackPanel x:Name="stpMods" Margin="10,41,10,91"/>
+        <StackPanel x:Name="stpMods" Margin="10,71,10,91"/>
         <StackPanel Margin="10,0,10,10" Height="114" VerticalAlignment="Bottom">
-            <StackPanel.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="BorderBrush" Value="#2c3e50"/>
-                    <Setter Property="BorderThickness" Value="2,0,2,5"/>
-                    <Setter Property="Background" Value="#FF587593"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="FontFamily" Value="Champagne &amp; Limousines"/>
-                    <Setter Property="Margin" Value="10,0,10,10"/>
-                </Style>
-            </StackPanel.Resources>
             <Button x:Name="btnInstallForge" Content="Install Forge" Click="BtnInstallForgeClick"/>
             <Button x:Name="btnInstallMods" Content="Install selected mods" Click="BtnInstallModsClick"/>
             <Button x:Name="btnInstallModsAndForge" Content="Install Forge and mods" Click="BtnInstallModsAndForgeClick"/>
         </StackPanel>
-        <CheckBox x:Name="btnClearModsFolder" Content="Clear mods folder on Install" HorizontalAlignment="Left" Margin="56,0,0,129" Width="214" IsChecked="True" Height="20" VerticalAlignment="Bottom"/>
+        <CheckBox x:Name="btnClearModsFolder" Content="Clear mods folder on Install" HorizontalAlignment="Left" Margin="56,0,0,130" Width="214" IsChecked="True" Height="20" VerticalAlignment="Bottom" Background="#FF69BF2D" BorderBrush="#FF48702C"/>
+        <Button Content="Advanced Settings" VerticalAlignment="Top" Margin="10,43,10,0"/>
     </Grid>
 </Window>
