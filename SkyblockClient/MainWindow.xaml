@@ -17,6 +17,9 @@
                 <Setter Property="FontFamily" Value="Champagne &amp; Limousines"/>
                 <Setter Property="Margin" Value="10,0,10,10"/>
             </Style>
+            <Style TargetType="CheckBox">
+                <Setter Property="Margin" Value="5,5,0,0"/>
+            </Style>
         </Grid.Resources>
         <Rectangle Fill="#ecf0f1" Margin="10,41,10,10"/>
         <Label Margin="10,0" Content="SkyClient" VerticalAlignment="Top" Background="White" Foreground="#DD000000" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontStyle="Italic" FontSize="24" FontFamily="Champagne &amp; Limousines" FontWeight="Bold"/>

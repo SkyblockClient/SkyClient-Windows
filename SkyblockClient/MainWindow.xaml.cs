@@ -43,7 +43,7 @@ namespace SkyblockClient
 
 		public async void PostConstruct()
 		{
-			string response = await DownloadFileString("info.txt");
+			string response = await DownloadFileString("mods.txt");
 			modsList = ModOption.Read(response);
 
 			foreach (var mod in modsList)
@@ -51,7 +51,6 @@ namespace SkyblockClient
 				CheckBox checkBox = new CheckBox();
 				checkBox.Content = mod.display;
 				checkBox.IsChecked = mod.enabled;
-				checkBox.Margin = new Thickness(5, 5, 0, 0);
 				checkBox.Tag = mod;
 				checkBox.Click += comboBoxIsChecked;
 				stpMods.Children.Add(checkBox);
@@ -78,25 +77,33 @@ namespace SkyblockClient
 
 		}
 
-		public async Task<string> DownloadFileString(string file)
+		private async void BtnInstallModsClick(object sender, RoutedEventArgs e)
 		{
-			WebResponse myWebResponse = await WebRequest.Create(URL + file + "?raw=true").GetResponseAsync();
-			return await new StreamReader(myWebResponse.GetResponseStream()).ReadToEndAsync();
+			await InitializeInstall();
+			await ModsInstaller();
 		}
 
-		public async Task DownloadFileByte(string file,string fileDestination)
+		private async void BtnInstallForgeClick(object sender, RoutedEventArgs e)
 		{
-			using (WebResponse webResponse = await WebRequest.Create(URL + file + "?raw=true").GetResponseAsync())
-			{
-				using (BinaryReader reader = new BinaryReader(webResponse.GetResponseStream()))
-				{
-					byte[] lnByte = reader.ReadBytes(1 * 1024 * 1024 * 10);
-					using (FileStream lxFS = new FileStream(fileDestination, FileMode.CreateNew))
-					{
-						lxFS.Write(lnByte, 0, lnByte.Length);
-					}
-				}
-			}	
+			await InitializeInstall();
+			await ForgeInstaller();
+		}
+
+		private async void BtnInstallModsAndForgeClick(object sender, RoutedEventArgs e)
+		{
+			await InitializeInstall();
+			List<Task> tasks = new List<Task>();
+			tasks.Add(ForgeInstaller());
+			tasks.Add(ModsInstaller());
+			await Task.WhenAll(tasks.ToArray());
+		}
+
+		private async Task InitializeInstall()
+		{
+			bool exists = await Task.Run(() => Directory.Exists(tempFolderLocation));
+			if (exists)
+				Directory.Delete(tempFolderLocation, true);
+			Directory.CreateDirectory(tempFolderLocation);
 		}
 
 		private async Task ModsInstaller()
@@ -146,7 +153,7 @@ namespace SkyblockClient
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("Please close Minecraft or try again",ConsoleColor.Red);
+				Console.WriteLine("Please close Minecraft or try again", ConsoleColor.Red);
 				Console.WriteLine(e.Message);
 			}
 		}
@@ -157,7 +164,7 @@ namespace SkyblockClient
 			const string FORGE = "forge.exe";
 			await DownloadFileByte(FORGE, tempFolderLocation + FORGE);
 			Console.WriteLine("Finished Downloading Forge");
-			
+
 			Process process = new Process();
 			ProcessStartInfo startInfo = new ProcessStartInfo();
 			startInfo.WindowStyle = ProcessWindowStyle.Hidden;
@@ -168,6 +175,28 @@ namespace SkyblockClient
 			process.WaitForExit();
 		}
 
+		public async Task<string> DownloadFileString(string file)
+		{
+			WebResponse myWebResponse = await WebRequest.Create(URL + file + "?raw=true").GetResponseAsync();
+			return await new StreamReader(myWebResponse.GetResponseStream()).ReadToEndAsync();
+		}
+
+		public async Task DownloadFileByte(string file, string fileDestination)
+		{
+			using (WebResponse webResponse = await WebRequest.Create(URL + file + "?raw=true").GetResponseAsync())
+			{
+				using (BinaryReader reader = new BinaryReader(webResponse.GetResponseStream()))
+				{
+					byte[] lnByte = reader.ReadBytes(1 * 1024 * 1024 * 10);
+					using (FileStream lxFS = new FileStream(fileDestination, FileMode.CreateNew))
+					{
+						lxFS.Write(lnByte, 0, lnByte.Length);
+					}
+				}
+			}
+		}
+
+
 		private async Task DownloadIndividualMods(List<ModOption> webResponseInfos)
 		{
 			foreach (var file in webResponseInfos)
@@ -176,35 +205,6 @@ namespace SkyblockClient
 				await DownloadFileByte(file.fileName, tempFolderLocation + file.fileName);
 				Console.WriteLine("Finished Downloading " + file.display);
 			}
-		}
-
-		private async Task InitializeInstall()
-		{
-			bool exists = await Task.Run(() => Directory.Exists(tempFolderLocation));
-			if (exists)
-				Directory.Delete(tempFolderLocation, true);
-			Directory.CreateDirectory(tempFolderLocation);
-		}
-
-		private async void BtnInstallModsClick(object sender, RoutedEventArgs e)
-		{
-			await InitializeInstall();
-			await ModsInstaller();
-		}
-
-		private async void BtnInstallForgeClick(object sender, RoutedEventArgs e)
-		{
-			await InitializeInstall();
-			await ForgeInstaller();
-		}
-
-		private async void BtnInstallModsAndForgeClick(object sender, RoutedEventArgs e)
-		{
-			await InitializeInstall();
-			List<Task> tasks = new List<Task>();
-			tasks.Add(ForgeInstaller());
-			tasks.Add(ModsInstaller());
-			await Task.WhenAll(tasks.ToArray());
 		}
 	}
 }
