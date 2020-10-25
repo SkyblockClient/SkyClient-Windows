@@ -19,8 +19,7 @@ namespace SkyblockClient
 		public string URL = "https://github.com/nacrt/SkyblockClient/blob/main/files/";
 		//public string URL = "http://localhost/files/";
 
-		public string exeLocation = Assembly.GetEntryAssembly().Location;
-		public string tempFolderLocation => exeLocation + @".temp\";
+		public string tempFolderLocation => Utils.exeLocation + @".temp\";
 		public string minecraftLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\.minecraft\";
 
 		public string skyblockResourceLocation => minecraftLocation + @"";
@@ -43,8 +42,18 @@ namespace SkyblockClient
 
 		public async void PostConstruct()
 		{
-			string response = await DownloadFileString("mods.txt");
-			modsList = ModOption.Read(response);
+			Utils.InitLog();
+
+			try
+			{
+				string response = await DownloadFileString("info.txt");
+				modsList = ModOption.Read(response);
+			}
+			catch (Exception e)
+			{
+				Utils.Error("ERROR CONNECTING TO GITHUB", "\tAre you using a proxy?");
+				Utils.Log(e, "error connecting to github");
+			}
 
 			foreach (var mod in modsList)
 			{
@@ -64,38 +73,34 @@ namespace SkyblockClient
 			tag.enabled = cmb.IsChecked ?? false;
 		}
 
-		public async void StartForgeAndModsInstaller()
-		{
-			if (Directory.Exists(tempFolderLocation))
-				Directory.Delete(tempFolderLocation, true);
-			Directory.CreateDirectory(tempFolderLocation);
-
-			List<Task> tasks = new List<Task>();
-			tasks.Add(ForgeInstaller());
-			tasks.Add(ModsInstaller());
-			await Task.WhenAll(tasks.ToArray());
-
-		}
-
 		private async void BtnInstallModsClick(object sender, RoutedEventArgs e)
 		{
+			ButtonsEnabled(false);
 			await InitializeInstall();
 			await ModsInstaller();
+			ButtonsEnabled(true);
 		}
 
 		private async void BtnInstallForgeClick(object sender, RoutedEventArgs e)
 		{
+			ButtonsEnabled(false);
 			await InitializeInstall();
 			await ForgeInstaller();
+			ButtonsEnabled(true);
 		}
 
 		private async void BtnInstallModsAndForgeClick(object sender, RoutedEventArgs e)
 		{
-			await InitializeInstall();
-			List<Task> tasks = new List<Task>();
-			tasks.Add(ForgeInstaller());
-			tasks.Add(ModsInstaller());
-			await Task.WhenAll(tasks.ToArray());
+			ButtonsEnabled(false);
+			await StartForgeAndModsInstaller();
+			ButtonsEnabled(true);
+		}
+
+		private void ButtonsEnabled(bool enabled)
+		{
+			btnInstallMods.IsEnabled = enabled;
+			btnInstallForge.IsEnabled = enabled;
+			btnInstallModsAndForge.IsEnabled = enabled;
 		}
 
 		private async Task InitializeInstall()
@@ -104,6 +109,16 @@ namespace SkyblockClient
 			if (exists)
 				Directory.Delete(tempFolderLocation, true);
 			Directory.CreateDirectory(tempFolderLocation);
+		}
+
+		public async Task StartForgeAndModsInstaller()
+		{
+			await InitializeInstall();
+
+			List<Task> tasks = new List<Task>();
+			tasks.Add(ForgeInstaller());
+			tasks.Add(ModsInstaller());
+			await Task.WhenAll(tasks.ToArray());
 		}
 
 		private async Task ModsInstaller()

@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SkyblockClient
 {
 	public class ModOption
 	{
 		public static List<ModOption> Read(string text)
-		{
-			var lines = new List<string>(text.Split(new string[1] { "\n" }, StringSplitOptions.None));
+		{ 
 			var result = new List<ModOption>();
+
+			if (text.Trim() == "")
+				return result;
+
+			var lines = new List<string>(text.Split(new string[1] { "\n" }, StringSplitOptions.None));
 			foreach (var line in lines)
 			{
 				if (line != "")
@@ -31,7 +32,6 @@ namespace SkyblockClient
 		public ModOption(string respLine)
 		{
 			const int KEY_INDEX = 0, DEFAULT_INDEX = 1, FILE_NAME_INDEX = 2, DISPLAY_INDEX = 3;
-
 			var split = respLine.Split(':');
 			if (split.Length != 4)
 			{
