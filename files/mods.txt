@@ -1,5 +1,5 @@
 optifine:true:preview_OptiFine_1.8.9_HD_U_L6_pre1.jar:Optifine L6
-patcher:true:Patcher-1.4_-_beta_9.1.jar:Patcher 1.4
+patcher:true:Patcher-1.4 (1.8.9).jar:Patcher 1.4
 sba:true:SkyblockAddons-1.5.4-for-MC-1.8.9.jar:SkyblockAddons
 neu:true:NotEnoughUpdates-1.4.5-BETA.jar:Not Enough Updates
 scrollabletooltips:true:Scrollable Tooltips-1.2 (1.8.9).jar:Scrollable Tooltips

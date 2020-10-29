@@ -1,0 +1,24 @@
+﻿<Window x:Class="SkyblockClient.FrmAdvancedSettings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SkyblockClient"
+        mc:Ignorable="d"
+        Title="AdvancedSettings" Height="450" Width="579.339">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="Button">
+                <Setter Property="BorderBrush" Value="#2c3e50"/>
+                <Setter Property="BorderThickness" Value="2,0,2,5"/>
+                <Setter Property="Background" Value="#FF587593"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontFamily" Value="Champagne &amp; Limousines"/>
+                <Setter Property="Margin" Value="10,0,10,10"/>
+            </Style>
+        </Grid.Resources>
+        <Label Content="Game Directory" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="127" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Button Content="Open mods Folder" HorizontalAlignment="Left" Margin="10,388,0,0" VerticalAlignment="Top" Width="127"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="0,41,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="137" TextChanged="TxtGameDirecotryTextChanged"/>
+    </Grid>
+</Window>

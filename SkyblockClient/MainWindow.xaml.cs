@@ -22,8 +22,8 @@ namespace SkyblockClient
 		public string tempFolderLocation => Utils.exeLocation + @".temp\";
 		public string minecraftLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\.minecraft\";
 
-		public string skyblockResourceLocation => minecraftLocation + @"";
-		//public string skyblockResourceLocation => minecraftLocation + @"skyblockclient\";
+		public string skyblockResourceLocation => minecraftLocation + skyblockResourceLocation;
+		public string gameDirectory = "";
 
 		public string skyblockModsLocation => skyblockResourceLocation + @"mods\";
 		public string skyblockTextureLocation => skyblockResourceLocation + @"ressourcepacks\";
@@ -46,7 +46,7 @@ namespace SkyblockClient
 
 			try
 			{
-				string response = await DownloadFileString("info.txt");
+				string response = await DownloadFileString("mods.txt");
 				modsList = ModOption.Read(response);
 			}
 			catch (Exception e)
@@ -222,15 +222,29 @@ namespace SkyblockClient
 			}
 		}
 
-
-		private async Task DownloadIndividualMods(List<ModOption> webResponseInfos)
+		private async Task DownloadIndividualMods(List<ModOption> modOptions)
 		{
-			foreach (var file in webResponseInfos)
+			foreach (var mod in modOptions)
 			{
-				Console.WriteLine("Downloading " + file.display);
-				await DownloadFileByte(file.fileName, tempFolderLocation + file.fileName);
-				Console.WriteLine("Finished Downloading " + file.display);
+				try
+				{
+					Console.WriteLine("Downloading " + mod.display);
+					await DownloadFileByte(mod.fileName, tempFolderLocation + mod.fileName);
+					Console.WriteLine("Finished Downloading " + mod.display);
+				}
+				catch (Exception e)
+				{
+					var msg = "Error while Downloading " + mod.display;
+					Utils.Error(msg);
+					Utils.Log(e, msg);
+				}
 			}
+		}
+
+		private void BtnAdvancedSettinsClick(object sender, RoutedEventArgs e)
+		{
+			var frmAdvancedSettings = new FrmAdvancedSettings(this);
+			frmAdvancedSettings.Show();
 		}
 	}
 }

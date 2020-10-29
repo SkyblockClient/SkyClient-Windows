@@ -22,7 +22,7 @@
             </Style>
         </Grid.Resources>
         <Rectangle Fill="#ecf0f1" Margin="10,41,10,10"/>
-        <Label Margin="10,0" Content="SkyClient" VerticalAlignment="Top" Background="White" Foreground="#DD000000" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontStyle="Italic" FontSize="24" FontFamily="Champagne &amp; Limousines" FontWeight="Bold"/>
+        <Label Margin="10,0" Content="SkyClient" VerticalAlignment="Top" Background="White" Foreground="#DD000000" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="24" FontFamily="Champagne &amp; Limousines" FontWeight="Bold"/>
         <StackPanel x:Name="stpMods" Margin="10,71,10,91"/>
         <StackPanel Margin="10,0,10,10" Height="114" VerticalAlignment="Bottom">
             <Button x:Name="btnInstallForge" Content="Install Forge" Click="BtnInstallForgeClick"/>
@@ -30,6 +30,6 @@
             <Button x:Name="btnInstallModsAndForge" Content="Install Forge and mods" Click="BtnInstallModsAndForgeClick"/>
         </StackPanel>
         <CheckBox x:Name="btnClearModsFolder" Content="Clear mods folder on Install" HorizontalAlignment="Left" Margin="56,0,0,130" Width="214" IsChecked="True" Height="20" VerticalAlignment="Bottom" Background="#FF69BF2D" BorderBrush="#FF48702C"/>
-        <Button Content="Advanced Settings (coming soon)" VerticalAlignment="Top" Margin="10,43,10,0"/>
+        <Button Content="Advanced Settings (coming soon)" VerticalAlignment="Top" Margin="10,43,10,0" Click="BtnAdvancedSettinsClick"/>
     </Grid>
 </Window>
