@@ -232,6 +232,12 @@ namespace SkyblockClient
 					await DownloadFileByte(mod.fileName, tempFolderLocation + mod.fileName);
 					Console.WriteLine("Finished Downloading " + mod.display);
 				}
+				catch (WebException webE)
+				{
+					var msg = "Error while Downloading " + mod.display;
+					Utils.Error(msg);
+					Utils.Log(webE, "msg:"+msg, "webE.Status:" + webE.Status, "webE.Data:" + webE.Data.ToString());
+				}
 				catch (Exception e)
 				{
 					var msg = "Error while Downloading " + mod.display;
