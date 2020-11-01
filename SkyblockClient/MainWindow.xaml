@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SkyblockClient"
-        mc:Ignorable="d" Width="321.667"
+        mc:Ignorable="d" Width="630.667"
         Background="#25364D"
         FontFamily="Champagne &amp; Limousines" FontSize="18">
     <Grid>
@@ -23,7 +23,31 @@
         </Grid.Resources>
         <Rectangle Fill="#ecf0f1" Margin="10,41,10,10"/>
         <Label Margin="10,0" Content="SkyClient" VerticalAlignment="Top" Background="White" Foreground="#DD000000" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="24" FontFamily="Champagne &amp; Limousines" FontWeight="Bold"/>
-        <StackPanel x:Name="stpMods" Margin="10,71,10,91"/>
+        <Grid Margin="10,71,10,155">
+            <Grid.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="FontSize" Value="22"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel x:Name="stpMods">
+                <Label Content="Mods"/>
+            </StackPanel>
+            <GridSplitter/>
+            <StackPanel x:Name="stpResources" Grid.Column="1">
+                <StackPanel.Resources>
+                    <Style TargetType="CheckBox">
+                        <Setter Property="FlowDirection" Value="RightToLeft"/>
+                    </Style>
+                </StackPanel.Resources>
+                <Label Content="Packs"/>
+            </StackPanel>
+        </Grid>
         <StackPanel Margin="10,0,10,10" Height="114" VerticalAlignment="Bottom">
             <Button x:Name="btnInstallForge" Content="Install Forge" Click="BtnInstallForgeClick"/>
             <Button x:Name="btnInstallMods" Content="Install selected mods" Click="BtnInstallModsClick"/>
@@ -31,5 +55,7 @@
         </StackPanel>
         <CheckBox x:Name="btnClearModsFolder" Content="Clear mods folder on Install" HorizontalAlignment="Left" Margin="56,0,0,130" Width="214" IsChecked="True" Height="20" VerticalAlignment="Bottom" Background="#FF69BF2D" BorderBrush="#FF48702C"/>
         <Button Content="Advanced Settings (coming soon)" VerticalAlignment="Top" Margin="10,43,10,0" Click="BtnAdvancedSettinsClick"/>
+        <DockPanel HorizontalAlignment="Left" Height="100" LastChildFill="False" Margin="97,167,0,0" VerticalAlignment="Top" Width="100"/>
+        <Button x:Name="btnInstallPacks" Content="Install Packs" Margin="0,0,20,134" Height="28" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="294" Click="BtnInstallPacksClick"/>
     </Grid>
 </Window>

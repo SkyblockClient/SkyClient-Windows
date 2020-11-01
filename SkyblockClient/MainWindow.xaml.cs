@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using SkyblockClient.Option;
 
 namespace SkyblockClient
 {
@@ -22,17 +23,19 @@ namespace SkyblockClient
 		public string tempFolderLocation => Utils.exeLocation + @".temp\";
 		public string minecraftLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\.minecraft\";
 
-		public string skyblockResourceLocation => minecraftLocation + skyblockResourceLocation;
+		public string skyblockRootLocation => minecraftLocation + gameDirectory;
 		public string gameDirectory = "";
 
-		public string skyblockModsLocation => skyblockResourceLocation + @"mods\";
-		public string skyblockTextureLocation => skyblockResourceLocation + @"ressourcepacks\";
+		public string skyblockModsLocation => skyblockRootLocation + @"mods\";
+		public string skyblockResourceLocation => skyblockRootLocation + @"resourcepacks\";
 
 		public bool clearModsFolder => btnClearModsFolder.IsChecked ?? false;
 
-		public List<ModOption> modsList = new List<ModOption>();
+		public List<IOption> modOptions = new List<IOption>();
+		public List<IOption> resourceOptions = new List<IOption>();
 
-		public List<ModOption> enabledModsList => modsList.Where(mod => mod.enabled).ToList();
+		public List<IOption> enabledModOptions => modOptions.Where(mod => mod.enabled).ToList();
+		public List<IOption> enabledResourcepackOptions => resourceOptions.Where(pack => pack.enabled).ToList();
 
 		public MainWindow()
 		{
@@ -42,12 +45,14 @@ namespace SkyblockClient
 
 		public async void PostConstruct()
 		{
-			Utils.InitLog();
+			await Utils.InitLog();
 
 			try
 			{
-				string response = await DownloadFileString("mods.txt");
-				modsList = ModOption.Read(response);
+				List<Task> tasks = new List<Task>();
+				tasks.Add(DownloadModsFile());
+				tasks.Add(DownloadResourceFile());
+				await Task.WhenAll(tasks.ToArray());
 			}
 			catch (Exception e)
 			{
@@ -55,29 +60,89 @@ namespace SkyblockClient
 				Utils.Log(e, "error connecting to github");
 			}
 
-			foreach (var mod in modsList)
+			foreach (ModOption mod in modOptions)
 			{
 				CheckBox checkBox = new CheckBox();
 				checkBox.Content = mod.display;
 				checkBox.IsChecked = mod.enabled;
 				checkBox.Tag = mod;
-				checkBox.Click += comboBoxIsChecked;
+				checkBox.Click += ModComboBoxIsChecked;
+
+				var tt = new ToolTip();
+				tt.Content = mod.description;
+				checkBox.ToolTip = tt;
+
 				stpMods.Children.Add(checkBox);
+			}
+
+			foreach (ResourcepackOption pack in resourceOptions)
+			{
+				if (!pack.hidden)
+				{
+					CheckBox checkBox = new CheckBox();
+					checkBox.Content = pack.display;
+					checkBox.IsChecked = pack.enabled;
+					checkBox.Tag = pack;
+					checkBox.Click += ResourceComboBoxIsChecked;
+					var tt = new ToolTip();
+					tt.Content = pack.description;
+					checkBox.ToolTip = tt;
+					stpResources.Children.Add(checkBox);
+				}
 			}
 		}
 
-		private void comboBoxIsChecked(object sender, RoutedEventArgs e)
+		private async Task DownloadResourceFile()
+		{
+			string response = await DownloadFileString("resourcepacks.txt");
+			resourceOptions = OptionHelper.Read<ResourcepackOption>(response);
+		}
+		private async Task DownloadModsFile()
+		{
+			string response = await DownloadFileString("mods.txt");
+			modOptions = OptionHelper.Read<ModOption>(response);
+		}
+
+		private void ModComboBoxIsChecked(object sender, RoutedEventArgs e)
 		{
 			var cmb = (CheckBox)sender;
 			var tag = (ModOption)cmb.Tag;
 			tag.enabled = cmb.IsChecked ?? false;
 		}
 
+		private void ResourceComboBoxIsChecked(object sender, RoutedEventArgs e)
+		{
+			var cmb = (CheckBox)sender;
+			var tag = (ResourcepackOption)cmb.Tag;
+			tag.enabled = cmb.IsChecked ?? false;
+		}
+
+		private async void BtnInstallPacksClick(object sender, RoutedEventArgs e)
+		{
+			ButtonsEnabled(false);
+			await InitializeInstall();
+			await Installer(skyblockResourceLocation, enabledResourcepackOptions, "resourcepacks");
+
+			var enabled = enabledResourcepackOptions;
+			enabled.Reverse();
+
+			string result = "resourcePacks:[";
+			foreach (var pack in enabled)
+			{
+				result += $"\"{pack.file}\",";
+			}
+			result = result.Remove(result.Length - 1);
+			result += "]";
+
+			File.WriteAllText(skyblockRootLocation + "options.txt", result);
+			ButtonsEnabled(true);
+		}
+
 		private async void BtnInstallModsClick(object sender, RoutedEventArgs e)
 		{
 			ButtonsEnabled(false);
 			await InitializeInstall();
-			await ModsInstaller();
+			await Installer(skyblockModsLocation, enabledModOptions, "mods");
 			ButtonsEnabled(true);
 		}
 
@@ -98,6 +163,7 @@ namespace SkyblockClient
 
 		private void ButtonsEnabled(bool enabled)
 		{
+			btnInstallPacks.IsEnabled = enabled;
 			btnInstallMods.IsEnabled = enabled;
 			btnInstallForge.IsEnabled = enabled;
 			btnInstallModsAndForge.IsEnabled = enabled;
@@ -117,61 +183,8 @@ namespace SkyblockClient
 
 			List<Task> tasks = new List<Task>();
 			tasks.Add(ForgeInstaller());
-			tasks.Add(ModsInstaller());
+			tasks.Add(Installer(skyblockModsLocation,enabledModOptions,"mods"));
 			await Task.WhenAll(tasks.ToArray());
-		}
-
-		private async Task ModsInstaller()
-		{
-			List<ModOption> mods = enabledModsList;
-			List<ModOption> firstHalf = mods.Take((mods.Count() + 1) / 2).ToList();
-			List<ModOption> secondHalf = mods.Skip((mods.Count() + 1) / 2).ToList();
-
-			List<Task> tasks = new List<Task>();
-			tasks.Add(DownloadIndividualMods(firstHalf));
-			tasks.Add(DownloadIndividualMods(secondHalf));
-			await Task.WhenAll(tasks.ToArray());
-
-			try
-			{
-				bool skyblockModsLocationExists = Directory.Exists(skyblockModsLocation);
-				if (skyblockModsLocationExists)
-					Utils.Info("skyblock mods folder exists");
-				else
-					Utils.Info("skyblock mods folder does not exist");
-
-				if (clearModsFolder)
-				{
-					if (skyblockModsLocationExists)
-						Directory.Delete(skyblockModsLocation, true);
-					Directory.CreateDirectory(skyblockModsLocation);
-				}
-				else
-				{
-					if (!skyblockModsLocationExists)
-						Directory.CreateDirectory(skyblockModsLocation);
-				}
-
-				foreach (var file in enabledModsList)
-				{
-					Utils.Info("Moving " + file.fileName);
-					try
-					{
-						File.Move(tempFolderLocation + file.fileName, skyblockModsLocation + file.fileName);
-						Utils.Info("Finished Moving " + file.fileName);
-					}
-					catch (Exception e)
-					{
-						Utils.Error("Failed Moving " + file.display);
-						Utils.Log(e, "failed moving " + file.display);
-					}
-				}
-			}
-			catch (Exception e)
-			{
-				Utils.Error("An Unknown error occured, please submit the log file");
-				Utils.Log(e, "unkown error in ModsInstaller()");
-			}
 		}
 
 		private async Task ForgeInstaller()
@@ -222,14 +235,14 @@ namespace SkyblockClient
 			}
 		}
 
-		private async Task DownloadIndividualMods(List<ModOption> modOptions)
+		private async Task DownloadIndividualMods(List<IOption> modOptions)
 		{
 			foreach (var mod in modOptions)
 			{
 				try
 				{
 					Console.WriteLine("Downloading " + mod.display);
-					await DownloadFileByte(mod.fileName, tempFolderLocation + mod.fileName);
+					await DownloadFileByte(mod.file, tempFolderLocation + mod.file);
 					Console.WriteLine("Finished Downloading " + mod.display);
 				}
 				catch (WebException webE)
@@ -251,6 +264,59 @@ namespace SkyblockClient
 		{
 			var frmAdvancedSettings = new FrmAdvancedSettings(this);
 			frmAdvancedSettings.Show();
+		}
+
+
+		private async Task Installer(string location, List<IOption> enabledOptions, string foldername)
+		{
+			List<IOption> firstHalf = enabledOptions.Take((enabledOptions.Count() + 1) / 2).ToList();
+			List<IOption> secondHalf = enabledOptions.Skip((enabledOptions.Count() + 1) / 2).ToList();
+
+			List<Task> tasks = new List<Task>();
+			tasks.Add(DownloadIndividualMods(firstHalf));
+			tasks.Add(DownloadIndividualMods(secondHalf));
+			await Task.WhenAll(tasks.ToArray());
+
+			try
+			{
+				bool locationExists = Directory.Exists(location);
+				if (locationExists)
+					Utils.Info($"skyblock {foldername} folder exists");
+				else
+					Utils.Info($"skyblock {foldername} folder does not exist");
+
+				if (locationExists)
+				{
+					DirectoryInfo di = new DirectoryInfo(location);
+
+					foreach (FileInfo file in di.GetFiles())
+					{
+						file.Delete();
+					}
+
+				}
+				Directory.CreateDirectory(location);
+
+				foreach (var file in enabledOptions)
+				{
+					Utils.Info("Moving " + file.file);
+					try
+					{
+						File.Move(tempFolderLocation + file.file, location + file.file);
+						Utils.Info("Finished Moving " + file.file);
+					}
+					catch (Exception e)
+					{
+						Utils.Error("Failed Moving " + file.display);
+						Utils.Log(e, "failed moving " + file.display);
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Utils.Error("An Unknown error occured, please submit the log file");
+				Utils.Log(e, "unkown error in Installer()");
+			}
 		}
 	}
 }

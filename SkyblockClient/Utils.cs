@@ -40,9 +40,10 @@ namespace SkyblockClient
 				Console.WriteLine(msg);
 		}
 
-		public static void InitLog()
+		public static Task InitLog()
 		{
-			/*
+			// causes errors for some reason
+			/* 
 			bool exists = File.Exists(logFileName);
 			if (exists)
 			{
@@ -61,6 +62,7 @@ namespace SkyblockClient
 				File.Create(logFileName);
 			}
 			*/
+			return Task.CompletedTask;
 		}
 
 		public static void Log(Exception e)
@@ -78,13 +80,14 @@ namespace SkyblockClient
 		public static void Log(Exception e, params string[] messages)
 		{
 			foreach (var message in messages)
-				File.AppendAllText(logFileName, message);
+				File.AppendAllText(logFileName, message + " ");
 
-			File.AppendAllText(logFileName, e.Message);
+			File.AppendAllText(logFileName, "\n");
+
+			File.AppendAllText(logFileName, e.Message + "\n");
 			File.AppendAllText(logFileName, e.StackTrace);
 
+			File.AppendAllText(logFileName, "\n\n");
 		}
-
-
 	}
 }
