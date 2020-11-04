@@ -2,7 +2,7 @@
 optifine:true:preview_OptiFine_1.8.9_HD_U_L6_pre1.jar:Optifine L6:Essential to Every Game
 patcher:true:Patcher-1.4.1 (1.8.9).jar:Patcher 1.4.1:Provides a Massive FPS boost
 sba:true:SkyblockAddons-1.5.4-for-MC-1.8.9.jar:SkyblockAddons:Essential to Skyblock
-neu:true:BaldEnoughUpdates-1.5-REL.jar:Not Enough Updates:Provides a full list of every Skyblock item and much more 
+neu:true:BaldEnoughUpdates-1.5.2-REL.jar:Not Enough Updates:Provides a full list of every Skyblock item and much more 
 scrollabletooltips:true:Scrollable Tooltips-1.3 (1.8.9).jar:Scrollable Tooltips:Let's you scroll around
 sidebarmod:true:1.8.9_Sidebar_Mod_Revamp.jar:Sidebar mod:Removes those pesky Numbers from your sidebar
 rpo:true:ResourcePackOrganizer_MC-1.8.9_v1.0.3.jar:Rescource Pack Organizer:Makes your resourcepack GUI much cooler
