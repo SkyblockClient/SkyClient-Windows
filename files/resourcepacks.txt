@@ -1,4 +1,5 @@
 #id-string:hidden-bool:enabled-bool:file-string:dislay-string:description-string
+bald:true:false:JustBaldEnoughUpdates.zip:JustBaldEnoughUpdates:Way too bald
 bald:true:true:TooBaldUpdates.zip:TooBaldUpdates:Way too bald
 hq32f:false:true:v12 F 16x Skyblock Pack.zip:Packs HQ v12 Full 16x:Packs HQ Skyblock Pack 16x. Standalone
 hq32f:false:false:v12 F 32x Skyblock Pack.zip:Packs HQ v12 Full 32x:Packs HQ Skyblock Pack 32x. Use Standalone and in combination with Faithful
