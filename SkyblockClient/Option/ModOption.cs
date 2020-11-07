@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SkyblockClient.Option
+﻿namespace SkyblockClient.Option
 {
 	public class ModOption : IOption
 	{
@@ -15,16 +12,15 @@ namespace SkyblockClient.Option
 
 		public void Create(string line)
 		{
-			const int ID_INDEX = 0, ENABLED_INDEX = 1, FILE_INDEX = 2, DISPLAY_INDEX = 3, DESCRIPTION_INDEX = 4, CAUTION_INDEX = 5, WARNING_INDEX = 6;
 			var helper = new OptionHelper(line, 7);
 
-			id = helper.String(ID_INDEX);
-			enabled = helper.Boolean(ENABLED_INDEX, "Enabled");
-			file = helper.String(FILE_INDEX);
-			display = helper.String(DISPLAY_INDEX);
-			description = helper.String(DESCRIPTION_INDEX);
-			caution = helper.Boolean(CAUTION_INDEX, "Caution");
-			warning = helper.String(WARNING_INDEX);
+			id = helper.String(Index.ID);
+			enabled = helper.Boolean(Index.Enabled, "Enabled");
+			file = helper.String(Index.File);
+			display = helper.String(Index.Display);
+			description = helper.String(Index.Description);
+			caution = helper.Boolean(Index.Caution, "Caution");
+			warning = helper.String(Index.Warning);
 		}
 
 		public override string ToString()
@@ -33,8 +29,14 @@ namespace SkyblockClient.Option
 			result += $"\tfile: {file}\n";
 			result += $"\tenabled: {enabled}\n";
 			result += $"\tdescription: {description}\n";
+			result += $"\twarning: {warning}\n";
 
 			return result;
+		}
+
+		private enum Index
+		{
+			ID, Enabled, File, Display, Description, Caution, Warning
 		}
 	}
 }

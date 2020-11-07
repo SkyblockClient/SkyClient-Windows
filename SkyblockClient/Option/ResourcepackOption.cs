@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SkyblockClient.Option
+﻿namespace SkyblockClient.Option
 {
 	public class ResourcepackOption : IOption
 	{
@@ -17,15 +11,14 @@ namespace SkyblockClient.Option
 
 		public void Create(string line)
 		{
-			const int ID_INDEX = 0, HIDDEN_INDEX = 1, ENABLED_INDEX = 2, FILE_INDEX = 3, DISPLAY_INDEX = 4, DESCRIPTION_INDEX = 5;
 			var helper = new OptionHelper(line, 6);
 
-			id = helper.String(ID_INDEX);
-			hidden = helper.Boolean(HIDDEN_INDEX, "Hidden");
-			enabled = helper.Boolean(ENABLED_INDEX, "Enabled");
-			file = helper.String(FILE_INDEX);
-			display = helper.String(DISPLAY_INDEX);
-			description = helper.String(DESCRIPTION_INDEX);
+			id = helper.String(Index.ID);
+			hidden = helper.Boolean(Index.Hidden, "Hidden");
+			enabled = helper.Boolean(Index.Enabled, "Enabled");
+			file = helper.String(Index.File);
+			display = helper.String(Index.Display);
+			description = helper.String(Index.Description);
 		}
 
 		public override string ToString()
@@ -37,6 +30,11 @@ namespace SkyblockClient.Option
 			result += $"\tdescription: {description}\n";
 
 			return result;
+		}
+
+		private enum Index
+		{
+			ID, Hidden, Enabled, File, Display, Description 
 		}
 	}
 }

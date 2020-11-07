@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.IO;
 using System.Reflection;
 
@@ -10,6 +8,8 @@ namespace SkyblockClient
 {
 	class Utils
 	{
+		private static TextWriter Out = Console.Out;
+		private static TextReader In = Console.In;
 
 		public static string exeLocation = Assembly.GetEntryAssembly().Location;
 
@@ -28,16 +28,32 @@ namespace SkyblockClient
 		
 		public static void Error(params string[] msgs)
 		{
+			Thread thread = new Thread(Error);
+			thread.Start(msgs);
+		}
+
+		private static void Error(object obj)
+		{
+			string[] msgs = (string[])obj;
+
 			Console.ForegroundColor = ConsoleColor.Red;
 			foreach (var msg in msgs)
-				Console.WriteLine(msg);
+				Out.WriteLine(msg);
 			Console.ResetColor();
 		}
 
 		public static void Info(params string[] msgs)
 		{
+			Thread thread = new Thread(Info);
+			thread.Start(msgs);
+		}
+
+		private static void Info(object obj)
+		{
+			string[] msgs = (string[])obj;
+
 			foreach (var msg in msgs)
-				Console.WriteLine(msg);
+				Out.WriteLine(msg);
 		}
 
 		public static Task InitLog()

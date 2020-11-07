@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SkyblockClient.Option
 {
@@ -50,10 +47,19 @@ namespace SkyblockClient.Option
 				throw new ArgumentException($"Value of '{name}' is neither true or false");
 		}
 
+		public bool Boolean(Enum index, string name)
+		{
+			return Boolean(Convert.ToInt32(index), name);
+		}
+
 		public string String(int index)
 		{
 			return parts[index].Replace(@"\n", "\n").Trim();
 		}
 
+		public string String(Enum index)
+		{
+			return String(Convert.ToInt32(index));
+		}
 	}
 }

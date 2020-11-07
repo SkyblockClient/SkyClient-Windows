@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,8 +16,8 @@ namespace SkyblockClient
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		public string URL = "https://github.com/nacrt/SkyblockClient/blob/main/files/";
-		//public string URL = "http://localhost/files/";
+		//public string URL = "https://github.com/nacrt/SkyblockClient/blob/main/files/";
+		public string URL = "http://localhost/files/";
 
 		public string tempFolderLocation => Utils.exeLocation + @".temp\";
 		public string minecraftLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\.minecraft\";
@@ -169,10 +168,10 @@ namespace SkyblockClient
 
 		private async Task ForgeInstaller()
 		{
-			Console.WriteLine("Downloading Forge");
+			Utils.Info("Downloading Forge");
 			const string FORGE = "forge.exe";
 			await DownloadFileByte(FORGE, tempFolderLocation + FORGE);
-			Console.WriteLine("Finished Downloading Forge");
+			Utils.Info("Finished Downloading Forge");
 
 			Process process = new Process();
 			ProcessStartInfo startInfo = new ProcessStartInfo();
@@ -221,9 +220,9 @@ namespace SkyblockClient
 			{
 				try
 				{
-					Console.WriteLine("Downloading " + mod.display);
+					Utils.Info("Downloading " + mod.display);
 					await DownloadFileByte(mod.file, tempFolderLocation + mod.file);
-					Console.WriteLine("Finished Downloading " + mod.display);
+					Utils.Info("Finished Downloading " + mod.display);
 				}
 				catch (WebException webE)
 				{
