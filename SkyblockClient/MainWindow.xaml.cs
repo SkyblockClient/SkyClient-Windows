@@ -68,9 +68,7 @@ namespace SkyblockClient
 				checkBox.Tag = mod;
 				checkBox.Click += ModComboBoxIsChecked;
 
-				var tt = new ToolTip();
-				tt.Content = mod.description;
-				checkBox.ToolTip = tt;
+				AddToolTip(checkBox, mod);
 
 				stpMods.Children.Add(checkBox);
 			}
@@ -84,9 +82,9 @@ namespace SkyblockClient
 					checkBox.IsChecked = pack.enabled;
 					checkBox.Tag = pack;
 					checkBox.Click += ResourceComboBoxIsChecked;
-					var tt = new ToolTip();
-					tt.Content = pack.description;
-					checkBox.ToolTip = tt;
+					//checkBox.FlowDirection = FlowDirection.RightToLeft;
+
+					AddToolTip(checkBox, pack);
 					stpResources.Children.Add(checkBox);
 				}
 			}
@@ -107,7 +105,33 @@ namespace SkyblockClient
 		{
 			var cmb = (CheckBox)sender;
 			var tag = (ModOption)cmb.Tag;
-			tag.enabled = cmb.IsChecked ?? false;
+
+			var isChecked = cmb.IsChecked ?? false;
+
+			if (tag.caution && isChecked)
+			{
+				MessageBoxResult result = MessageBox.Show(tag.warning + "\n\nUse anyway?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+				switch (result)
+				{
+					case MessageBoxResult.Yes:
+						cmb.IsChecked = true;
+						tag.enabled = true;
+						break;
+					case MessageBoxResult.No:
+						cmb.IsChecked = false;
+						tag.enabled = false;
+						break;
+					default:
+						cmb.IsChecked = false;
+						tag.enabled = false;
+						break;
+				}
+			}
+			else
+			{
+				tag.enabled = isChecked; 
+			}
+
 		}
 
 		private void ResourceComboBoxIsChecked(object sender, RoutedEventArgs e)
@@ -115,50 +139,6 @@ namespace SkyblockClient
 			var cmb = (CheckBox)sender;
 			var tag = (ResourcepackOption)cmb.Tag;
 			tag.enabled = cmb.IsChecked ?? false;
-		}
-
-		private async void BtnInstallPacksClick(object sender, RoutedEventArgs e)
-		{
-			ButtonsEnabled(false);
-			await InitializeInstall();
-			await Installer(skyblockResourceLocation, enabledResourcepackOptions, "resourcepacks");
-
-			var enabled = enabledResourcepackOptions;
-			enabled.Reverse();
-
-			string result = "resourcePacks:[";
-			foreach (var pack in enabled)
-			{
-				result += $"\"{pack.file}\",";
-			}
-			result = result.Remove(result.Length - 1);
-			result += "]";
-
-			File.WriteAllText(skyblockRootLocation + "options.txt", result);
-			ButtonsEnabled(true);
-		}
-
-		private async void BtnInstallModsClick(object sender, RoutedEventArgs e)
-		{
-			ButtonsEnabled(false);
-			await InitializeInstall();
-			await Installer(skyblockModsLocation, enabledModOptions, "mods");
-			ButtonsEnabled(true);
-		}
-
-		private async void BtnInstallForgeClick(object sender, RoutedEventArgs e)
-		{
-			ButtonsEnabled(false);
-			await InitializeInstall();
-			await ForgeInstaller();
-			ButtonsEnabled(true);
-		}
-
-		private async void BtnInstallModsAndForgeClick(object sender, RoutedEventArgs e)
-		{
-			ButtonsEnabled(false);
-			await StartForgeAndModsInstaller();
-			ButtonsEnabled(true);
 		}
 
 		private void ButtonsEnabled(bool enabled)
@@ -260,13 +240,6 @@ namespace SkyblockClient
 			}
 		}
 
-		private void BtnAdvancedSettinsClick(object sender, RoutedEventArgs e)
-		{
-			var frmAdvancedSettings = new FrmAdvancedSettings(this);
-			frmAdvancedSettings.Show();
-		}
-
-
 		private async Task Installer(string location, List<IOption> enabledOptions, string foldername)
 		{
 			List<IOption> firstHalf = enabledOptions.Take((enabledOptions.Count() + 1) / 2).ToList();
@@ -317,6 +290,18 @@ namespace SkyblockClient
 				Utils.Error("An Unknown error occured, please submit the log file");
 				Utils.Log(e, "unkown error in Installer()");
 			}
+		}
+
+		private void AddToolTip(CheckBox checkBox, IOption option)
+		{
+			AddToolTip(checkBox, option.description);
+		}
+
+		private void AddToolTip(CheckBox checkBox, string description)
+		{
+			ToolTip toolTip = new ToolTip();
+			toolTip.Content = description;
+			checkBox.ToolTip = toolTip;
 		}
 	}
 }

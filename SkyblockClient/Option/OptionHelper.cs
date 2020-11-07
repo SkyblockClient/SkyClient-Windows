@@ -52,7 +52,7 @@ namespace SkyblockClient.Option
 
 		public string String(int index)
 		{
-			return parts[index];
+			return parts[index].Replace(@"\n", "\n").Trim();
 		}
 
 	}

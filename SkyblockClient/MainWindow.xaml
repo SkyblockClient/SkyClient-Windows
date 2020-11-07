@@ -40,11 +40,6 @@
             </StackPanel>
             <GridSplitter/>
             <StackPanel x:Name="stpResources" Grid.Column="1">
-                <StackPanel.Resources>
-                    <Style TargetType="CheckBox">
-                        <Setter Property="FlowDirection" Value="RightToLeft"/>
-                    </Style>
-                </StackPanel.Resources>
                 <Label Content="Packs"/>
             </StackPanel>
         </Grid>
