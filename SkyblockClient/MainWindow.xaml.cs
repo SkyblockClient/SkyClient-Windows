@@ -81,8 +81,6 @@ namespace SkyblockClient
 					checkBox.IsChecked = pack.enabled;
 					checkBox.Tag = pack;
 					checkBox.Click += ResourceComboBoxIsChecked;
-					//checkBox.FlowDirection = FlowDirection.RightToLeft;
-
 					AddToolTip(checkBox, pack);
 					stpResources.Children.Add(checkBox);
 				}
