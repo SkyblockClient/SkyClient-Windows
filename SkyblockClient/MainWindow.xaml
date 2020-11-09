@@ -40,7 +40,7 @@
             </StackPanel>
             <GridSplitter/>
             <StackPanel x:Name="stpResources" Grid.Column="1">
-                <Label Content="Packs"/>
+                <Label Content="Texturepacks"/>
             </StackPanel>
         </Grid>
         <StackPanel Margin="10,0,10,10" Height="114" VerticalAlignment="Bottom">

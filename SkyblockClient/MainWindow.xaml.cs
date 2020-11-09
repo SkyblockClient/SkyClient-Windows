@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,8 +17,8 @@ namespace SkyblockClient
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		//public string URL = "https://github.com/nacrt/SkyblockClient/blob/main/files/";
-		public string URL = "http://localhost/files/";
+		public string URL = "https://github.com/nacrt/SkyblockClient/blob/main/files/";
+		//public string URL = "http://localhost/files/";
 
 		public string tempFolderLocation => Utils.exeLocation + @".temp\";
 		public string minecraftLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\.minecraft\";
@@ -162,6 +163,8 @@ namespace SkyblockClient
 			tasks.Add(ForgeInstaller());
 			tasks.Add(Installer(skyblockModsLocation,enabledModOptions,"mods"));
 			await Task.WhenAll(tasks.ToArray());
+
+			await NotifyCompleted("All the mods have been installed. Now you just need to press \"OK\" on the Minecraft Forge window");
 		}
 
 		private async Task ForgeInstaller()
@@ -332,6 +335,17 @@ namespace SkyblockClient
 			ToolTip toolTip = new ToolTip();
 			toolTip.Content = description;
 			checkBox.ToolTip = toolTip;
+		}
+
+		private async Task NotifyCompleted(string message)
+		{
+			Thread thread = new Thread(NotifyCompletedInternal);
+			thread.Start(message);
+		}
+
+		private void NotifyCompletedInternal(object obj)
+		{
+			MessageBox.Show((string)obj, "Completed", MessageBoxButton.OK, MessageBoxImage.Information);
 		}
 	}
 }

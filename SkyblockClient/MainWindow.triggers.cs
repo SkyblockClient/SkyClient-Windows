@@ -29,6 +29,8 @@ namespace SkyblockClient
 
 			File.WriteAllText(skyblockRootLocation + "options.txt", result);
 			ButtonsEnabled(true);
+
+			await NotifyCompleted("All the texturepacks have been installed");
 		}
 
 		private async void BtnInstallModsClick(object sender, RoutedEventArgs e)
@@ -37,6 +39,8 @@ namespace SkyblockClient
 			await InitializeInstall();
 			await Installer(skyblockModsLocation, enabledModOptions, "mods");
 			ButtonsEnabled(true);
+
+			await NotifyCompleted("All the mods have been installed");
 		}
 
 		private async void BtnInstallForgeClick(object sender, RoutedEventArgs e)
