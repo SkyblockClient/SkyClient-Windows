@@ -8,6 +8,7 @@ namespace SkyblockClient
 {
 	class Utils
 	{
+		private static TextWriter ErrorOut = Console.Error;
 		private static TextWriter Out = Console.Out;
 		private static TextReader In = Console.In;
 
@@ -35,10 +36,9 @@ namespace SkyblockClient
 		private static void Error(object obj)
 		{
 			string[] msgs = (string[])obj;
-
 			Console.ForegroundColor = ConsoleColor.Red;
 			foreach (var msg in msgs)
-				Out.WriteLine(msg);
+				ErrorOut.Write(msg);
 			Console.ResetColor();
 		}
 

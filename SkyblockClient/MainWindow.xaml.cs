@@ -166,20 +166,53 @@ namespace SkyblockClient
 
 		private async Task ForgeInstaller()
 		{
-			Utils.Info("Downloading Forge");
-			const string FORGE = "forge.exe";
-			await DownloadFileByte(FORGE, tempFolderLocation + FORGE);
-			Utils.Info("Finished Downloading Forge");
+			bool correctJavaVersion = false;
 
-			Process process = new Process();
-			ProcessStartInfo startInfo = new ProcessStartInfo();
-			startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-			startInfo.FileName = "cmd.exe";
-			startInfo.Arguments = $"/C {tempFolderLocation}forge.exe";
-			process.StartInfo = startInfo;
-			process.Start();
-			process.WaitForExit();
+			var javaProcess = Process.Start(CreateProcessStartInfo("java.exe", "-version"));
+
+			List<string> jLines = new List<string>();
+
+			while (!javaProcess.StandardError.EndOfStream)
+			{
+				jLines.Add(javaProcess.StandardError.ReadLine());
+			}
+
+			if (jLines.Count == 3)
+			{
+				var split = jLines[0].Split('"');
+				Utils.Info(split[1]);
+
+			}
+			else
+			{
+				correctJavaVersion = false;
+			}
+
+			if (correctJavaVersion)
+			{
+				Utils.Info("Downloading Forge");
+				const string FORGE = "forge.exe";
+				await DownloadFileByte(FORGE, tempFolderLocation + FORGE);
+				Utils.Info("Finished Downloading Forge");
+
+				Process forgeProcess = new Process
+				{
+					StartInfo = CreateProcessStartInfo("cmd.exe", $"/c {tempFolderLocation}{FORGE}")
+				};
+				forgeProcess.Start();
+				forgeProcess.WaitForExit();
+			}
+
+			await Task.CompletedTask;
 		}
+
+		private ProcessStartInfo CreateProcessStartInfo(string exe,string command) => new ProcessStartInfo
+		{
+			FileName = $"{exe}",
+			Arguments = $"{command}",
+			UseShellExecute = false,
+			RedirectStandardError = true
+		};
 
 		public async Task<string> DownloadFileString(string file)
 		{
