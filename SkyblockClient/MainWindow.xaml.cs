@@ -183,12 +183,16 @@ namespace SkyblockClient
 			if (jLines.Count == 3)
 			{
 				var split = jLines[0].Split('"');
-				Utils.Info(split[1]);
-
+				Utils.Info($"JAVA VERSION: {split[1]}");
+				correctJavaVersion = true;
 			}
 			else
 			{
 				correctJavaVersion = false;
+				Utils.Error("You are Using the wrong version of Java.");
+				Utils.Error("Download the newest version here:");
+				Utils.Error("https://www.java.com/en/download/manual.jsp");
+				Utils.Error("Select \"Windows Offline (64-Bit)\"");
 			}
 
 			if (correctJavaVersion)
