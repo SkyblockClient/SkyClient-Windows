@@ -38,7 +38,7 @@ namespace SkyblockClient
 			string[] msgs = (string[])obj;
 			Console.ForegroundColor = ConsoleColor.Red;
 			foreach (var msg in msgs)
-				ErrorOut.Write(msg);
+				ErrorOut.WriteLine(msg);
 			Console.ResetColor();
 		}
 

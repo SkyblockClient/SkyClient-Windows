@@ -169,6 +169,7 @@ namespace SkyblockClient
 
 		private async Task ForgeInstaller()
 		{
+			const string JAVA_LINK = "https://www.java.com/en/download/manual.jsp";
 			bool correctJavaVersion = false;
 
 			var javaProcess = Process.Start(CreateProcessStartInfo("java.exe", "-version"));
@@ -183,16 +184,29 @@ namespace SkyblockClient
 			if (jLines.Count == 3)
 			{
 				var split = jLines[0].Split('"');
-				Utils.Info($"JAVA VERSION: {split[1]}");
-				correctJavaVersion = true;
+				if (split[1].StartsWith("1.8."))
+				{
+					correctJavaVersion = true;
+				}
+				else
+				{
+
+					correctJavaVersion = false;
+					Utils.Error("You are using the wrong version of Java.");
+					Utils.Error("Download the newest version here:");
+					Utils.Error(JAVA_LINK);
+					Utils.Error("Select \"Windows Offline (64-Bit)\"");
+					Process.Start(CreateProcessStartInfo("cmd.exe",$"/c start {JAVA_LINK}"));
+				}
 			}
 			else
 			{
 				correctJavaVersion = false;
 				Utils.Error("You are Using the wrong version of Java.");
 				Utils.Error("Download the newest version here:");
-				Utils.Error("https://www.java.com/en/download/manual.jsp");
+				Utils.Error(JAVA_LINK);
 				Utils.Error("Select \"Windows Offline (64-Bit)\"");
+				Process.Start(CreateProcessStartInfo("cmd.exe", $"/c start {JAVA_LINK}"));
 			}
 
 			if (correctJavaVersion)
