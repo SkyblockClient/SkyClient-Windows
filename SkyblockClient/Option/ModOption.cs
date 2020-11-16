@@ -1,6 +1,8 @@
-﻿namespace SkyblockClient.Option
+﻿using System;
+
+namespace SkyblockClient.Option
 {
-	public class ModOption : IOption
+	public class ModOption : IOption, IEquatable<ModOption>, IEquatable<string>
 	{
 		public string id { get; set; }
 		public bool enabled { get; set; }
@@ -9,10 +11,13 @@
 		public string description { get; set; }
 		public bool caution { get; set; }
 		public string warning { get; set; }
+		public bool hidden { get; set; }
+		public bool dispersed { get; set; }
+		public string dependency { get; set; }
 
 		public void Create(string line)
 		{
-			var helper = new OptionHelper(line, 7);
+			var helper = new OptionHelper(line, 10);
 
 			id = helper.String(Index.ID);
 			enabled = helper.Boolean(Index.Enabled, "Enabled");
@@ -21,6 +26,9 @@
 			description = helper.String(Index.Description);
 			caution = helper.Boolean(Index.Caution, "Caution");
 			warning = helper.String(Index.Warning);
+			hidden = helper.Boolean(Index.Hidden, "Hidden");
+			dispersed = helper.Boolean(Index.Dispersed, "Dispersed");
+			dependency = helper.String(Index.Dependency);
 		}
 
 		public override string ToString()
@@ -34,9 +42,19 @@
 			return result;
 		}
 
+		public bool Equals(string other)
+		{
+			return id.Equals(other);
+		}
+
+		bool IEquatable<ModOption>.Equals(ModOption other)
+		{
+			return id.Equals(other.id);
+		}
+
 		private enum Index
 		{
-			ID, Enabled, File, Display, Description, Caution, Warning
+			ID, Enabled, File, Display, Description, Caution, Warning, Hidden, Dispersed, Dependency
 		}
 	}
 }

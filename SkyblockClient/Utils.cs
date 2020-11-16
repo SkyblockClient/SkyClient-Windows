@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.IO;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace SkyblockClient
 {
@@ -105,5 +106,14 @@ namespace SkyblockClient
 
 			File.AppendAllText(logFileName, "\n\n");
 		}
+
+		public static ProcessStartInfo CreateProcessStartInfo(string exe, string command) => new ProcessStartInfo
+		{
+			FileName = $"{exe}",
+			Arguments = $"{command}",
+			UseShellExecute = false,
+			RedirectStandardOutput = true,
+			RedirectStandardError = true
+		};
 	}
 }

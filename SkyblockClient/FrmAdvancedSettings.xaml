@@ -18,7 +18,7 @@
             </Style>
         </Grid.Resources>
         <Label Content="Game Directory" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="127" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-        <Button Content="Open mods Folder" HorizontalAlignment="Left" Margin="10,388,0,0" VerticalAlignment="Top" Width="127"/>
+        <Button Content="Open mods Folder" HorizontalAlignment="Left" Margin="10,388,0,0" VerticalAlignment="Top" Width="127" Click="BtnOpenModsFolderClick"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="0,41,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="137" TextChanged="TxtGameDirecotryTextChanged"/>
     </Grid>
 </Window>

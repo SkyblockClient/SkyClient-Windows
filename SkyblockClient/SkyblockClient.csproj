@@ -7,7 +7,7 @@
     <ProjectGuid>{2DEA9CD8-419E-4F59-82D9-D089DC282BB7}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>SkyblockClient</RootNamespace>
-    <AssemblyName>SkyblockClient-0.7.3</AssemblyName>
+    <AssemblyName>SkyblockClient-0.7.4</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -61,6 +61,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="CheckBoxMod.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FrmAdvancedSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -69,6 +73,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="CheckBoxMod.xaml.cs">
+      <DependentUpon>CheckBoxMod.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FrmAdvancedSettings.xaml.cs">
       <DependentUpon>FrmAdvancedSettings.xaml</DependentUpon>
     </Compile>

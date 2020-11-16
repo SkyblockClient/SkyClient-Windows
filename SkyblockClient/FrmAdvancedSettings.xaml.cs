@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace SkyblockClient
@@ -20,5 +21,16 @@ namespace SkyblockClient
 			var txt = (TextBox)sender;
 			mainWindow.gameDirectory = txt.Text;
 		}
+
+		private void BtnOpenModsFolderClick(object sender, RoutedEventArgs e)
+		{
+			Process explorer = new Process
+			{
+				StartInfo = Utils.CreateProcessStartInfo("explorer.exe", $"{mainWindow.skyblockModsLocation}")
+			};
+			explorer.Start();
+			explorer.WaitForExit();
+		}
+
 	}
 }

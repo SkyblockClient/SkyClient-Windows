@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using SkyblockClient.Option;
 
 namespace SkyblockClient
 {
@@ -14,7 +15,7 @@ namespace SkyblockClient
 		{
 			ButtonsEnabled(false);
 			await InitializeInstall();
-			await Installer(skyblockResourceLocation, enabledResourcepackOptions, "resourcepacks");
+			await Installer(skyblockResourceLocation, enabledResourcepackOptions.ToArray(), "resourcepacks");
 
 			var enabled = enabledResourcepackOptions;
 			enabled.Reverse();
@@ -30,17 +31,17 @@ namespace SkyblockClient
 			File.WriteAllText(skyblockRootLocation + "options.txt", result);
 			ButtonsEnabled(true);
 
-			await NotifyCompleted("All the texturepacks have been installed");
+			NotifyCompleted("All the texturepacks have been installed");
 		}
 
 		private async void BtnInstallModsClick(object sender, RoutedEventArgs e)
 		{
 			ButtonsEnabled(false);
 			await InitializeInstall();
-			await Installer(skyblockModsLocation, enabledModOptions, "mods");
+			await Installer(skyblockModsLocation, neededMods.ToArray(), "mods");
 			ButtonsEnabled(true);
 
-			await NotifyCompleted("All the mods have been installed");
+			NotifyCompleted("All the mods have been installed");
 		}
 
 		private async void BtnInstallForgeClick(object sender, RoutedEventArgs e)

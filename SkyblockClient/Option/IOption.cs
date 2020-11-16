@@ -13,6 +13,7 @@ namespace SkyblockClient.Option
 		string file { get; set; }
 		string display { get; set; }
 		string description { get; set; }
+		bool hidden { get; set; }
 
 		void Create(string line);
 		//  { throw new NotImplementedException("OptionBase(string line) is not Implemented"); }

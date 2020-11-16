@@ -31,11 +31,45 @@ namespace SkyblockClient
 
 		public bool clearModsFolder => btnClearModsFolder.IsChecked ?? false;
 
-		public List<IOption> modOptions = new List<IOption>();
-		public List<IOption> resourceOptions = new List<IOption>();
+		public List<ModOption> modOptions = new List<ModOption>();
+		public List<ResourcepackOption> resourceOptions = new List<ResourcepackOption>();
 
-		public List<IOption> enabledModOptions => modOptions.Where(mod => mod.enabled).ToList();
-		public List<IOption> enabledResourcepackOptions => resourceOptions.Where(pack => pack.enabled).ToList();
+		public List<ModOption> enabledModOptions => modOptions.Where(mod => mod.enabled).ToList();
+		public List<ResourcepackOption> enabledResourcepackOptions => resourceOptions.Where(pack => pack.enabled).ToList();
+
+		public List<ModOption> neededMods
+		{ 
+			get
+			{
+				var enabled = enabledModOptions;
+				var result = new List<ModOption>();
+				result.AddRange(enabled);
+
+				var libraries = new List<ModOption>();
+
+				foreach (var mod in enabled)
+				{
+					if (mod.dispersed)
+					{
+						foreach (var library in modOptions)
+						{
+							if (mod.dependency == library.id)
+							{
+								if (!libraries.Contains(library))
+								{
+									libraries.Add(library);
+								}
+								break;
+							}
+						}
+					}
+				}
+
+				result.AddRange(libraries);
+
+				return result;
+			}
+		}
 
 		public MainWindow()
 		{
@@ -56,21 +90,23 @@ namespace SkyblockClient
 			}
 			catch (Exception e)
 			{
-				Utils.Error("ERROR CONNECTING TO GITHUB", "\tAre you using a proxy?");
+				Utils.Error("ERROR CONNECTING TO GITHUB", "\tAre you using a proxy?","\tYou might also be using an outdated version! Update!");
 				Utils.Log(e, "error connecting to github");
 			}
 
 			foreach (ModOption mod in modOptions)
 			{
-				CheckBox checkBox = new CheckBox();
-				checkBox.Content = mod.display;
-				checkBox.IsChecked = mod.enabled;
-				checkBox.Tag = mod;
-				checkBox.Click += ModComboBoxIsChecked;
+				if (!mod.hidden)
+				{
+					CheckBox checkBox = new CheckBox();
+					checkBox.Content = mod.display;
+					checkBox.IsChecked = mod.enabled;
+					checkBox.Tag = mod;
+					checkBox.Click += ModComboBoxIsChecked;
 
-				AddToolTip(checkBox, mod);
-
-				stpMods.Children.Add(checkBox);
+					AddToolTip(checkBox, mod);
+					stpMods.Children.Add(checkBox);
+				}
 			}
 
 			foreach (ResourcepackOption pack in resourceOptions)
@@ -161,10 +197,10 @@ namespace SkyblockClient
 
 			List<Task> tasks = new List<Task>();
 			tasks.Add(ForgeInstaller());
-			tasks.Add(Installer(skyblockModsLocation,enabledModOptions,"mods"));
+			tasks.Add(Installer(skyblockModsLocation, enabledModOptions.ToArray(), "mods"));
 			await Task.WhenAll(tasks.ToArray());
 
-			await NotifyCompleted("All the mods have been installed. Now you just need to press \"OK\" on the Minecraft Forge window");
+			NotifyCompleted("All the mods have been installed. Now you just need to press \"OK\" on the Minecraft Forge window");
 		}
 
 		private async Task ForgeInstaller()
@@ -172,7 +208,7 @@ namespace SkyblockClient
 			const string JAVA_LINK = "https://www.java.com/en/download/manual.jsp";
 			bool correctJavaVersion = false;
 
-			var javaProcess = Process.Start(CreateProcessStartInfo("java.exe", "-version"));
+			var javaProcess = Process.Start(Utils.CreateProcessStartInfo("java.exe", "-version"));
 
 			List<string> jLines = new List<string>();
 
@@ -181,23 +217,9 @@ namespace SkyblockClient
 				jLines.Add(javaProcess.StandardError.ReadLine());
 			}
 
-			if (jLines.Count == 3)
+			if (jLines.Count == 3 && jLines[0].Split('"')[1].StartsWith("1.8."))
 			{
-				var split = jLines[0].Split('"');
-				if (split[1].StartsWith("1.8."))
-				{
-					correctJavaVersion = true;
-				}
-				else
-				{
-
-					correctJavaVersion = false;
-					Utils.Error("You are using the wrong version of Java.");
-					Utils.Error("Download the newest version here:");
-					Utils.Error(JAVA_LINK);
-					Utils.Error("Select \"Windows Offline (64-Bit)\"");
-					Process.Start(CreateProcessStartInfo("cmd.exe",$"/c start {JAVA_LINK}"));
-				}
+				correctJavaVersion = true;
 			}
 			else
 			{
@@ -206,7 +228,7 @@ namespace SkyblockClient
 				Utils.Error("Download the newest version here:");
 				Utils.Error(JAVA_LINK);
 				Utils.Error("Select \"Windows Offline (64-Bit)\"");
-				Process.Start(CreateProcessStartInfo("cmd.exe", $"/c start {JAVA_LINK}"));
+				Process.Start(Utils.CreateProcessStartInfo("cmd.exe", $"/c start {JAVA_LINK}"));
 			}
 
 			if (correctJavaVersion)
@@ -218,7 +240,7 @@ namespace SkyblockClient
 
 				Process forgeProcess = new Process
 				{
-					StartInfo = CreateProcessStartInfo("cmd.exe", $"/c {tempFolderLocation}{FORGE}")
+					StartInfo = Utils.CreateProcessStartInfo("cmd.exe", $"/c {tempFolderLocation}{FORGE}")
 				};
 				forgeProcess.Start();
 				forgeProcess.WaitForExit();
@@ -226,14 +248,6 @@ namespace SkyblockClient
 
 			await Task.CompletedTask;
 		}
-
-		private ProcessStartInfo CreateProcessStartInfo(string exe,string command) => new ProcessStartInfo
-		{
-			FileName = $"{exe}",
-			Arguments = $"{command}",
-			UseShellExecute = false,
-			RedirectStandardError = true
-		};
 
 		public async Task<string> DownloadFileString(string file)
 		{
@@ -291,7 +305,7 @@ namespace SkyblockClient
 			}
 		}
 
-		private async Task Installer(string location, List<IOption> enabledOptions, string foldername)
+		private async Task Installer(string location, IOption[] enabledOptions, string foldername)
 		{
 			List<IOption> firstHalf = enabledOptions.Take((enabledOptions.Count() + 1) / 2).ToList();
 			List<IOption> secondHalf = enabledOptions.Skip((enabledOptions.Count() + 1) / 2).ToList();
@@ -343,19 +357,19 @@ namespace SkyblockClient
 			}
 		}
 
-		private void AddToolTip(CheckBox checkBox, IOption option)
+		private void AddToolTip(Control checkBox, IOption option)
 		{
 			AddToolTip(checkBox, option.description);
 		}
 
-		private void AddToolTip(CheckBox checkBox, string description)
+		private void AddToolTip(Control checkBox, string description)
 		{
 			ToolTip toolTip = new ToolTip();
 			toolTip.Content = description;
 			checkBox.ToolTip = toolTip;
 		}
 
-		private async Task NotifyCompleted(string message)
+		private void NotifyCompleted(string message)
 		{
 			Thread thread = new Thread(NotifyCompletedInternal);
 			thread.Start(message);

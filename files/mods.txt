@@ -1,18 +1,18 @@
-#id-string:enabled-bool:file-string:display-string:description-string:caution-bool:warning-string
-optifine:true:preview_OptiFine_1.8.9_HD_U_L6_pre1.jar:Optifine L6:Essential for every game:false:None
-patcher:true:Patcher-1.4.1 (1.8.9).jar:Patcher:Provides a massive FPS boost:false:None
-sba:true:SkyblockAddons-1.5.4-for-MC-1.8.9.jar:SkyblockAddons:Essential for Skyblock:false:None
-neu:true:BaldEnoughUpdates-1.5.3-REL.jar:Not Enough Updates:Provides a full list of every Skyblock item and much more:false:None
-scrollabletooltips:true:Scrollable Tooltips-1.3 (1.8.9).jar:Scrollable Tooltips:Lets you scroll on tooltips that are larger than your screen:false:None
-sidebarmod:true:1.8.9_Sidebar_Mod_Revamp.jar:Sidebar mod:Removes those pesky numbers from your sidebar:false:None
-rpo:true:ResourcePackOrganizer_MC-1.8.9_v1.0.3.jar:Resource Pack Organizer:Revamps your resourcepack GUI, making it a lot better:false:None
-hytilities:true:Hytilities-1.0_-_beta_4.jar:Hytilities:A bunch of useful features for Hypixel:false:None
-cowlection:false:Cowlection-1.8.9-0.11.0.jar:Cowlection:A collection of various features mainly focused on Hypixel SkyBlock\nSome features - for example the Minecraft log search - have a universal use:false:None
-togglesneak:false:[1.8.9] Powns ToggleSneak - 3.0.jar:Pown's Toggle Sneak:Lets you sprint without having to press Control:true:This mod Requires PlayerAPI to work
-ctjs:false:ctjs-1.3.0-1.8.9.jar:Chat Triggers:Requirement for DungeonUtilies and SoopyAddons:false:None
-oldanim:false:Sk1er_Old_Animations-1.0_-_beta_5.jar:Old Animations:Better than Oranges!:false:None
-potionhud:false:[1.8.9] Powns PotionEffect HUD - 1.0.jar:Powns Potion hud:A mod that shows your active potion effects without you having to open your inventory:false:None
-autogg:false:AutoGG-4.0.3 (1.8.9).jar:AutoGG:Says "gg" for you after each game so you can gain free Karma:false:None
-discordrp:false:DiscordRP-1.2.4.jar:Discord Rich Pressence:Minecraft to Discord Rich Pressence\nSimilar features are includes in SkyblockAddons\nBreaks SkyblockAddons's DiscordRP:false:None
-sbcustommobtex:false:SBCustomMobTex-1.4.jar:SBCustomMobTex:Allows Texturepacks to View the NBT data of Mobs:true:This Mod will cause serious performance issues inside of dungeons
-playerapi:true:PlayerAPI-1.12.1-1.0.jar:PlayerAPI:A mod that makes other mods work, you probably need this:false:None
+#id-string:enabled-bool:file-string:display-string:description-string:caution-bool:warning-string:hidden-bool:dispersed-bool:dependency-string
+optifine:true:preview_OptiFine_1.8.9_HD_U_L6_pre1.jar:Optifine L6:Essential for every game:false:None:false:false:None
+patcher:true:Patcher-1.4.1 (1.8.9).jar:Patcher:Provides a massive FPS boost:false:None:false:false:None
+sba:true:SkyblockAddons-1.5.4-for-MC-1.8.9.jar:SkyblockAddons:Essential for Skyblock:false:None:false:false:None
+neu:true:BaldEnoughUpdates-1.5.3-REL.jar:Not Enough Updates:Provides a full list of every Skyblock item and much more:false:None:false:false:None
+scrollabletooltips:true:Scrollable Tooltips-1.3 (1.8.9).jar:Scrollable Tooltips:Lets you scroll on tooltips that are larger than your screen:false:None:false:false:None
+sidebarmod:true:1.8.9_Sidebar_Mod_Revamp.jar:Sidebar mod:Removes those pesky numbers from your sidebar:false:None:false:false:None
+rpo:true:ResourcePackOrganizer_MC-1.8.9_v1.0.3.jar:Resource Pack Organizer:Revamps your resourcepack GUI, making it a lot better:false:None:false:false:None
+hytilities:true:Hytilities-1.0_-_beta_4.jar:Hytilities:A bunch of useful features for Hypixel:false:None:false:false:None
+cowlection:false:Cowlection-1.8.9-0.11.0.jar:Cowlection:A collection of various features mainly focused on Hypixel SkyBlock\nSome features - for example the Minecraft log search - have a universal use:false:None:false:false:None
+togglesneak:false:[1.8.9] Powns ToggleSneak - 3.0.jar:Pown's Toggle Sneak:Lets you sprint without having to press Control:false:None:false:true:playerapi
+ctjs:false:ctjs-1.3.0-1.8.9.jar:Chat Triggers:Requirement for DungeonUtilies and SoopyAddons:false:None:false:false:None
+oldanim:false:Sk1er_Old_Animations-1.0_-_beta_5.jar:Old Animations:Better than Oranges!:false:None:false:false:None
+potionhud:false:[1.8.9] Powns PotionEffect HUD - 1.0.jar:Powns Potion hud:A mod that shows your active potion effects without you having to open your inventory:false:None:false:false:None
+autogg:false:AutoGG-4.0.3 (1.8.9).jar:AutoGG:Says "gg" for you after each game so you can gain free Karma:false:None:false:false:None
+discordrp:false:DiscordRP-1.2.4.jar:Discord Rich Pressence:Minecraft to Discord Rich Pressence\nSimilar features are includes in SkyblockAddons\nBreaks SkyblockAddons's DiscordRP:false:None:false:false:None
+sbcustommobtex:false:SBCustomMobTex-1.4.jar:SBCustomMobTex:Allows Texturepacks to View the NBT data of Mobs:true:This Mod will cause serious performance issues inside of dungeons:false:false:None
+playerapi:false:PlayerAPI-1.12.1-1.0.jar:PlayerAPI:A mod that makes other mods work, you probably need this:false:None:true:false:None
