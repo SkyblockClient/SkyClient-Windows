@@ -17,7 +17,7 @@ namespace SkyblockClient
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		public string URL = "https://github.com/nacrt/SkyblockClient/blob/main/files/";
+		public string URL = "https://github.com/nacrt/SkyblockClient-REPO/blob/main/files/";
 		//public string URL = "http://localhost/files/";
 
 		public string tempFolderLocation => Utils.exeLocation + @".temp\";

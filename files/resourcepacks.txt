@@ -1,7 +1,0 @@
-#id-string:hidden-bool:enabled-bool:file-string:dislay-string:description-string
-bald:true:false:JustBaldEnoughUpdates.zip:JustBaldEnoughUpdates:Way too bald
-bald:true:true:TooBaldUpdates.zip:TooBaldUpdates:Way too bald
-vtay:false:false:vTays Skyblock Smoothie [Full] 6.0.zip:vTay's Skyblock Smoothie 16x:vTays mix of different skyblock packs\nIn vTays' terms "A refreshing taste of skyblock texture packs"
-hq32f:false:true:v12 F 16x Skyblock Pack.zip:Packs HQ v12 Full 16x:Packs HQ Skyblock Pack 16x. Standalone
-hq32f:false:false:v12 F 32x Skyblock Pack.zip:Packs HQ v12 Full 32x:Packs HQ Skyblock Pack 32x. Use Standalone and in combination with Faithful
-faitful:false:false:Faithful 1.14 in 1.8.zip:Faithful 32x:Faithful 1.14 port by 8KCoffeeWizard
