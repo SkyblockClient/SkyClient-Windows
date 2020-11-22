@@ -20,7 +20,7 @@ namespace SkyblockClient.Config
 			string sourceIcon = await helper.DownloadFileByte("icon.png");
 			helper.Move(sourceIcon, $"{configFolder}/icon.png");
 
-			string sourceCfg = await helper.DownloadFileByte("icon.png");
+			string sourceCfg = await helper.DownloadFileByte("itlt.cfg");
 			helper.Move(sourceCfg, Path.Combine(Globals.skyblockConfigLocation, "itlt.cfg"));
 		}
 	}
