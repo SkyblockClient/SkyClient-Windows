@@ -101,11 +101,13 @@ namespace SkyblockClient
 					using (FileStream lxFS = new FileStream(fileDestination, FileMode.Create))
 					{
 						byte[] lnByte;
-						do
+						while (true)
 						{
 							lnByte = reader.ReadBytes(1024 * 1024); // 1 mb each package
+							if (lnByte.Length == 0)
+								break;
 							lxFS.Write(lnByte, 0, lnByte.Length);
-						} while (lnByte.Length == 0);
+						}
 					}
 				}
 			}
