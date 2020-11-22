@@ -17,18 +17,6 @@ namespace SkyblockClient
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		public string URL = "https://github.com/nacrt/SkyblockClient-REPO/blob/main/files/";
-		//public string URL = "http://localhost/files/";
-
-		public string tempFolderLocation => Utils.exeLocation + @".temp\";
-		public string minecraftLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\.minecraft\";
-
-		public string skyblockRootLocation => minecraftLocation + gameDirectory;
-		public string gameDirectory = "";
-
-		public string skyblockModsLocation => skyblockRootLocation + @"mods\";
-		public string skyblockResourceLocation => skyblockRootLocation + @"resourcepacks\";
-
 		public bool clearModsFolder => btnClearModsFolder.IsChecked ?? false;
 
 		public List<ModOption> modOptions = new List<ModOption>();
@@ -126,12 +114,12 @@ namespace SkyblockClient
 
 		private async Task DownloadResourceFile()
 		{
-			string response = await DownloadFileString("resourcepacks.txt");
+			string response = await Globals.DownloadFileString("resourcepacks.txt");
 			resourceOptions = OptionHelper.Read<ResourcepackOption>(response);
 		}
 		private async Task DownloadModsFile()
 		{
-			string response = await DownloadFileString("mods.txt");
+			string response = await Globals.DownloadFileString("mods.txt");
 			modOptions = OptionHelper.Read<ModOption>(response);
 		}
 
@@ -185,10 +173,10 @@ namespace SkyblockClient
 
 		private async Task InitializeInstall()
 		{
-			bool exists = await Task.Run(() => Directory.Exists(tempFolderLocation));
+			bool exists = await Task.Run(() => Directory.Exists(Globals.tempFolderLocation));
 			if (exists)
-				Directory.Delete(tempFolderLocation, true);
-			Directory.CreateDirectory(tempFolderLocation);
+				Directory.Delete(Globals.tempFolderLocation, true);
+			Directory.CreateDirectory(Globals.tempFolderLocation);
 		}
 
 		public async Task StartForgeAndModsInstaller()
@@ -197,7 +185,7 @@ namespace SkyblockClient
 
 			List<Task> tasks = new List<Task>();
 			tasks.Add(ForgeInstaller());
-			tasks.Add(Installer(skyblockModsLocation, enabledModOptions.ToArray(), "mods"));
+			tasks.Add(Installer(Globals.skyblockModsLocation, enabledModOptions.ToArray(), "mods", true));
 			await Task.WhenAll(tasks.ToArray());
 
 			NotifyCompleted("All the mods have been installed. Now you just need to press \"OK\" on the Minecraft Forge window");
@@ -235,49 +223,18 @@ namespace SkyblockClient
 			{
 				Utils.Info("Downloading Forge");
 				const string FORGE = "forge.exe";
-				await DownloadFileByte(FORGE, tempFolderLocation + FORGE);
+				await Globals.DownloadFileByte(FORGE, Globals.tempFolderLocation + FORGE);
 				Utils.Info("Finished Downloading Forge");
 
 				Process forgeProcess = new Process
 				{
-					StartInfo = Utils.CreateProcessStartInfo("cmd.exe", $"/c {tempFolderLocation}{FORGE}")
+					StartInfo = Utils.CreateProcessStartInfo("cmd.exe", $"/c {Globals.tempFolderLocation}{FORGE}")
 				};
 				forgeProcess.Start();
 				forgeProcess.WaitForExit();
 			}
 
 			await Task.CompletedTask;
-		}
-
-		public async Task<string> DownloadFileString(string file)
-		{
-			WebResponse myWebResponse = await WebRequest.Create(URL + file + "?raw=true").GetResponseAsync();
-			return await new StreamReader(myWebResponse.GetResponseStream()).ReadToEndAsync();
-		}
-
-		public async Task DownloadFileByte(string file, string fileDestination)
-		{
-			using (WebResponse webResponse = await WebRequest.Create(URL + file + "?raw=true").GetResponseAsync())
-			{
-				using (BinaryReader reader = new BinaryReader(webResponse.GetResponseStream()))
-				{
-					bool exists = File.Exists(fileDestination);
-					if (exists)
-						File.Delete(fileDestination);
-
-					while (true)
-					{
-						byte[] lnByte = reader.ReadBytes(1024 * 1024); // 1 mb each package
-						if (lnByte.Length == 0)
-							break;
-
-						using (FileStream lxFS = new FileStream(fileDestination, FileMode.Append))
-						{
-							lxFS.Write(lnByte, 0, lnByte.Length);
-						}
-					}
-				}
-			}
 		}
 
 		private async Task DownloadIndividualMods(List<IOption> modOptions)
@@ -287,7 +244,7 @@ namespace SkyblockClient
 				try
 				{
 					Utils.Info("Downloading " + mod.display);
-					await DownloadFileByte(mod.file, tempFolderLocation + mod.file);
+					await Globals.DownloadFileByte(mod.file, Globals.tempFolderLocation + mod.file);
 					Utils.Info("Finished Downloading " + mod.display);
 				}
 				catch (WebException webE)
@@ -305,7 +262,7 @@ namespace SkyblockClient
 			}
 		}
 
-		private async Task Installer(string location, IOption[] enabledOptions, string foldername)
+		private async Task Installer(string location, IOption[] enabledOptions, string foldername, bool isMods)
 		{
 			List<IOption> firstHalf = enabledOptions.Take((enabledOptions.Count() + 1) / 2).ToList();
 			List<IOption> secondHalf = enabledOptions.Skip((enabledOptions.Count() + 1) / 2).ToList();
@@ -340,13 +297,32 @@ namespace SkyblockClient
 					Utils.Info("Moving " + file.file);
 					try
 					{
-						File.Move(tempFolderLocation + file.file, location + file.file);
+						File.Move(Globals.tempFolderLocation + file.file, location + file.file);
 						Utils.Info("Finished Moving " + file.file);
 					}
 					catch (Exception e)
 					{
 						Utils.Error("Failed Moving " + file.display);
 						Utils.Log(e, "failed moving " + file.display);
+					}
+				}
+
+				if (isMods)
+				{
+					foreach (ModOption mod in enabledOptions)
+					{
+						List<Task> tasks1 = new List<Task>();
+						try
+						{
+							tasks1.Add(Config.ConfigUtils.CreateModConfigWorker(mod));
+						}
+						catch (Exception e)
+						{
+							Utils.Debug(e.Message);
+							Utils.Error("An Unknown error occured, please submit the log file");
+							Utils.Log(e, "unkown error in Installer():if(isMods)");
+						}
+						await Task.WhenAll(tasks1.ToArray());
 					}
 				}
 			}
@@ -379,5 +355,6 @@ namespace SkyblockClient
 		{
 			MessageBox.Show((string)obj, "Completed", MessageBoxButton.OK, MessageBoxImage.Information);
 		}
+
 	}
 }

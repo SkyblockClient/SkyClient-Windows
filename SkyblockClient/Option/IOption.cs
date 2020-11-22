@@ -16,6 +16,5 @@ namespace SkyblockClient.Option
 		bool hidden { get; set; }
 
 		void Create(string line);
-		//  { throw new NotImplementedException("OptionBase(string line) is not Implemented"); }
 	}
 }

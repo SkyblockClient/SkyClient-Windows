@@ -14,10 +14,11 @@ namespace SkyblockClient.Option
 		public bool hidden { get; set; }
 		public bool dispersed { get; set; }
 		public string dependency { get; set; }
+		public bool config { get; set; }
 
 		public void Create(string line)
 		{
-			var helper = new OptionHelper(line, 10);
+			var helper = new OptionHelper(line, 11);
 
 			id = helper.String(Index.ID);
 			enabled = helper.Boolean(Index.Enabled, "Enabled");
@@ -29,6 +30,8 @@ namespace SkyblockClient.Option
 			hidden = helper.Boolean(Index.Hidden, "Hidden");
 			dispersed = helper.Boolean(Index.Dispersed, "Dispersed");
 			dependency = helper.String(Index.Dependency);
+			config = helper.Boolean(Index.Config, "Config");
+
 		}
 
 		public override string ToString()
@@ -54,7 +57,7 @@ namespace SkyblockClient.Option
 
 		private enum Index
 		{
-			ID, Enabled, File, Display, Description, Caution, Warning, Hidden, Dispersed, Dependency
+			ID, Enabled, File, Display, Description, Caution, Warning, Hidden, Dispersed, Dependency, Config
 		}
 	}
 }

@@ -5,7 +5,6 @@ namespace SkyblockClient.Option
 {
 	public class OptionHelper
 	{
-
 		public static List<TOption> Read<TOption>(string text) where TOption : IOption, new()
 		{
 			var result = new List<TOption>();

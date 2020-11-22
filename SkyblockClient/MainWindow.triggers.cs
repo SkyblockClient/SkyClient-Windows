@@ -15,7 +15,7 @@ namespace SkyblockClient
 		{
 			ButtonsEnabled(false);
 			await InitializeInstall();
-			await Installer(skyblockResourceLocation, enabledResourcepackOptions.ToArray(), "resourcepacks");
+			await Installer(Globals.skyblockResourceLocation, enabledResourcepackOptions.ToArray(), "resourcepacks", false);
 
 			var enabled = enabledResourcepackOptions;
 			enabled.Reverse();
@@ -28,7 +28,7 @@ namespace SkyblockClient
 			result = result.Remove(result.Length - 1);
 			result += "]";
 
-			File.WriteAllText(skyblockRootLocation + "options.txt", result);
+			File.WriteAllText(Globals.skyblockRootLocation + "options.txt", result);
 			ButtonsEnabled(true);
 
 			NotifyCompleted("All the texturepacks have been installed");
@@ -38,7 +38,7 @@ namespace SkyblockClient
 		{
 			ButtonsEnabled(false);
 			await InitializeInstall();
-			await Installer(skyblockModsLocation, neededMods.ToArray(), "mods");
+			await Task.Run(() => Installer(Globals.skyblockModsLocation, neededMods.ToArray(), "mods", true));
 			ButtonsEnabled(true);
 
 			NotifyCompleted("All the mods have been installed");

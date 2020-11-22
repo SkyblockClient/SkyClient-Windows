@@ -43,6 +43,14 @@ namespace SkyblockClient
 			Console.ResetColor();
 		}
 
+		public static void Debug(params string[] msgs)
+		{
+			if (Globals.isDebugEnabled)
+			{
+				Info(msgs);
+			}
+		} 
+
 		public static void Info(params string[] msgs)
 		{
 			Thread thread = new Thread(Info);
