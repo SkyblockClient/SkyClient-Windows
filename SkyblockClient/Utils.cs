@@ -19,12 +19,8 @@ namespace SkyblockClient
 		{
 			get
 			{
-				string result = "";
-				result += exeLocation;
 				DateTime dateTime = DateTime.Now;
-				result += dateTime.ToString("-yyyy-MM-dd");
-				result += ".log";
-				return result;
+				return $"{exeLocation}-{dateTime.ToString("yyyy-MM-dd")}.log";
 			}
 		}
 		
@@ -88,6 +84,22 @@ namespace SkyblockClient
 			}
 			*/
 			return Task.CompletedTask;
+		}
+
+		public static bool ValidateMinecraftDirectory(string path)
+		{
+			try
+			{
+				if (File.Exists(Path.Combine(path, "launcher_profiles.json")))
+				{
+					return true;
+				}
+			}
+			catch (IOException e)
+			{
+				Utils.Log(e, "Error accessing" + Path.Combine(path, "launcher_profiles.json"));
+			}
+			return false;
 		}
 
 		public static void Log(Exception e)

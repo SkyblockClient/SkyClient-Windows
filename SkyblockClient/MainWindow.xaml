@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SkyblockClient"
         mc:Ignorable="d" Width="630.667"
         Background="#25364D"
-        FontFamily="Champagne &amp; Limousines" FontSize="18">
+        FontFamily="Champagne &amp; Limousines" FontSize="18" Icon="textures/skyclient.png">
     <Grid>
         <Grid.Resources>
             <Style TargetType="Button">
@@ -46,7 +46,7 @@
             <Button x:Name="btnInstallModsAndForge" Content="Install Forge and mods" Click="BtnInstallModsAndForgeClick"/>
         </StackPanel>
         <CheckBox x:Name="btnClearModsFolder" IsEnabled="False" Content="Clear mods folder on Install" HorizontalAlignment="Left" Margin="56,0,0,130" Width="214" IsChecked="True" Height="20" VerticalAlignment="Bottom" Background="#FF69BF2D" BorderBrush="#FF48702C"/>
-        <Button Content="Advanced Settings (coming soon)" VerticalAlignment="Top" Margin="10,43,10,0" Click="BtnAdvancedSettinsClick"/>
+        <Button Content="Advanced Settings" VerticalAlignment="Top" Margin="10,43,10,0" Click="BtnAdvancedSettinsClick"/>
         <DockPanel HorizontalAlignment="Left" Height="100" LastChildFill="False" Margin="97,167,0,0" VerticalAlignment="Top" Width="100"/>
         <Button x:Name="btnInstallPacks" Content="Install Packs" Margin="0,0,20,134" Height="28" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="294" Click="BtnInstallPacksClick"/>
     </Grid>

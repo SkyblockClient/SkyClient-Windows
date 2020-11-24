@@ -61,8 +61,7 @@ namespace SkyblockClient
 
 		private void BtnAdvancedSettinsClick(object sender, RoutedEventArgs e)
 		{
-			var frmAdvancedSettings = new FrmAdvancedSettings(this);
-			frmAdvancedSettings.Show();
+			OpenAdvancedSettings();
 		}
 	}
 }

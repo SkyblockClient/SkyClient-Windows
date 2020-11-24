@@ -11,14 +11,14 @@ namespace SkyblockClient.Config
 	[ModConfigWorker("itlt")]
 	class ModConfigWorkerITLT : ModConfigWorkerBase
 	{
-		public string configFolder => Globals.skyblockConfigLocation + "itlt/";
+		public string configFolder => Path.Combine(Globals.skyblockConfigLocation, "itlt");
 
 		public override async Task Work()
 		{
 			helper.InitFolders("config", "config/itlt");
 
 			string sourceIcon = await helper.DownloadFileByte("icon.png");
-			helper.Move(sourceIcon, $"{configFolder}/icon.png");
+			helper.Move(sourceIcon, Path.Combine(configFolder,"icon.png"));
 
 			string sourceCfg = await helper.DownloadFileByte("itlt.cfg");
 			helper.Move(sourceCfg, Path.Combine(Globals.skyblockConfigLocation, "itlt.cfg"));
@@ -34,6 +34,25 @@ namespace SkyblockClient.Config
 
 			string sourceCfg = await helper.DownloadFileByte("hytilities.toml");
 			helper.Move(sourceCfg, Path.Combine(Globals.skyblockConfigLocation, "hytilities.toml"));
+		}
+	}
+
+	[ModConfigWorker("cmm")]
+	class ModConfigWorkerCmm : ModConfigWorkerBase
+	{
+		public override async Task Work()
+		{
+			helper.InitFolders("resources", "resources/mainmenu", "config", "config/CustomMainMenu");
+
+			string source = await helper.DownloadFileByte("mainmenu.json");
+			helper.Move(source, Path.Combine(Globals.skyblockConfigLocation, "CustomMainMenu/mainmenu.json"));
+
+			string[] files = new string[] { "background.png", "discord.png", "discordbutton.png", "skyclient.png" };
+			foreach (var file in files)
+			{
+				source = await helper.DownloadFileByte(file);
+				helper.Move(source, Path.Combine(Globals.skyblockConfigLocation, $"CustomMainMenu/{file}"));
+			}
 		}
 	}
 }

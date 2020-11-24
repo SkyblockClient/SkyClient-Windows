@@ -47,14 +47,14 @@ namespace SkyblockClient
 		private static bool setValues = false;
 
 		public static string tempFolderLocation => Utils.exeLocation + @".temp\";
-		public static string minecraftLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\.minecraft\";
+		public static string minecraftRootLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft");
 
 		public static string gameDirectory = "";
-		public static string skyblockRootLocation => minecraftLocation + gameDirectory;
-		public static string skyblockConfigLocation => skyblockRootLocation + "config/";
+		public static string skyblockRootLocation => Path.Combine(minecraftRootLocation, gameDirectory);
 
-		public static string skyblockModsLocation => skyblockRootLocation + @"mods\";
-		public static string skyblockResourceLocation => skyblockRootLocation + @"resourcepacks\";
+		public static string skyblockConfigLocation => Path.Combine(skyblockRootLocation, "config");
+		public static string skyblockModsLocation => Path.Combine(skyblockRootLocation, "mods");
+		public static string skyblockResourceLocation => Path.Combine(skyblockRootLocation, "resourcepacks");
 
 		public static void InitializeValues()
 		{
@@ -68,7 +68,7 @@ namespace SkyblockClient
 					Globals.setValues = true;
 					result = "http://localhost/files/";
 					isDebugEnabled = true;
-					gameDirectory = "skyblockclient/";
+					gameDirectory = "skyblockclient";
 					Utils.Info("Connect domain:", result);
 					Utils.Info("Debug mode enabled");
 				}
@@ -100,10 +100,9 @@ namespace SkyblockClient
 
 					using (FileStream lxFS = new FileStream(fileDestination, FileMode.Create))
 					{
-						byte[] lnByte;
 						while (true)
 						{
-							lnByte = reader.ReadBytes(1024 * 1024); // 1 mb each package
+							byte[] lnByte = reader.ReadBytes(1024 * 1024); // 1 mb each package
 							if (lnByte.Length == 0)
 								break;
 							lxFS.Write(lnByte, 0, lnByte.Length);

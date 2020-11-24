@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SkyblockClient"
         mc:Ignorable="d"
-        Title="AdvancedSettings" Height="450" Width="579.339">
+        Title="AdvancedSettings" Height="280" Width="368.339" Closed="Window_Closed" Icon="textures/skyclient.png">
     <Grid>
         <Grid.Resources>
             <Style TargetType="Button">
@@ -17,8 +17,11 @@
                 <Setter Property="Margin" Value="10,0,10,10"/>
             </Style>
         </Grid.Resources>
-        <Label Content="Game Directory" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="127" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-        <Button Content="Open mods Folder" HorizontalAlignment="Left" Margin="10,388,0,0" VerticalAlignment="Top" Width="127" Click="BtnOpenModsFolderClick"/>
-        <TextBox x:Name="txtGameDirectory" HorizontalAlignment="Left" Height="23" Margin="0,41,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="137" TextChanged="TxtGameDirecotryTextChanged"/>
+        <Button Content="Open mods Folder" Margin="10,10,10,0" Click="BtnOpenModsFolderClick" Height="21" VerticalAlignment="Top"/>
+        <Label Content="Game Directory" Margin="10,46,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="txtGameDirectory" Height="23" Margin="10,77,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" TextChanged="TxtGameDirectoryTextChanged"/>
+        <Label Content="Custom Minecraft Location" Margin="10,120,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Button Content="Select Folder" Margin="10,151,10,0" VerticalAlignment="Top" Click="BtnSelectCustomGameLocation"/>
+        <TextBox x:Name="txtCustomGameLocation" IsReadOnly="True" Height="46" Margin="10,177,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"/>
     </Grid>
 </Window>

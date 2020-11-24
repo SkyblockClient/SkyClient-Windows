@@ -193,6 +193,14 @@ namespace SkyblockClient
 
 		private async Task ForgeInstaller()
 		{
+			bool valid = Utils.ValidateMinecraftDirectory(Globals.minecraftRootLocation);
+			if (!valid)
+			{
+				string msg = $"\"{Globals.minecraftRootLocation}\" is not a valid minecraft directory.\nMake sure you run the minecraft launcher at least once.";
+				MessageBox.Show(msg, "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+				return;
+			}
+
 			const string JAVA_LINK = "https://www.java.com/en/download/manual.jsp";
 			bool correctJavaVersion = false;
 
@@ -297,7 +305,7 @@ namespace SkyblockClient
 					Utils.Info("Moving " + file.file);
 					try
 					{
-						File.Move(Globals.tempFolderLocation + file.file, location + file.file);
+						File.Move(Globals.tempFolderLocation + file.file, Path.Combine(location, file.file));
 						Utils.Info("Finished Moving " + file.file);
 					}
 					catch (Exception e)
@@ -354,6 +362,26 @@ namespace SkyblockClient
 		private void NotifyCompletedInternal(object obj)
 		{
 			MessageBox.Show((string)obj, "Completed", MessageBoxButton.OK, MessageBoxImage.Information);
+		}
+
+		public bool frmAdvancedSettingsIsOpen = false;
+		public FrmAdvancedSettings frmAdvancedSettings = null;
+		private void OpenAdvancedSettings()
+		{
+			if (!frmAdvancedSettingsIsOpen)
+			{
+				frmAdvancedSettings = new FrmAdvancedSettings(this);
+				frmAdvancedSettings.Show();
+				frmAdvancedSettingsIsOpen = true;
+			}
+			else
+			{
+				if (frmAdvancedSettings != null)
+				{
+					frmAdvancedSettings.Show();
+					frmAdvancedSettingsIsOpen = true;
+				}
+			}
 		}
 
 	}
