@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using SkyblockClient.Option;
+using Newtonsoft.Json;
+using SkyblockClient.Json;
 
 namespace SkyblockClient
 {
@@ -63,6 +65,14 @@ namespace SkyblockClient
 		{
 			InitializeComponent();
 			PostConstruct();
+
+
+			if (Globals.isDebugEnabled)
+			{
+				string text = File.ReadAllText(Path.Combine(Globals.minecraftRootLocation, "launcher_profiles.json"));
+				var launcherProfiles = JsonConvert.DeserializeObject<LauncherProfiles>(text);
+
+			}
 		}
 
 		public async void PostConstruct()

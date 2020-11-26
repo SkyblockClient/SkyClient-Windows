@@ -47,11 +47,11 @@ namespace SkyblockClient.Config
 			string source = await helper.DownloadFileByte("mainmenu.json");
 			helper.Move(source, Path.Combine(Globals.skyblockConfigLocation, "CustomMainMenu/mainmenu.json"));
 
-			string[] files = new string[] { "background.png", "discord.png", "discordbutton.png", "skyclient.png" };
+			string[] files = new string[] { "background.png", "skyclient.png", "bg_menu.png" };
 			foreach (var file in files)
 			{
 				source = await helper.DownloadFileByte(file);
-				helper.Move(source, Path.Combine(Globals.skyblockConfigLocation, $"CustomMainMenu/{file}"));
+				helper.Move(source, Path.Combine(Globals.gameDirectory, "resources", "mainmenu", file));
 			}
 		}
 	}
