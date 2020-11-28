@@ -42,17 +42,23 @@ namespace SkyblockClient.Config
 	{
 		public override async Task Work()
 		{
-			helper.InitFolders("resources", "resources/mainmenu", "config", "config/CustomMainMenu");
+			helper.InitFolders("config", "config/CustomMainMenu");
 
-			string source = await helper.DownloadFileByte("mainmenu.json");
-			helper.Move(source, Path.Combine(Globals.skyblockConfigLocation, "CustomMainMenu/mainmenu.json"));
-
-			string[] files = new string[] { "background.png", "skyclient.png", "bg_menu.png" };
-			foreach (var file in files)
+			string[] custommainmenu = new string[] { "mainmenu.json", "play.json" };
+			foreach (var file in custommainmenu)
 			{
-				source = await helper.DownloadFileByte(file);
+				string source = await helper.DownloadFileByte(file);
+				helper.Move(source, Path.Combine(Globals.skyblockConfigLocation, "CustomMainMenu", file));
+			}
+
+			/*
+			string[] resources = new string[] { "background.png", "skyclient.png", "bg_menu.png" };
+			foreach (var file in resources)
+			{
+				string source = await helper.DownloadFileByte($"cmm{file}");
 				helper.Move(source, Path.Combine(Globals.gameDirectory, "resources", "mainmenu", file));
 			}
+			*/
 		}
 	}
 }

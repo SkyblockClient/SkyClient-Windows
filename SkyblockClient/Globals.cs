@@ -48,13 +48,17 @@ namespace SkyblockClient
 
 		public static string tempFolderLocation => Utils.exeLocation + @".temp\";
 		public static string minecraftRootLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft");
+		public static string launcherProfilesLocation = Path.Combine(minecraftRootLocation, "launcher_profiles.json");
+		public static string minecraftLibrariesLocation = Path.Combine(minecraftRootLocation, "libraries");
+		public static string minecraftVersionsLocation = Path.Combine(minecraftRootLocation, "versions");
 
-		public static string gameDirectory = "";
+		public static string gameDirectory = "skyclient";
 		public static string skyblockRootLocation => Path.Combine(minecraftRootLocation, gameDirectory);
 
 		public static string skyblockConfigLocation => Path.Combine(skyblockRootLocation, "config");
 		public static string skyblockModsLocation => Path.Combine(skyblockRootLocation, "mods");
 		public static string skyblockResourceLocation => Path.Combine(skyblockRootLocation, "resourcepacks");
+		
 
 		public static void InitializeValues()
 		{
@@ -68,7 +72,7 @@ namespace SkyblockClient
 					Globals.setValues = true;
 					result = "http://localhost/files/";
 					isDebugEnabled = true;
-					gameDirectory = "skyblockclient";
+					gameDirectory = "skytest";
 					Utils.Info("Connect domain:", result);
 					Utils.Info("Debug mode enabled");
 				}
@@ -89,6 +93,8 @@ namespace SkyblockClient
 		public static async Task DownloadFileByte(string file, string fileDestination)
 		{
 			string endpoint = Globals.URL + file + "?raw=true";
+
+			Utils.Debug(endpoint);
 
 			using (WebResponse webResponse = await Task.Run(() => WebRequest.Create(endpoint).GetResponse()))
 			{

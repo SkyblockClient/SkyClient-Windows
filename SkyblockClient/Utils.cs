@@ -4,6 +4,7 @@ using System.Threading;
 using System.IO;
 using System.Reflection;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace SkyblockClient
 {
@@ -135,5 +136,11 @@ namespace SkyblockClient
 			RedirectStandardOutput = true,
 			RedirectStandardError = true
 		};
+
+		public static string Base64Image(string path)
+		{
+			byte[] imageArray = File.ReadAllBytes(path);
+			return Convert.ToBase64String(imageArray);
+		}
 	}
 }

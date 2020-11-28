@@ -40,14 +40,11 @@
                 <Label Content="Texturepacks"/>
             </StackPanel>
         </Grid>
-        <StackPanel Margin="10,0,10,10" Height="114" VerticalAlignment="Bottom">
-            <Button x:Name="btnInstallForge" Content="Install Forge" Click="BtnInstallForgeClick"/>
-            <Button x:Name="btnInstallMods" Content="Install selected mods" Click="BtnInstallModsClick"/>
-            <Button x:Name="btnInstallModsAndForge" Content="Install Forge and mods" Click="BtnInstallModsAndForgeClick"/>
-        </StackPanel>
-        <CheckBox x:Name="btnClearModsFolder" IsEnabled="False" Content="Clear mods folder on Install" HorizontalAlignment="Left" Margin="56,0,0,130" Width="214" IsChecked="True" Height="20" VerticalAlignment="Bottom" Background="#FF69BF2D" BorderBrush="#FF48702C"/>
+        <Button x:Name="btnInstallModsAndForge" Content="Install" Click="BtnInstallModsAndForgeClick" Margin="20,0,20,20" Height="42" VerticalAlignment="Bottom"/>
+        
+        <CheckBox x:Name="btnClearModsFolder" IsEnabled="False" Content="Clear mods folder on Install" HorizontalAlignment="Left" Margin="51,0,0,73" Width="214" IsChecked="True" Height="20" VerticalAlignment="Bottom" Background="#FF69BF2D" BorderBrush="#FF48702C"/>
         <Button Content="Advanced Settings" VerticalAlignment="Top" Margin="10,43,10,0" Click="BtnAdvancedSettinsClick"/>
         <DockPanel HorizontalAlignment="Left" Height="100" LastChildFill="False" Margin="97,167,0,0" VerticalAlignment="Top" Width="100"/>
-        <Button x:Name="btnInstallPacks" Content="Install Packs" Margin="0,0,20,134" Height="28" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="294" Click="BtnInstallPacksClick"/>
+        <Button x:Name="btnInstallPacks" Content="Install Packs" Margin="0,0,20,67" Height="28" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="294" Click="BtnInstallPacksClick"/>
     </Grid>
 </Window>

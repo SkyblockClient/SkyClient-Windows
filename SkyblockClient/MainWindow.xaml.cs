@@ -65,14 +65,6 @@ namespace SkyblockClient
 		{
 			InitializeComponent();
 			PostConstruct();
-
-
-			if (Globals.isDebugEnabled)
-			{
-				string text = File.ReadAllText(Path.Combine(Globals.minecraftRootLocation, "launcher_profiles.json"));
-				var launcherProfiles = JsonConvert.DeserializeObject<LauncherProfiles>(text);
-
-			}
 		}
 
 		public async void PostConstruct()
@@ -176,8 +168,6 @@ namespace SkyblockClient
 		private void ButtonsEnabled(bool enabled)
 		{
 			btnInstallPacks.IsEnabled = enabled;
-			btnInstallMods.IsEnabled = enabled;
-			btnInstallForge.IsEnabled = enabled;
 			btnInstallModsAndForge.IsEnabled = enabled;
 		}
 
@@ -198,11 +188,12 @@ namespace SkyblockClient
 			tasks.Add(Installer(Globals.skyblockModsLocation, enabledModOptions.ToArray(), "mods", true));
 			await Task.WhenAll(tasks.ToArray());
 
-			NotifyCompleted("All the mods have been installed. Now you just need to press \"OK\" on the Minecraft Forge window");
+			NotifyCompleted("Finished installing.\nAll that's left is to start your vanilla launcher and play the game.");
 		}
 
 		private async Task ForgeInstaller()
 		{
+			
 			bool valid = Utils.ValidateMinecraftDirectory(Globals.minecraftRootLocation);
 			if (!valid)
 			{
@@ -236,20 +227,28 @@ namespace SkyblockClient
 				Utils.Error("Select \"Windows Offline (64-Bit)\"");
 				Process.Start(Utils.CreateProcessStartInfo("cmd.exe", $"/c start {JAVA_LINK}"));
 			}
-
+			
 			if (correctJavaVersion)
 			{
-				Utils.Info("Downloading Forge");
-				const string FORGE = "forge.exe";
-				await Globals.DownloadFileByte(FORGE, Globals.tempFolderLocation + FORGE);
-				Utils.Info("Finished Downloading Forge");
+				await SkyblockClient.Forge.ForgeInstaller.Work();
+				/*
+				string text = File.ReadAllText(Globals.launcherProfilesLocation);
+				var launcherProfiles = JsonConvert.DeserializeObject<LauncherProfiles>(text);
 
-				Process forgeProcess = new Process
+
+				if (launcherProfiles.profiles.ContainsKey("SkyClient"))
 				{
-					StartInfo = Utils.CreateProcessStartInfo("cmd.exe", $"/c {Globals.tempFolderLocation}{FORGE}")
-				};
-				forgeProcess.Start();
-				forgeProcess.WaitForExit();
+					Utils.Info("Profile Exists -> Updating");
+					launcherProfiles.profiles["SkyClient"] = await SkyClientJson.Create();
+				}
+				else
+				{
+					Utils.Info("SkyClient does not exist -> Creating");
+					launcherProfiles.profiles.Add("SkyClient", await SkyClientJson.Create());
+				}
+				string outp = JsonConvert.SerializeObject(launcherProfiles, Formatting.Indented);
+				File.WriteAllText(Globals.launcherProfilesLocation, outp);
+				*/
 			}
 
 			await Task.CompletedTask;

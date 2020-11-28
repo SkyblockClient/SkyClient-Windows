@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using System.Collections.Generic;
 
 namespace SkyblockClient.Json
 {
-	class LauncherProfiles
+	public class LauncherProfiles
 	{
-		public ProfilesJson profiles { get; set; }
+		public object authenticationDatabase { get; set; }
+		public object clientToken { get; set; }
+		public object launcherVersion { get; set; }
+		public Dictionary<string, object> profiles { get; set; }
+		public object selectedUser { get; set; }
+		public object settings { get; set; }
 	}
 }

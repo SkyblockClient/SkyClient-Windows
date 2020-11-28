@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SkyblockClient.Json
 {
-	class ProfilesJson
+	public class ProfilesJson
 	{
-
+		public SkyClientJson SkyClient { get; set; }
 	}
 }
