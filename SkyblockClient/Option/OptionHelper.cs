@@ -5,6 +5,9 @@ namespace SkyblockClient.Option
 {
 	public class OptionHelper
 	{
+		public const char SPLIT_CHARACTER = ';';
+		public const string COMMENT_CHARACTER = "#";
+
 		public static List<TOption> Read<TOption>(string text) where TOption : IOption, new()
 		{
 			var result = new List<TOption>();
@@ -16,7 +19,7 @@ namespace SkyblockClient.Option
 			foreach (var line in lines)
 			{
 				string ln = line.Trim();
-				if (ln != "" && !ln.StartsWith("#"))
+				if (ln != "" && !ln.StartsWith(COMMENT_CHARACTER))
 				{
 					TOption opt = new TOption();
 					opt.Create(ln);
@@ -30,7 +33,7 @@ namespace SkyblockClient.Option
 
 		public OptionHelper(string line, int length)
 		{
-			parts = line.Split(':');
+			parts = line.Split(SPLIT_CHARACTER);
 			if (parts.Length != length)
 				throw new ArgumentException("Line is either malformed or Empty");
 

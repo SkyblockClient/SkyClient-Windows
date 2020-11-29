@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SkyblockClient.Config
 {
@@ -17,8 +13,5 @@ namespace SkyblockClient.Config
 		{
 			response = responseString.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
 		}
-
-
-
 	}
 }
