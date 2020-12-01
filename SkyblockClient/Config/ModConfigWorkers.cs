@@ -50,15 +50,18 @@ namespace SkyblockClient.Config
 				string source = await helper.DownloadFileByte(file);
 				helper.Move(source, Path.Combine(Globals.skyblockConfigLocation, "CustomMainMenu", file));
 			}
+		}
+	}
 
-			/*
-			string[] resources = new string[] { "background.png", "skyclient.png", "bg_menu.png" };
-			foreach (var file in resources)
-			{
-				string source = await helper.DownloadFileByte($"cmm{file}");
-				helper.Move(source, Path.Combine(Globals.gameDirectory, "resources", "mainmenu", file));
-			}
-			*/
+	[ModConfigWorker("sidebarmod")]
+	class ModConfigWorkerSbm : ModConfigWorkerBase
+	{
+		public override async Task Work()
+		{
+			helper.InitFolders("config");
+			string file = "SidebarMod.config";
+			string source = await helper.DownloadFileByte(file);
+			helper.Move(source, Path.Combine(Globals.skyblockConfigLocation, file));
 		}
 	}
 }

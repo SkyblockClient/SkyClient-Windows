@@ -9,6 +9,8 @@
 		public string display { get; set; }
 		public string description { get; set; }
 
+		public IDownloadUrl downloadUrl => new InternalDownloadUrl(file);
+
 		public void Create(string line)
 		{
 			var helper = new OptionHelper(line, 6);

@@ -6,8 +6,32 @@ using System.Threading.Tasks;
 
 namespace SkyblockClient
 {
-	class DownloadId
+	public interface IDownloadUrl
 	{
+		string Url { get; }
+	}
 
+	public class InternalDownloadUrl : IDownloadUrl
+	{
+		public string Url => Globals.URL + Resource + "?raw=true";
+
+		private string Resource;
+
+		public InternalDownloadUrl(string resource)
+		{
+			this.Resource = resource;
+		}
+	}
+
+	public class RemoteDownloadUrl : IDownloadUrl
+	{
+		public string Url => Resource;
+
+		private string Resource;
+
+		public RemoteDownloadUrl(string resource)
+		{
+			this.Resource = resource;
+		}
 	}
 }

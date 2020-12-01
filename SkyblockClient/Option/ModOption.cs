@@ -15,10 +15,14 @@ namespace SkyblockClient.Option
 		public bool dispersed { get; set; }
 		public string dependency { get; set; }
 		public bool config { get; set; }
+		public bool remote { get; set; }
+		public string url { get; set; }
+
+		public IDownloadUrl downloadUrl => remote ? new RemoteDownloadUrl(url) : (IDownloadUrl)new InternalDownloadUrl(file);
 
 		public void Create(string line)
 		{
-			var helper = new OptionHelper(line, 11);
+			var helper = new OptionHelper(line, 13);
 
 			id = helper.String(Index.ID);
 			enabled = helper.Boolean(Index.Enabled, "Enabled");
@@ -31,7 +35,8 @@ namespace SkyblockClient.Option
 			dispersed = helper.Boolean(Index.Dispersed, "Dispersed");
 			dependency = helper.String(Index.Dependency);
 			config = helper.Boolean(Index.Config, "Config");
-
+			remote = helper.Boolean(Index.Remote, "Remote");
+			url = helper.String(Index.Url);
 		}
 
 		public override string ToString()
@@ -41,6 +46,8 @@ namespace SkyblockClient.Option
 			result += $"\tenabled: {enabled}\n";
 			result += $"\tdescription: {description}\n";
 			result += $"\twarning: {warning}\n";
+			result += $"\tremote: {remote}\n";
+			result += $"\turl: {url}\n";
 
 			return result;
 		}
@@ -57,7 +64,7 @@ namespace SkyblockClient.Option
 
 		private enum Index
 		{
-			ID, Enabled, File, Display, Description, Caution, Warning, Hidden, Dispersed, Dependency, Config
+			ID, Enabled, File, Display, Description, Caution, Warning, Hidden, Dispersed, Dependency, Config, Remote, Url
 		}
 	}
 }

@@ -261,7 +261,7 @@ namespace SkyblockClient
 				try
 				{
 					Utils.Info("Downloading " + mod.display);
-					await Globals.DownloadFileByte(mod.file, Globals.tempFolderLocation + mod.file);
+					await Globals.DownloadFileByte(mod.downloadUrl, Globals.tempFolderLocation + mod.file);
 					Utils.Info("Finished Downloading " + mod.display);
 				}
 				catch (WebException webE)

@@ -15,6 +15,8 @@ namespace SkyblockClient.Option
 		string description { get; set; }
 		bool hidden { get; set; }
 
+		IDownloadUrl downloadUrl { get; }
+
 		void Create(string line);
 	}
 }

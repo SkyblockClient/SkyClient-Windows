@@ -131,6 +131,7 @@ namespace SkyblockClient.Forge
 				nextCommand = "if (!File.Exists(Path.Combine(versionDirectory, fileJson)))";
 				if (!File.Exists(Path.Combine(versionDirectory, fileJson)))
 				{
+					nextCommand = "if (!Directory.Exists(versionDirectory))";
 					if (!Directory.Exists(versionDirectory))
 					{
 						nextCommand = "Directory.CreateDirectory(versionDirectory);";
