@@ -330,7 +330,7 @@ namespace SkyblockClient
 					Utils.Info("Moving " + file.file);
 					try
 					{
-						File.Move(Globals.tempFolderLocation + file.file, Path.Combine(location, file.file));
+						File.Move(Path.Combine(Globals.tempFolderLocation, file.file), Path.Combine(location, file.file));
 						Utils.Info("Finished Moving " + file.file);
 					}
 					catch (Exception e)

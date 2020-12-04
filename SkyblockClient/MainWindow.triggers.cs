@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,18 +15,68 @@ namespace SkyblockClient
 			await InitializeInstall();
 			await Installer(Globals.skyblockResourceLocation, enabledResourcepackOptions.ToArray(), "resourcepacks", false);
 
-			var enabled = enabledResourcepackOptions;
-			enabled.Reverse();
-
-			string result = "resourcePacks:[";
-			foreach (var pack in enabled)
+			try
 			{
-				result += $"\"{pack.file}\",";
-			}
-			result = result.Remove(result.Length - 1);
-			result += "]";
+				var enabled = enabledResourcepackOptions;
+				enabled.Reverse();
 
-			File.WriteAllText(Globals.skyblockRootLocation + "options.txt", result);
+				string optionsLocation = Path.Combine(Globals.skyblockRootLocation, "options.txt");
+
+				List<string> lines;
+
+				if (File.Exists(optionsLocation))
+				{
+					lines = new List<string>(File.ReadAllLines(optionsLocation));
+				}
+				else
+				{
+					lines = new List<string>();
+				}
+
+				string packLine = "resourcePacks:[";
+				foreach (var pack in enabled)
+				{
+					packLine += $"\"{pack.file}\",";
+				}
+				packLine = packLine.Remove(packLine.Length - 1);
+				packLine += "]";
+
+				bool foundPackLine = false;
+				int indexPackLine = -1;
+
+				for (int i = 0; i < lines.Count; i++)
+				{
+					if (lines[i].StartsWith("resourcePacks:"))
+					{
+						if (!foundPackLine)
+						{
+							foundPackLine = true;
+							indexPackLine = i;
+						}
+						else
+						{
+							lines[i] = "";
+						}
+					}
+				}
+
+				if (foundPackLine)
+				{
+					lines[indexPackLine] = packLine;
+				}
+				else
+				{
+					lines.Add(packLine);
+				}
+
+				File.WriteAllLines(optionsLocation, lines);
+			}
+			catch (IOException ex)
+			{
+				Utils.Error("Failed Reading or Writing options.txt -> Skipping");
+				Utils.Log(ex, "Failed Reading or Writing options.txt");
+			}
+
 			ButtonsEnabled(true);
 
 			NotifyCompleted("All the texturepacks have been installed");
