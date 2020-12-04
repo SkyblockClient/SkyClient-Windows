@@ -76,6 +76,11 @@ namespace SkyblockClient
 				Utils.Error("Failed Reading or Writing options.txt -> Skipping");
 				Utils.Log(ex, "Failed Reading or Writing options.txt");
 			}
+			catch (Exception ex)
+			{
+				Utils.Error("An unexpected error happend while updating mods.txt");
+				Utils.Log(ex, "An unexpected error happend while updating mods.txt");
+			}
 
 			ButtonsEnabled(true);
 
