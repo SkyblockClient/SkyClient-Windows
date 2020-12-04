@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using SkyblockClient.Option;
+using System.Windows.Input;
 
 namespace SkyblockClient
 {
@@ -62,6 +59,53 @@ namespace SkyblockClient
 		private void BtnAdvancedSettinsClick(object sender, RoutedEventArgs e)
 		{
 			OpenAdvancedSettings();
+		}
+
+		private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			if (e.LeftButton == MouseButtonState.Pressed)
+			{
+				Rect rect = new Rect(this.rectDragRectangle.RenderSize);
+				if (rect.Contains(e.GetPosition(this)))
+				{
+					ReleaseCapture();
+					SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+				}
+			}
+		}
+
+		private void BtnClose_Click(object sender, RoutedEventArgs e)
+		{
+			this.Close();
+		}
+
+		private void BtnFullscreen_Click(object sender, RoutedEventArgs e)
+		{
+			if (WindowState == WindowState.Normal)
+			{
+				WindowState = WindowState.Maximized;
+			}
+			else
+			{
+				WindowState = WindowState.Normal;
+			}
+		}
+
+		private void BtnMinimize_Click(object sender, RoutedEventArgs e)
+		{
+			WindowState = WindowState.Minimized;
+		}
+
+		private void Window_StateChanged(object sender, EventArgs e)
+		{
+			if (WindowState == WindowState.Maximized)
+			{
+				BtnFullscreen.Content = "❒";
+			}
+			else
+			{
+				BtnFullscreen.Content = "▢";
+			}
 		}
 	}
 }

@@ -8,7 +8,7 @@ namespace SkyblockClient.Option
 		public const char SPLIT_CHARACTER = ';';
 		public const string COMMENT_CHARACTER = "#";
 
-		public static List<TOption> Read<TOption>(string text) where TOption : IOption, new()
+		public static List<TOption> Read<TOption>(string text) where TOption : Option, new()
 		{
 			var result = new List<TOption>();
 			text = text.Trim();

@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using SkyblockClient.Option;
-using Newtonsoft.Json;
-using SkyblockClient.Json;
+using System.Runtime.InteropServices;
+using System.Windows.Input;
 
 namespace SkyblockClient
 {
@@ -19,7 +19,29 @@ namespace SkyblockClient
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		public bool clearModsFolder => btnClearModsFolder.IsChecked ?? false;
+		public const int WM_NCLBUTTONDOWN = 0xA1;
+		public const int HT_CAPTION = 0x2;
+
+		IntPtr Handle
+		{
+			get
+			{
+				if (_handle == IntPtr.Zero)
+				{
+					_handle = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+				}
+				return _handle;
+			}
+		}
+		IntPtr _handle = IntPtr.Zero;
+
+		[DllImport("user32.dll")]
+		public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+		[DllImport("user32.dll")]
+		public static extern bool ReleaseCapture();
+
+		//public bool clearModsFolder => btnClearModsFolder.IsChecked ?? false;
+		public bool clearModsFolder =>  false;
 
 		public List<ModOption> modOptions = new List<ModOption>();
 		public List<ResourcepackOption> resourceOptions = new List<ResourcepackOption>();
@@ -65,6 +87,10 @@ namespace SkyblockClient
 		{
 			InitializeComponent();
 			PostConstruct();
+			if (!Globals.isDebugEnabled)
+			{
+				Utils.Info("Thank you for using SkyClient", "This is the output Console and will display information important to the developer!");
+			}
 		}
 
 		public async void PostConstruct()
@@ -88,14 +114,8 @@ namespace SkyblockClient
 			{
 				if (!mod.hidden)
 				{
-					CheckBox checkBox = new CheckBox();
-					checkBox.Content = mod.display;
-					checkBox.IsChecked = mod.enabled;
-					checkBox.Tag = mod;
-					checkBox.Click += ModComboBoxIsChecked;
-
-					AddToolTip(checkBox, mod);
-					stpMods.Children.Add(checkBox);
+					Utils.Debug(mod.display);
+					lbMods.Items.Add(mod.CheckBox);
 				}
 			}
 
@@ -103,13 +123,7 @@ namespace SkyblockClient
 			{
 				if (!pack.hidden)
 				{
-					CheckBox checkBox = new CheckBox();
-					checkBox.Content = pack.display;
-					checkBox.IsChecked = pack.enabled;
-					checkBox.Tag = pack;
-					checkBox.Click += ResourceComboBoxIsChecked;
-					AddToolTip(checkBox, pack);
-					stpResources.Children.Add(checkBox);
+					lbPacks.Items.Add(pack.CheckBox);
 				}
 			}
 		}
@@ -167,8 +181,10 @@ namespace SkyblockClient
 
 		private void ButtonsEnabled(bool enabled)
 		{
+			
 			btnInstallPacks.IsEnabled = enabled;
-			btnInstallModsAndForge.IsEnabled = enabled;
+			btnInstall.IsEnabled = enabled;
+			
 		}
 
 		private async Task InitializeInstall()
@@ -254,7 +270,7 @@ namespace SkyblockClient
 			await Task.CompletedTask;
 		}
 
-		private async Task DownloadIndividualMods(List<IOption> modOptions)
+		private async Task DownloadIndividualMods(List<Option.Option> modOptions)
 		{
 			foreach (var mod in modOptions)
 			{
@@ -279,10 +295,10 @@ namespace SkyblockClient
 			}
 		}
 
-		private async Task Installer(string location, IOption[] enabledOptions, string foldername, bool isMods)
+		private async Task Installer(string location, Option.Option[] enabledOptions, string foldername, bool isMods)
 		{
-			List<IOption> firstHalf = enabledOptions.Take((enabledOptions.Count() + 1) / 2).ToList();
-			List<IOption> secondHalf = enabledOptions.Skip((enabledOptions.Count() + 1) / 2).ToList();
+			List<Option.Option> firstHalf = enabledOptions.Take((enabledOptions.Count() + 1) / 2).ToList();
+			List<Option.Option> secondHalf = enabledOptions.Skip((enabledOptions.Count() + 1) / 2).ToList();
 
 			List<Task> tasks = new List<Task>();
 			tasks.Add(DownloadIndividualMods(firstHalf));
@@ -350,18 +366,6 @@ namespace SkyblockClient
 			}
 		}
 
-		private void AddToolTip(Control checkBox, IOption option)
-		{
-			AddToolTip(checkBox, option.description);
-		}
-
-		private void AddToolTip(Control checkBox, string description)
-		{
-			ToolTip toolTip = new ToolTip();
-			toolTip.Content = description;
-			checkBox.ToolTip = toolTip;
-		}
-
 		private void NotifyCompleted(string message)
 		{
 			Thread thread = new Thread(NotifyCompletedInternal);
@@ -392,6 +396,5 @@ namespace SkyblockClient
 				}
 			}
 		}
-
 	}
 }

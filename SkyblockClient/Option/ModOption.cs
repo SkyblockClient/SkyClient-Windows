@@ -1,26 +1,21 @@
 ﻿using System;
+using System.Windows;
 
 namespace SkyblockClient.Option
 {
-	public class ModOption : IOption, IEquatable<ModOption>, IEquatable<string>
+	public class ModOption : Option, IEquatable<ModOption>, IEquatable<string>
 	{
-		public string id { get; set; }
-		public bool enabled { get; set; }
-		public string file { get; set; }
-		public string display { get; set; }
-		public string description { get; set; }
 		public bool caution { get; set; }
 		public string warning { get; set; }
-		public bool hidden { get; set; }
 		public bool dispersed { get; set; }
 		public string dependency { get; set; }
 		public bool config { get; set; }
 		public bool remote { get; set; }
 		public string url { get; set; }
 
-		public IDownloadUrl downloadUrl => remote ? new RemoteDownloadUrl(url) : (IDownloadUrl)new InternalDownloadUrl(file);
+		public override IDownloadUrl downloadUrl => remote ? new RemoteDownloadUrl(url) : (IDownloadUrl)new InternalDownloadUrl(file);
 
-		public void Create(string line)
+		public override void Create(string line)
 		{
 			var helper = new OptionHelper(line, 13);
 
@@ -60,6 +55,36 @@ namespace SkyblockClient.Option
 		bool IEquatable<ModOption>.Equals(ModOption other)
 		{
 			return id.Equals(other.id);
+		}
+
+		public override void ComboBoxChecked(object sender, RoutedEventArgs e)
+		{
+			var checkBox = sender as System.Windows.Controls.CheckBox;
+			var isChecked = checkBox.IsChecked ?? false;
+
+			if (this.caution && isChecked)
+			{
+				MessageBoxResult result = MessageBox.Show(this.warning + "\n\nUse anyway?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+				switch (result)
+				{
+					case MessageBoxResult.Yes:
+						checkBox.IsChecked = true;
+						this.enabled = true;
+						break;
+					case MessageBoxResult.No:
+						checkBox.IsChecked = false;
+						this.enabled = false;
+						break;
+					default:
+						checkBox.IsChecked = false;
+						this.enabled = false;
+						break;
+				}
+			}
+			else
+			{
+				this.enabled = isChecked;
+			}
 		}
 
 		private enum Index

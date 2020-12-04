@@ -1,17 +1,13 @@
-﻿namespace SkyblockClient.Option
+﻿using System.Windows;
+
+namespace SkyblockClient.Option
 {
-	public class ResourcepackOption : IOption
+	public class ResourcepackOption : Option
 	{
-		public string id { get; set; }
-		public bool hidden { get; set; }
-		public bool enabled { get; set; }
-		public string file { get; set; }
-		public string display { get; set; }
-		public string description { get; set; }
 
-		public IDownloadUrl downloadUrl => new InternalDownloadUrl(file);
+		public override IDownloadUrl downloadUrl => new InternalDownloadUrl(file);
 
-		public void Create(string line)
+		public override void Create(string line)
 		{
 			var helper = new OptionHelper(line, 6);
 
@@ -32,6 +28,12 @@
 			result += $"\tdescription: {description}\n";
 
 			return result;
+		}
+
+		public override void ComboBoxChecked(object sender, RoutedEventArgs e)
+		{
+			var checkBox = sender as System.Windows.Controls.CheckBox;
+			enabled = checkBox.IsChecked ?? false;
 		}
 
 		private enum Index

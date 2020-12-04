@@ -1,50 +1,39 @@
-﻿<Window x:Name="wpfMainWindow" x:Class="SkyblockClient.MainWindow"
+﻿<Window x:Class="SkyblockClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SkyblockClient"
-        mc:Ignorable="d" Width="630.667"
-        Background="#25364D"
-        FontFamily="Champagne &amp; Limousines" FontSize="18" Icon="textures/skyclient.png">
+        mc:Ignorable="d" Width="677.667"
+        FontFamily="Champagne &amp; Limousines" FontSize="18" Icon="textures/skyclient.png" WindowStyle="None" Height="518" MouseDown="Window_MouseDown"
+        MinWidth="400" MinHeight="600" StateChanged="Window_StateChanged"
+        >
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Grid.Resources>
-            <Style TargetType="Button">
-                <Setter Property="BorderBrush" Value="#2c3e50"/>
-                <Setter Property="BorderThickness" Value="2,0,2,5"/>
-                <Setter Property="Background" Value="#FF587593"/>
-                <Setter Property="Foreground" Value="White"/>
-                <Setter Property="FontFamily" Value="Champagne &amp; Limousines"/>
-                <Setter Property="Margin" Value="10,0,10,10"/>
+            <Style TargetType="ListBox">
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Margin" Value="10,45,10,90"/>
             </Style>
         </Grid.Resources>
-        <Rectangle Fill="#ecf0f1" Margin="10,41,10,10"/>
-        <Label Margin="10,0" Content="SkyClient" VerticalAlignment="Top" Background="White" Foreground="#DD000000" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="24" FontFamily="Champagne &amp; Limousines" FontWeight="Bold"/>
-        <Grid Margin="10,71,10,155">
-            <Grid.Resources>
-                <Style TargetType="Label">
-                    <Setter Property="FontSize" Value="22"/>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                </Style>
-            </Grid.Resources>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <StackPanel x:Name="stpMods">
-                <Label Content="Mods"/>
-            </StackPanel>
-            <GridSplitter/>
-            <StackPanel x:Name="stpResources" Grid.Column="1">
-                <Label Content="Texturepacks"/>
-            </StackPanel>
-        </Grid>
-        <Button x:Name="btnInstallModsAndForge" Content="Install" Click="BtnInstallModsAndForgeClick" Margin="20,0,20,20" Height="42" VerticalAlignment="Bottom"/>
-        
-        <CheckBox x:Name="btnClearModsFolder" IsEnabled="False" Content="Clear mods folder on Install" HorizontalAlignment="Left" Margin="51,0,0,73" Width="214" IsChecked="True" Height="20" VerticalAlignment="Bottom" Background="#FF69BF2D" BorderBrush="#FF48702C"/>
-        <Button Content="Advanced Settings" VerticalAlignment="Top" Margin="10,43,10,0" Click="BtnAdvancedSettinsClick"/>
-        <DockPanel HorizontalAlignment="Left" Height="100" LastChildFill="False" Margin="97,167,0,0" VerticalAlignment="Top" Width="100"/>
-        <Button x:Name="btnInstallPacks" Content="Install Packs" Margin="0,0,20,67" Height="28" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="294" Click="BtnInstallPacksClick"/>
+        <Rectangle x:Name="rectDragRectangle" Fill="Transparent" Height="40" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <Rectangle Fill="#FF587593" HorizontalAlignment="Left" Margin="0,-10,0,0" Width="10"/>
+        <Rectangle Fill="#FF587593" Margin="0,-10,0,0" Grid.Column="1" HorizontalAlignment="Right" Width="10"/>
+        <Rectangle Fill="#FF587593" Margin="10,0,0,0" Grid.ColumnSpan="2" Height="10" VerticalAlignment="Bottom"/>
+        <Label x:Name="txtSkyClient" Content="SkyClient" HorizontalAlignment="Center" Margin="0,6,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.146,0.226" Width="623" HorizontalContentAlignment="Center" Grid.ColumnSpan="2" FontFamily="Cooper Black" FontSize="28"/>
+        <Image x:Name="imgIconLeft" Source="textures/icon.ico" Height="32" VerticalAlignment="Top" Margin="0,10,80,0" RenderTransformOrigin="0.906,0.5" HorizontalAlignment="Right" Width="32"/>
+        <Image x:Name="imgIconRight" HorizontalAlignment="Left" Width="32" Source="textures/icon.ico" Height="32" VerticalAlignment="Top" Margin="80,10,0,0" RenderTransformOrigin="0.906,0.5" Grid.Column="1"/>
+        <Button x:Name="BtnClose" Content="☓" IsTabStop="False" VerticalAlignment="Top" HorizontalAlignment="Right" Width="25" Height="25" Background="#00000000" BorderBrush="#00000000" Click="BtnClose_Click" FontFamily="MS PGothic" Margin="0,0,11,0" FontWeight="Bold" Grid.Column="1"/>
+        <Button x:Name="BtnFullscreen" Content="▢" IsTabStop="False" VerticalAlignment="Top" HorizontalAlignment="Right" Width="25" Height="25" Background="#00000000" BorderBrush="#00000000" Margin="0,0,41,0" Click="BtnFullscreen_Click" FontFamily="Consolas" FontWeight="Bold" Grid.Column="1"/>
+        <Button x:Name="BtnMinimize" Content="----" IsTabStop="False" VerticalAlignment="Top" HorizontalAlignment="Right" Width="25" Height="25" Background="#00000000" BorderBrush="#00000000" Margin="0,0,71,0" Click="BtnMinimize_Click" FontFamily="Bauhaus 93" Grid.Column="1" />
+        <ListBox x:Name="lbMods"/>
+        <ListBox x:Name="lbPacks" Grid.Column="1"/>
+        <Button x:Name="btnInstall"              BorderBrush="#2c3e50" BorderThickness="2,0,2,5" Background="#FF587593" Foreground="White"        Content="Install SkyClient" Margin="15,0,15,15" Grid.ColumnSpan="2" Height="35" VerticalAlignment="Bottom" Click="BtnInstallModsAndForgeClick"/>
+        <Button x:Name="btnInstallPacks"        BorderBrush="#2c3e50" BorderThickness="2,0,2,5" Background="#FF587593" Foreground="White"     Content="Install Texturepacks" Margin="10,0,16,55" Height="30" VerticalAlignment="Bottom" Click="BtnInstallPacksClick" Grid.Column="1"/>
+        <Button x:Name="btnOpenAdvancedSettings"   BorderBrush="#2c3e50" BorderThickness="2,0,2,5" Background="#FF587593" Foreground="White"      Content="Open Advanced settings" Margin="15,0,10,55" Height="30" VerticalAlignment="Bottom" Click="BtnAdvancedSettinsClick"/>
     </Grid>
 </Window>

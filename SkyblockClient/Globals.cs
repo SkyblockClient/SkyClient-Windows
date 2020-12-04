@@ -92,7 +92,7 @@ namespace SkyblockClient
 
 		public static async Task DownloadFileByte(string file, string fileDestination)
 		{
-			IDownloadUrl downloadUrl = new InternalDownloadUrl(file + "?raw=true");
+			IDownloadUrl downloadUrl = new InternalDownloadUrl(file);
 			await DownloadFileByte(downloadUrl, fileDestination);
 		}
 
