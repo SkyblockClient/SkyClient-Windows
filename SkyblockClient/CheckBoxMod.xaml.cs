@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using SkyblockClient.Options;
 
 namespace SkyblockClient
 {
@@ -20,9 +9,53 @@ namespace SkyblockClient
 	/// </summary>
 	public partial class CheckBoxMod : UserControl
 	{
+		public bool HasGuide
+		{
+			get => _hasGuide;
+			set
+			{
+				_hasGuide = value;
+
+				Visibility visibility;
+				if (HasGuide)
+					visibility = Visibility.Visible;
+				else
+					visibility = Visibility.Hidden;
+
+				buttonOpenGuide.Visibility = visibility;
+				rectInfoBorder.Visibility = visibility;
+			}
+		}
+		private bool _hasGuide;
+
+		public event ClickEventHandler Click;
+		public delegate void ClickEventHandler(object sender, RoutedEventArgs e);
+
+		public new object Content
+		{
+			get => checkBox.Content;
+			set => checkBox.Content = value;
+		}
+		public bool IsChecked
+		{
+			get => checkBox.IsChecked ?? false;
+			set => checkBox.IsChecked = value;
+		}
+
 		public CheckBoxMod()
 		{
 			InitializeComponent();
+		}
+
+		private void CheckBox_Click(object sender, RoutedEventArgs e)
+		{
+			this.Click?.Invoke(this, e);
+		}
+
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			var option = this.Tag as Option;
+			option.OpenGuide();
 		}
 	}
 }

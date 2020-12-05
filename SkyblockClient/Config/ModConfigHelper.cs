@@ -1,4 +1,4 @@
-﻿using SkyblockClient.Option;
+﻿using SkyblockClient.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;

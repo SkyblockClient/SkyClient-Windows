@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace SkyblockClient.Option
+namespace SkyblockClient.Options
 {
 	public class ModOption : Option, IEquatable<ModOption>, IEquatable<string>
 	{
@@ -13,11 +13,11 @@ namespace SkyblockClient.Option
 		public bool remote { get; set; }
 		public string url { get; set; }
 
-		public override IDownloadUrl downloadUrl => remote ? new RemoteDownloadUrl(url) : (IDownloadUrl)new InternalDownloadUrl(file);
+		public override IDownloadUrl downloadUrl => remote ? (IDownloadUrl)new RemoteDownloadUrl(url) : new InternalDownloadUrl("mods/" + file);
 
 		public override void Create(string line)
 		{
-			var helper = new OptionHelper(line, 13);
+			var helper = new OptionHelper(line, Index.Guide);
 
 			id = helper.String(Index.ID);
 			enabled = helper.Boolean(Index.Enabled, "Enabled");
@@ -32,6 +32,7 @@ namespace SkyblockClient.Option
 			config = helper.Boolean(Index.Config, "Config");
 			remote = helper.Boolean(Index.Remote, "Remote");
 			url = helper.String(Index.Url);
+			HasGuide = helper.Boolean(Index.Guide, "Guide");
 		}
 
 		public override string ToString()
@@ -59,12 +60,12 @@ namespace SkyblockClient.Option
 
 		public override void ComboBoxChecked(object sender, RoutedEventArgs e)
 		{
-			var checkBox = sender as System.Windows.Controls.CheckBox;
-			var isChecked = checkBox.IsChecked ?? false;
+			var checkBox = sender as CheckBoxMod;
+			var isChecked = checkBox.IsChecked;
 
-			if (this.caution && isChecked)
+			if (caution && isChecked)
 			{
-				MessageBoxResult result = MessageBox.Show(this.warning + "\n\nUse anyway?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+				MessageBoxResult result = MessageBox.Show(warning + "\n\nUse anyway?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 				switch (result)
 				{
 					case MessageBoxResult.Yes:
@@ -89,7 +90,7 @@ namespace SkyblockClient.Option
 
 		private enum Index
 		{
-			ID, Enabled, File, Display, Description, Caution, Warning, Hidden, Dispersed, Dependency, Config, Remote, Url
+			ID, Enabled, File, Display, Description, Caution, Warning, Hidden, Dispersed, Dependency, Config, Remote, Url, Guide
 		}
 	}
 }

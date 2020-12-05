@@ -1,15 +1,14 @@
 ﻿using System.Windows;
 
-namespace SkyblockClient.Option
+namespace SkyblockClient.Options
 {
 	public class ResourcepackOption : Option
 	{
-
-		public override IDownloadUrl downloadUrl => new InternalDownloadUrl(file);
+		public override IDownloadUrl downloadUrl => new InternalDownloadUrl("packs/" + file);
 
 		public override void Create(string line)
 		{
-			var helper = new OptionHelper(line, 6);
+			var helper = new OptionHelper(line, Index.Description);
 
 			id = helper.String(Index.ID);
 			hidden = helper.Boolean(Index.Hidden, "Hidden");
@@ -17,6 +16,8 @@ namespace SkyblockClient.Option
 			file = helper.String(Index.File);
 			display = helper.String(Index.Display);
 			description = helper.String(Index.Description);
+
+			HasGuide = false;
 		}
 
 		public override string ToString()
@@ -32,13 +33,13 @@ namespace SkyblockClient.Option
 
 		public override void ComboBoxChecked(object sender, RoutedEventArgs e)
 		{
-			var checkBox = sender as System.Windows.Controls.CheckBox;
-			enabled = checkBox.IsChecked ?? false;
+			var checkBox = sender as CheckBoxMod;
+			enabled = checkBox.IsChecked;
 		}
 
 		private enum Index
 		{
-			ID, Hidden, Enabled, File, Display, Description 
+			ID, Hidden, Enabled, File, Display, Description
 		}
 	}
 }

@@ -10,6 +10,9 @@ namespace SkyblockClient
 {
 	public static class Globals
 	{
+		public const string GITHUB_RELEASES = "https://github.com/nacrt/SkyblockClient/releases/latest";
+
+
 		public static bool isDebugEnabled
 		{
 			get

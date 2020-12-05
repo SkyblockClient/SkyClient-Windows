@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SkyblockClient.Option
+namespace SkyblockClient.Options
 {
 	public class OptionHelper
 	{
@@ -31,12 +31,11 @@ namespace SkyblockClient.Option
 
 		string[] parts;
 
-		public OptionHelper(string line, int length)
+		public OptionHelper(string line, Enum index)
 		{
 			parts = line.Split(SPLIT_CHARACTER);
-			if (parts.Length != length)
+			if (parts.Length != Convert.ToInt32(index) + 1)
 				throw new ArgumentException("Line is either malformed or Empty");
-
 		}
 
 		public bool Boolean(int index, string name)

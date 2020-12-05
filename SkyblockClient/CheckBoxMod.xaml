@@ -4,15 +4,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SkyblockClient"
-             mc:Ignorable="d" Height="24">
+             mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
             <Style TargetType="CheckBox">
-                <Setter Property="Margin" Value="5,5,0,0"/>
+                <Setter Property="Margin" Value="0,0,0,0"/>
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
             </Style>
         </Grid.Resources>
-        <Label Content="ABC"/>
-        <CheckBox Margin="5,5,0,0"/>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <CheckBox x:Name="checkBox" Click="CheckBox_Click" VerticalAlignment="Center" Grid.Column="0"/>
+        <Rectangle x:Name="rectInfoBorder" RadiusX="9.5" RadiusY="9.5" Width="20" Stroke="#FF587593" RenderTransformOrigin="0.5,0.5" Grid.Column="2"/>
+        <Button x:Name="buttonOpenGuide" Content="?" Width="20" Click="Button_Click" Grid.Column="2"/>
     </Grid>
 </UserControl>

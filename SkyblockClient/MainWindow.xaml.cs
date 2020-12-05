@@ -8,9 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using SkyblockClient.Option;
 using System.Runtime.InteropServices;
-using System.Windows.Input;
+using SkyblockClient.Options;
 
 namespace SkyblockClient
 {
@@ -108,6 +107,13 @@ namespace SkyblockClient
 			{
 				Utils.Error("ERROR CONNECTING TO GITHUB", "\tAre you using a proxy?","\tYou might also be using an outdated version! Update!");
 				Utils.Log(e, "error connecting to github");
+				if (!Globals.isDebugEnabled)
+				{
+					string endpoint = $"{Globals.GITHUB_RELEASES}";
+					string command = $"/c start {endpoint}";
+					var processInfo = Utils.CreateProcessStartInfo("cmd.exe", command);
+					Process.Start(processInfo);
+				}
 			}
 
 			foreach (ModOption mod in modOptions)
@@ -133,58 +139,17 @@ namespace SkyblockClient
 			string response = await Globals.DownloadFileString("resourcepacks.txt");
 			resourceOptions = OptionHelper.Read<ResourcepackOption>(response);
 		}
+
 		private async Task DownloadModsFile()
 		{
 			string response = await Globals.DownloadFileString("mods.txt");
 			modOptions = OptionHelper.Read<ModOption>(response);
 		}
 
-		private void ModComboBoxIsChecked(object sender, RoutedEventArgs e)
-		{
-			var cmb = (CheckBox)sender;
-			var tag = (ModOption)cmb.Tag;
-
-			var isChecked = cmb.IsChecked ?? false;
-
-			if (tag.caution && isChecked)
-			{
-				MessageBoxResult result = MessageBox.Show(tag.warning + "\n\nUse anyway?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-				switch (result)
-				{
-					case MessageBoxResult.Yes:
-						cmb.IsChecked = true;
-						tag.enabled = true;
-						break;
-					case MessageBoxResult.No:
-						cmb.IsChecked = false;
-						tag.enabled = false;
-						break;
-					default:
-						cmb.IsChecked = false;
-						tag.enabled = false;
-						break;
-				}
-			}
-			else
-			{
-				tag.enabled = isChecked; 
-			}
-
-		}
-
-		private void ResourceComboBoxIsChecked(object sender, RoutedEventArgs e)
-		{
-			var cmb = (CheckBox)sender;
-			var tag = (ResourcepackOption)cmb.Tag;
-			tag.enabled = cmb.IsChecked ?? false;
-		}
-
 		private void ButtonsEnabled(bool enabled)
 		{
-			
 			btnInstallPacks.IsEnabled = enabled;
 			btnInstall.IsEnabled = enabled;
-			
 		}
 
 		private async Task InitializeInstall()
@@ -247,30 +212,12 @@ namespace SkyblockClient
 			if (correctJavaVersion)
 			{
 				await SkyblockClient.Forge.ForgeInstaller.Work();
-				/*
-				string text = File.ReadAllText(Globals.launcherProfilesLocation);
-				var launcherProfiles = JsonConvert.DeserializeObject<LauncherProfiles>(text);
-
-
-				if (launcherProfiles.profiles.ContainsKey("SkyClient"))
-				{
-					Utils.Info("Profile Exists -> Updating");
-					launcherProfiles.profiles["SkyClient"] = await SkyClientJson.Create();
-				}
-				else
-				{
-					Utils.Info("SkyClient does not exist -> Creating");
-					launcherProfiles.profiles.Add("SkyClient", await SkyClientJson.Create());
-				}
-				string outp = JsonConvert.SerializeObject(launcherProfiles, Formatting.Indented);
-				File.WriteAllText(Globals.launcherProfilesLocation, outp);
-				*/
 			}
 
 			await Task.CompletedTask;
 		}
 
-		private async Task DownloadIndividualMods(List<Option.Option> modOptions)
+		private async Task DownloadIndividualMods(List<Options.Option> modOptions)
 		{
 			foreach (var mod in modOptions)
 			{
@@ -295,10 +242,10 @@ namespace SkyblockClient
 			}
 		}
 
-		private async Task Installer(string location, Option.Option[] enabledOptions, string foldername, bool isMods)
+		private async Task Installer(string location, Options.Option[] enabledOptions, string foldername, bool isMods)
 		{
-			List<Option.Option> firstHalf = enabledOptions.Take((enabledOptions.Count() + 1) / 2).ToList();
-			List<Option.Option> secondHalf = enabledOptions.Skip((enabledOptions.Count() + 1) / 2).ToList();
+			List<Options.Option> firstHalf = enabledOptions.Take((enabledOptions.Count() + 1) / 2).ToList();
+			List<Options.Option> secondHalf = enabledOptions.Skip((enabledOptions.Count() + 1) / 2).ToList();
 
 			List<Task> tasks = new List<Task>();
 			tasks.Add(DownloadIndividualMods(firstHalf));

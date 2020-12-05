@@ -1,4 +1,4 @@
-﻿using SkyblockClient.Option;
+﻿using SkyblockClient.Options;
 using System.Threading.Tasks;
 
 namespace SkyblockClient.Config

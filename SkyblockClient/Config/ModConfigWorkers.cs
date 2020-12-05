@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SkyblockClient.Option;
+using SkyblockClient.Options;
 
 namespace SkyblockClient.Config
 {

@@ -20,7 +20,7 @@
                 <Setter Property="Margin" Value="10,45,10,90"/>
             </Style>
         </Grid.Resources>
-        <Rectangle x:Name="rectDragRectangle" Fill="Transparent" Height="40" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <Rectangle x:Name="rectDragRectangle" Fill="Transparent" Height="40" VerticalAlignment="Top" Grid.ColumnSpan="2" />
         <Rectangle Fill="#FF587593" HorizontalAlignment="Left" Margin="0,-10,0,0" Width="10"/>
         <Rectangle Fill="#FF587593" Margin="0,-10,0,0" Grid.Column="1" HorizontalAlignment="Right" Width="10"/>
         <Rectangle Fill="#FF587593" Margin="10,0,0,0" Grid.ColumnSpan="2" Height="10" VerticalAlignment="Bottom"/>
