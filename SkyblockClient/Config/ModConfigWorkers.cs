@@ -64,4 +64,15 @@ namespace SkyblockClient.Config
 			helper.Move(source, Path.Combine(Globals.skyblockConfigLocation, file));
 		}
 	}
+
+	[ModConfigWorker("neu")]
+	class ModConfigWorkerNeu : ModConfigWorkerBase
+	{
+		public override async Task Work()
+		{
+			helper.InitFolders("config", "config/notenoughupdates");
+			string source = await helper.DownloadFileByte("neuconfig.json");
+			helper.Move(source, Path.Combine(Globals.skyblockConfigLocation, "notenoughupdates", "config.json"));
+		}
+	}
 }
