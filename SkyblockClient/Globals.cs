@@ -1,9 +1,9 @@
-﻿using System;
+﻿using SkyblockClient.Options;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SkyblockClient
@@ -11,7 +11,7 @@ namespace SkyblockClient
 	public static class Globals
 	{
 		public const string GITHUB_RELEASES = "https://github.com/nacrt/SkyblockClient/releases/latest";
-
+		public const string PERSISTANCE_JSON_NAME = "skyclient.json";
 
 		public static bool isDebugEnabled
 		{
@@ -61,7 +61,61 @@ namespace SkyblockClient
 		public static string skyblockConfigLocation => Path.Combine(skyblockRootLocation, "config");
 		public static string skyblockModsLocation => Path.Combine(skyblockRootLocation, "mods");
 		public static string skyblockResourceLocation => Path.Combine(skyblockRootLocation, "resourcepacks");
-		
+
+		public static string skyblockPersistenceLocation => Path.Combine(skyblockRootLocation, PERSISTANCE_JSON_NAME);
+		public static string skyblockOptionsLocation => Path.Combine(skyblockRootLocation, "options.txt");
+
+		public static List<ModOption> modOptions = new List<ModOption>();
+		public static List<PackOption> resourceOptions = new List<PackOption>();
+
+		public static List<ModOption> enabledModOptions => modOptions.Where(mod => mod.enabled).ToList();
+		public static List<PackOption> enabledResourcepackOptions => resourceOptions.Where(pack => pack.enabled).ToList();
+
+		public static List<ModOption> neededMods
+		{
+			get
+			{
+				var enabled = enabledModOptions;
+				var result = new List<ModOption>();
+				result.AddRange(enabled);
+
+				var libraries = new List<ModOption>();
+
+				foreach (var mod in enabled)
+				{
+					if (mod.dispersed)
+					{
+						foreach (var library in modOptions)
+						{
+							if (mod.dependency == library.id)
+							{
+								if (!libraries.Contains(library))
+								{
+									libraries.Add(library);
+								}
+								break;
+							}
+						}
+					}
+				}
+
+				result.AddRange(libraries);
+
+				return result;
+			}
+		}
+
+		public static List<PackOption> neededPacks
+		{
+			get
+			{
+				var enabled = enabledResourcepackOptions;
+				var result = new List<PackOption>();
+				result.AddRange(enabled);
+				return result;
+			}
+		}
+
 
 		public static void InitializeValues()
 		{

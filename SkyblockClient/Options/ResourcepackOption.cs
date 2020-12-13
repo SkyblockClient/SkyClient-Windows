@@ -2,7 +2,7 @@
 
 namespace SkyblockClient.Options
 {
-	public class ResourcepackOption : Option
+	public class PackOption : Option
 	{
 		public override IDownloadUrl downloadUrl => new InternalDownloadUrl("packs/" + file);
 

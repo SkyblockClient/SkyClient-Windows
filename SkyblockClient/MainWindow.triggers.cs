@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -9,108 +7,6 @@ namespace SkyblockClient
 {
 	public partial class MainWindow
 	{
-		private async void BtnInstallPacksClick(object sender, RoutedEventArgs e)
-		{
-			ButtonsEnabled(false);
-			await InitializeInstall();
-			await Installer(Globals.skyblockResourceLocation, enabledResourcepackOptions.ToArray(), "resourcepacks", false);
-
-			try
-			{
-				var enabled = enabledResourcepackOptions;
-				enabled.Reverse();
-
-				string optionsLocation = Path.Combine(Globals.skyblockRootLocation, "options.txt");
-
-				List<string> lines;
-
-				if (File.Exists(optionsLocation))
-				{
-					lines = new List<string>(File.ReadAllLines(optionsLocation));
-				}
-				else
-				{
-					lines = new List<string>();
-				}
-
-				string packLine = "resourcePacks:[";
-				foreach (var pack in enabled)
-				{
-					packLine += $"\"{pack.file}\",";
-				}
-				packLine = packLine.Remove(packLine.Length - 1);
-				packLine += "]";
-
-				bool foundPackLine = false;
-				int indexPackLine = -1;
-
-				for (int i = 0; i < lines.Count; i++)
-				{
-					if (lines[i].StartsWith("resourcePacks:"))
-					{
-						if (!foundPackLine)
-						{
-							foundPackLine = true;
-							indexPackLine = i;
-						}
-						else
-						{
-							lines[i] = "";
-						}
-					}
-				}
-
-				if (foundPackLine)
-				{
-					lines[indexPackLine] = packLine;
-				}
-				else
-				{
-					lines.Add(packLine);
-				}
-
-				File.WriteAllLines(optionsLocation, lines);
-			}
-			catch (IOException ex)
-			{
-				Utils.Error("Failed Reading or Writing options.txt -> Skipping");
-				Utils.Log(ex, "Failed Reading or Writing options.txt");
-			}
-			catch (Exception ex)
-			{
-				Utils.Error("An unexpected error happend while updating mods.txt");
-				Utils.Log(ex, "An unexpected error happend while updating mods.txt");
-			}
-
-			ButtonsEnabled(true);
-
-			NotifyCompleted("All the texturepacks have been installed");
-		}
-
-		private async void BtnInstallModsClick(object sender, RoutedEventArgs e)
-		{
-			ButtonsEnabled(false);
-			await InitializeInstall();
-			await Task.Run(() => Installer(Globals.skyblockModsLocation, neededMods.ToArray(), "mods", true));
-			ButtonsEnabled(true);
-
-			NotifyCompleted("All the mods have been installed");
-		}
-
-		private async void BtnInstallForgeClick(object sender, RoutedEventArgs e)
-		{
-			ButtonsEnabled(false);
-			await InitializeInstall();
-			await ForgeInstaller();
-			ButtonsEnabled(true);
-		}
-
-		private async void BtnInstallModsAndForgeClick(object sender, RoutedEventArgs e)
-		{
-			ButtonsEnabled(false);
-			await StartForgeAndModsInstaller();
-			ButtonsEnabled(true);
-		}
 
 		private void BtnAdvancedSettinsClick(object sender, RoutedEventArgs e)
 		{
@@ -162,6 +58,20 @@ namespace SkyblockClient
 			{
 				BtnFullscreen.Content = "▢";
 			}
+		}
+
+		private async void BtnUpdate_Click(object sender, RoutedEventArgs e)
+		{
+			ButtonsEnabled(false);
+			await StartInstaller();
+			ButtonsEnabled(true);
+		}
+
+		private async void BtnInstallModsAndForgeClick(object sender, RoutedEventArgs e)
+		{
+			ButtonsEnabled(false);
+			await StartInstaller();
+			ButtonsEnabled(true);
 		}
 	}
 }

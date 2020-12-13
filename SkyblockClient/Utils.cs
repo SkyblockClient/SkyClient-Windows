@@ -5,16 +5,59 @@ using System.IO;
 using System.Reflection;
 using System.Diagnostics;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace SkyblockClient
 {
 	class Utils
 	{
+		internal static bool updateProfileOnDebug = true;
+
 		private static TextWriter ErrorOut = Console.Error;
 		private static TextWriter Out = Console.Out;
-		private static TextReader In = Console.In;
 
 		public static string exeLocation = Assembly.GetEntryAssembly().Location;
+
+		public static Dictionary<string, Options.ModOption> AvailableModOptions
+		{
+			get
+			{
+				if (_availableModOptions is null)
+				{
+					_availableModOptions = new Dictionary<string, Options.ModOption>();
+					foreach (var item in Globals.modOptions)
+					{
+						if (!AvailableModOptions.ContainsKey(item.id))
+						{
+							AvailableModOptions.Add(item.id, item);
+						}
+					}
+				}
+				return AvailableModOptions;
+			}
+		}
+		private static Dictionary<string, Options.ModOption> _availableModOptions;
+
+		public static Dictionary<string, Options.PackOption> AvailablePackOptions
+		{
+			get
+			{
+				if (_availablePackOptions is null)
+				{
+					_availablePackOptions = new Dictionary<string, Options.PackOption>();
+
+					foreach (var item in Globals.resourceOptions)
+					{
+						if (!AvailablePackOptions.ContainsKey(item.id))
+						{
+							AvailablePackOptions.Add(item.id, item);
+						}
+					}
+				}
+				return _availablePackOptions;
+			}
+		}
+		private static Dictionary<string, Options.PackOption> _availablePackOptions;
 
 		private static string logFileName
 		{
@@ -103,6 +146,19 @@ namespace SkyblockClient
 			return false;
 		}
 
+		public static async Task InitializeInstall(bool skipTempFolder = false)
+		{
+			if (skipTempFolder)
+			{
+				if (await Task.Run(() => Directory.Exists(Globals.tempFolderLocation)))
+					await Task.Run(() => Directory.Delete(Globals.tempFolderLocation, true));
+				await Task.Run(() => Directory.CreateDirectory(Globals.tempFolderLocation));
+			}
+
+			if (!await Task.Run(() => Directory.Exists(Globals.skyblockRootLocation)))
+				await Task.Run(() => Directory.CreateDirectory(Globals.skyblockRootLocation));
+		}
+
 		public static void Log(Exception e)
 		{
 			File.AppendAllText(logFileName, e.Message);
@@ -142,5 +198,7 @@ namespace SkyblockClient
 			byte[] imageArray = File.ReadAllBytes(path);
 			return Convert.ToBase64String(imageArray);
 		}
+
+		public static async Task ExecuteAsyncronous(params Task[] tasks) => await Task.WhenAll(tasks);
 	}
 }

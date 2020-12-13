@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Runtime.InteropServices;
 using SkyblockClient.Options;
+using SkyblockClient.Persistence;
 
 namespace SkyblockClient
 {
@@ -38,49 +39,6 @@ namespace SkyblockClient
 		public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
 		[DllImport("user32.dll")]
 		public static extern bool ReleaseCapture();
-
-		//public bool clearModsFolder => btnClearModsFolder.IsChecked ?? false;
-		public bool clearModsFolder =>  false;
-
-		public List<ModOption> modOptions = new List<ModOption>();
-		public List<ResourcepackOption> resourceOptions = new List<ResourcepackOption>();
-
-		public List<ModOption> enabledModOptions => modOptions.Where(mod => mod.enabled).ToList();
-		public List<ResourcepackOption> enabledResourcepackOptions => resourceOptions.Where(pack => pack.enabled).ToList();
-
-		public List<ModOption> neededMods
-		{ 
-			get
-			{
-				var enabled = enabledModOptions;
-				var result = new List<ModOption>();
-				result.AddRange(enabled);
-
-				var libraries = new List<ModOption>();
-
-				foreach (var mod in enabled)
-				{
-					if (mod.dispersed)
-					{
-						foreach (var library in modOptions)
-						{
-							if (mod.dependency == library.id)
-							{
-								if (!libraries.Contains(library))
-								{
-									libraries.Add(library);
-								}
-								break;
-							}
-						}
-					}
-				}
-
-				result.AddRange(libraries);
-
-				return result;
-			}
-		}
 
 		public MainWindow()
 		{
@@ -116,7 +74,7 @@ namespace SkyblockClient
 				}
 			}
 
-			foreach (ModOption mod in modOptions)
+			foreach (ModOption mod in Globals.modOptions)
 			{
 				if (!mod.hidden)
 				{
@@ -125,7 +83,7 @@ namespace SkyblockClient
 				}
 			}
 
-			foreach (ResourcepackOption pack in resourceOptions)
+			foreach (PackOption pack in Globals.resourceOptions)
 			{
 				if (!pack.hidden)
 				{
@@ -137,180 +95,29 @@ namespace SkyblockClient
 		private async Task DownloadResourceFile()
 		{
 			string response = await Globals.DownloadFileString("resourcepacks.txt");
-			resourceOptions = OptionHelper.Read<ResourcepackOption>(response);
+			Globals.resourceOptions = OptionHelper.Read<PackOption>(response);
 		}
 
 		private async Task DownloadModsFile()
 		{
 			string response = await Globals.DownloadFileString("mods.txt");
-			modOptions = OptionHelper.Read<ModOption>(response);
+			Globals.modOptions = OptionHelper.Read<ModOption>(response);
 		}
 
 		private void ButtonsEnabled(bool enabled)
 		{
-			btnInstallPacks.IsEnabled = enabled;
+			btnUpdate.IsEnabled = enabled;
 			btnInstall.IsEnabled = enabled;
 		}
 
 		private async Task InitializeInstall()
 		{
-			bool exists = await Task.Run(() => Directory.Exists(Globals.tempFolderLocation));
-			if (exists)
-				Directory.Delete(Globals.tempFolderLocation, true);
-			Directory.CreateDirectory(Globals.tempFolderLocation);
+			await Utils.InitializeInstall();
 		}
 
-		public async Task StartForgeAndModsInstaller()
+		private async Task InstallForge()
 		{
-			await InitializeInstall();
-
-			List<Task> tasks = new List<Task>();
-			tasks.Add(ForgeInstaller());
-			tasks.Add(Installer(Globals.skyblockModsLocation, enabledModOptions.ToArray(), "mods", true));
-			await Task.WhenAll(tasks.ToArray());
-
-			NotifyCompleted("Finished installing.\nAll that's left is to start your vanilla launcher and play the game.");
-		}
-
-		private async Task ForgeInstaller()
-		{
-			
-			bool valid = Utils.ValidateMinecraftDirectory(Globals.minecraftRootLocation);
-			if (!valid)
-			{
-				string msg = $"\"{Globals.minecraftRootLocation}\" is not a valid minecraft directory.\nMake sure you run the minecraft launcher at least once.";
-				MessageBox.Show(msg, "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-				return;
-			}
-
-			const string JAVA_LINK = "https://www.java.com/en/download/manual.jsp";
-			bool correctJavaVersion = false;
-
-			var javaProcess = Process.Start(Utils.CreateProcessStartInfo("java.exe", "-version"));
-
-			List<string> jLines = new List<string>();
-
-			while (!javaProcess.StandardError.EndOfStream)
-			{
-				jLines.Add(javaProcess.StandardError.ReadLine());
-			}
-
-			if (jLines.Count == 3 && jLines[0].Split('"')[1].StartsWith("1.8."))
-			{
-				correctJavaVersion = true;
-			}
-			else
-			{
-				correctJavaVersion = false;
-				Utils.Error("You are Using the wrong version of Java.");
-				Utils.Error("Download the newest version here:");
-				Utils.Error(JAVA_LINK);
-				Utils.Error("Select \"Windows Offline (64-Bit)\"");
-				Process.Start(Utils.CreateProcessStartInfo("cmd.exe", $"/c start {JAVA_LINK}"));
-			}
-			
-			if (correctJavaVersion)
-			{
-				await SkyblockClient.Forge.ForgeInstaller.Work();
-			}
-
-			await Task.CompletedTask;
-		}
-
-		private async Task DownloadIndividualMods(List<Options.Option> modOptions)
-		{
-			foreach (var mod in modOptions)
-			{
-				try
-				{
-					Utils.Info("Downloading " + mod.display);
-					await Globals.DownloadFileByte(mod.downloadUrl, Globals.tempFolderLocation + mod.file);
-					Utils.Info("Finished Downloading " + mod.display);
-				}
-				catch (WebException webE)
-				{
-					var msg = "Error while Downloading " + mod.display;
-					Utils.Error(msg);
-					Utils.Log(webE, "msg:"+msg, "webE.Status:" + webE.Status, "webE.Data:" + webE.Data.ToString());
-				}
-				catch (Exception e)
-				{
-					var msg = "Error while Downloading " + mod.display;
-					Utils.Error(msg);
-					Utils.Log(e, msg);
-				}
-			}
-		}
-
-		private async Task Installer(string location, Options.Option[] enabledOptions, string foldername, bool isMods)
-		{
-			List<Options.Option> firstHalf = enabledOptions.Take((enabledOptions.Count() + 1) / 2).ToList();
-			List<Options.Option> secondHalf = enabledOptions.Skip((enabledOptions.Count() + 1) / 2).ToList();
-
-			List<Task> tasks = new List<Task>();
-			tasks.Add(DownloadIndividualMods(firstHalf));
-			tasks.Add(DownloadIndividualMods(secondHalf));
-			await Task.WhenAll(tasks.ToArray());
-
-			try
-			{
-				bool locationExists = Directory.Exists(location);
-				if (locationExists)
-					Utils.Info($"skyblock {foldername} folder exists");
-				else
-					Utils.Info($"skyblock {foldername} folder does not exist");
-
-				if (locationExists)
-				{
-					DirectoryInfo di = new DirectoryInfo(location);
-
-					foreach (FileInfo file in di.GetFiles())
-					{
-						file.Delete();
-					}
-
-				}
-				Directory.CreateDirectory(location);
-
-				foreach (var file in enabledOptions)
-				{
-					Utils.Info("Moving " + file.file);
-					try
-					{
-						File.Move(Path.Combine(Globals.tempFolderLocation, file.file), Path.Combine(location, file.file));
-						Utils.Info("Finished Moving " + file.file);
-					}
-					catch (Exception e)
-					{
-						Utils.Error("Failed Moving " + file.display);
-						Utils.Log(e, "failed moving " + file.display);
-					}
-				}
-
-				if (isMods)
-				{
-					foreach (ModOption mod in enabledOptions)
-					{
-						List<Task> tasks1 = new List<Task>();
-						try
-						{
-							tasks1.Add(Config.ConfigUtils.CreateModConfigWorker(mod));
-						}
-						catch (Exception e)
-						{
-							Utils.Debug(e.Message);
-							Utils.Error("An Unknown error occured, please submit the log file");
-							Utils.Log(e, "unkown error in Installer():if(isMods)");
-						}
-						await Task.WhenAll(tasks1.ToArray());
-					}
-				}
-			}
-			catch (Exception e)
-			{
-				Utils.Error("An Unknown error occured, please submit the log file");
-				Utils.Log(e, "unkown error in Installer()");
-			}
+			await Forge.ForgeInstaller.Work();
 		}
 
 		private void NotifyCompleted(string message)
@@ -342,6 +149,33 @@ namespace SkyblockClient
 					frmAdvancedSettingsIsOpen = true;
 				}
 			}
+		}
+
+		public async Task Persist()
+		{
+			await PersistenceMain.Update();
+		}
+
+		public async Task StartInstaller()
+		{
+			await InitializeInstall();
+			await Persist();
+
+			await Utils.ExecuteAsyncronous(
+				InstallForge(),
+				InstallMods(),
+				InstallPacks()
+			);
+		}
+
+		public async Task InstallPacks()
+		{
+			await PersistenceMain.InstallPacks(Globals.neededPacks);
+		}
+
+		public async Task InstallMods()
+		{
+			await PersistenceMain.InstallMods(Globals.neededMods);
 		}
 	}
 }

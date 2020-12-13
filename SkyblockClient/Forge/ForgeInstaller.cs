@@ -2,9 +2,8 @@
 using SkyblockClient.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SkyblockClient.Forge
@@ -13,10 +12,49 @@ namespace SkyblockClient.Forge
 	{
 		public async static Task Work()
 		{
-			List<Task> tasks = new List<Task>();
-			tasks.Add(Task.Run(() => Profile()));
-			tasks.Add(Task.Run(() => Libraries()));
-			await Task.WhenAll(tasks.ToArray());
+			bool valid = Utils.ValidateMinecraftDirectory(Globals.minecraftRootLocation);
+			if (!valid)
+			{
+				string msg = $"\"{Globals.minecraftRootLocation}\" is not a valid minecraft directory.\nMake sure you run the minecraft launcher at least once.";
+				//MessageBox.Show(msg, "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+				return;
+			}
+
+			const string JAVA_LINK = "https://www.java.com/en/download/manual.jsp";
+			bool correctJavaVersion = false;
+
+			var javaProcess = Process.Start(Utils.CreateProcessStartInfo("java.exe", "-version"));
+
+			List<string> jLines = new List<string>();
+
+			while (!javaProcess.StandardError.EndOfStream)
+			{
+				jLines.Add(javaProcess.StandardError.ReadLine());
+			}
+
+			if (jLines.Count == 3 && jLines[0].Split('"')[1].StartsWith("1.8."))
+			{
+				correctJavaVersion = true;
+			}
+			else
+			{
+				correctJavaVersion = false;
+				Utils.Error("You are Using the wrong version of Java.");
+				Utils.Error("Download the newest version here:");
+				Utils.Error(JAVA_LINK);
+				Utils.Error("Select \"Windows Offline (64-Bit)\"");
+				Process.Start(Utils.CreateProcessStartInfo("cmd.exe", $"/c start {JAVA_LINK}"));
+			}
+
+			if (correctJavaVersion)
+			{
+				List<Task> tasks = new List<Task>();
+				tasks.Add(Task.Run(() => Profile()));
+				tasks.Add(Task.Run(() => Libraries()));
+				await Task.WhenAll(tasks.ToArray());
+			}
+
+			await Task.CompletedTask;
 		}
 
 		private static async Task Profile()
@@ -32,8 +70,15 @@ namespace SkyblockClient.Forge
 
 				if (launcherProfiles.profiles.ContainsKey("SkyClient"))
 				{
-					Utils.Info("Profile Exists -> Updating");
-					launcherProfiles.profiles["SkyClient"] = skyClientJson;
+					if (Globals.isDebugEnabled && !Utils.updateProfileOnDebug)
+					{
+						Utils.Error("Profile Exists -> Debug mode is enabled -> not updating");
+					}
+					else
+					{
+						Utils.Info("Profile Exists -> Updating");
+						launcherProfiles.profiles["SkyClient"] = skyClientJson;
+					}
 				}
 				else
 				{
