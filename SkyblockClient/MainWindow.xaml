@@ -34,6 +34,6 @@
         <ListBox x:Name="lbPacks" Grid.Column="1"/>
         <Button x:Name="btnInstall"              BorderBrush="#2c3e50" BorderThickness="2,0,2,5" Background="#FF587593" Foreground="White"        Content="Install SkyClient" Margin="15,0,15,15" Grid.ColumnSpan="2" Height="35" VerticalAlignment="Bottom" Click="BtnInstallModsAndForgeClick"/>
         <Button x:Name="btnOpenAdvancedSettings"   BorderBrush="#2c3e50" BorderThickness="2,0,2,5" Background="#FF587593" Foreground="White"      Content="Open Advanced settings" Margin="15,0,10,55" Height="30" VerticalAlignment="Bottom" Click="BtnAdvancedSettinsClick"/>
-        <Button x:Name="btnUpdate" Content="Update (coming soon)" IsEnabled="False" Grid.Column="1" Margin="10,0,15,55" BorderBrush="#2c3e50" BorderThickness="2,0,2,5" Background="#FF587593" Foreground="White" Click="BtnUpdate_Click" Height="30" VerticalAlignment="Bottom"/>
+        <Button x:Name="btnUpdate" Content="Update (coming soon)" Grid.Column="1" Margin="10,0,15,55" BorderBrush="#2c3e50" BorderThickness="2,0,2,5" Background="#FF587593" Foreground="White" Click="BtnUpdate_Click" Height="30" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

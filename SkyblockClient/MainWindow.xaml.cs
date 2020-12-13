@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Runtime.InteropServices;
 using SkyblockClient.Options;
 using SkyblockClient.Persistence;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace SkyblockClient
 {
@@ -94,14 +92,14 @@ namespace SkyblockClient
 
 		private async Task DownloadResourceFile()
 		{
-			string response = await Globals.DownloadFileString("resourcepacks.txt");
-			Globals.resourceOptions = OptionHelper.Read<PackOption>(response);
+			string response = await Globals.DownloadFileString("packs.json");
+			Globals.resourceOptions = JsonConvert.DeserializeObject<List<PackOption>>(response, Utils.JsonSerializerSettings);
 		}
 
 		private async Task DownloadModsFile()
 		{
-			string response = await Globals.DownloadFileString("mods.txt");
-			Globals.modOptions = OptionHelper.Read<ModOption>(response);
+			string response = await Globals.DownloadFileString("mods.json");
+			Globals.modOptions = JsonConvert.DeserializeObject<List<ModOption>>(response, Utils.JsonSerializerSettings);
 		}
 
 		private void ButtonsEnabled(bool enabled)
@@ -176,6 +174,15 @@ namespace SkyblockClient
 		public async Task InstallMods()
 		{
 			await PersistenceMain.InstallMods(Globals.neededMods);
+		}
+
+		private void CreateJson()
+		{
+			/*
+			var jsonString = JsonConvert.SerializeObject(Globals.resourceOptions, Utils.JsonSerializerSettings);
+			File.WriteAllText("packs.json", jsonString);
+			Utils.Error(jsonString);
+			*/
 		}
 	}
 }

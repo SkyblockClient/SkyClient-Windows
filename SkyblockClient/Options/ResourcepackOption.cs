@@ -6,20 +6,6 @@ namespace SkyblockClient.Options
 	{
 		public override IDownloadUrl downloadUrl => new InternalDownloadUrl("packs/" + file);
 
-		public override void Create(string line)
-		{
-			var helper = new OptionHelper(line, Index.Description);
-
-			id = helper.String(Index.ID);
-			hidden = helper.Boolean(Index.Hidden, "Hidden");
-			enabled = helper.Boolean(Index.Enabled, "Enabled");
-			file = helper.String(Index.File);
-			display = helper.String(Index.Display);
-			description = helper.String(Index.Description);
-
-			HasGuide = false;
-		}
-
 		public override string ToString()
 		{
 			string result = $"{id}-{display}\n";
@@ -35,11 +21,6 @@ namespace SkyblockClient.Options
 		{
 			var checkBox = sender as CheckBoxMod;
 			enabled = checkBox.IsChecked;
-		}
-
-		private enum Index
-		{
-			ID, Hidden, Enabled, File, Display, Description
 		}
 	}
 }

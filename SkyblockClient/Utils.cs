@@ -6,12 +6,13 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Drawing;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace SkyblockClient
 {
 	class Utils
 	{
-		internal static bool updateProfileOnDebug = true;
+		internal static bool updateProfileOnDebug = false;
 
 		private static TextWriter ErrorOut = Console.Error;
 		private static TextWriter Out = Console.Out;
@@ -192,6 +193,14 @@ namespace SkyblockClient
 			RedirectStandardOutput = true,
 			RedirectStandardError = true
 		};
+
+		public static JsonSerializerSettings JsonSerializerSettings => new JsonSerializerSettings
+		{
+			NullValueHandling = NullValueHandling.Ignore,
+			Formatting = Formatting.Indented,
+			DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate
+		};
+
 
 		public static string Base64Image(string path)
 		{

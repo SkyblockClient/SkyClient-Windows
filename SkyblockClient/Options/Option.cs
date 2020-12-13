@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using Newtonsoft.Json;
+using System.Diagnostics;
 using System.Windows;
+using System.ComponentModel;
 using System.Windows.Controls;
 
 namespace SkyblockClient.Options
@@ -7,16 +9,22 @@ namespace SkyblockClient.Options
 	public abstract class Option
 	{
 		public string id { get; set; }
+		[DefaultValue(false)]
 		public bool enabled { get; set; }
 		public string file { get; set; }
+		[DefaultValue("")]
 		public string display { get; set; }
+		[DefaultValue("")]
 		public string description { get; set; }
+		[DefaultValue(false)]
 		public bool hidden { get; set; }
 
-		public bool HasGuide { get; set; }
+		public bool guide { get; set; }
 
+		[JsonIgnore]
 		public abstract IDownloadUrl downloadUrl { get; }
 
+		[JsonIgnore]
 		public CheckBoxMod CheckBox
 		{
 			get
@@ -25,7 +33,7 @@ namespace SkyblockClient.Options
 				checkBox.Content = display;
 				checkBox.IsChecked = enabled;
 				checkBox.Tag = this;
-				checkBox.HasGuide = HasGuide;
+				checkBox.HasGuide = guide;
 
 				ToolTip toolTip = new ToolTip();
 				toolTip.Content = description;
@@ -39,11 +47,10 @@ namespace SkyblockClient.Options
 		}
 
 		public abstract void ComboBoxChecked(object sender, RoutedEventArgs e);
-		public abstract void Create(string line);
 
 		public void OpenGuide()
 		{
-			if (HasGuide)
+			if (guide)
 			{
 				string endpoint = $"{Globals.URL}guides/{id}.md";
 				string command = $"/c start {endpoint}";
@@ -56,5 +63,7 @@ namespace SkyblockClient.Options
 				Utils.Error("How did we get here?");
 			}
 		}
+
+		protected bool IsSet(string value) => !(value == "" || value == "None" || value == "none");
 	}
 }

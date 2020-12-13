@@ -62,9 +62,7 @@ namespace SkyblockClient
 
 		private async void BtnUpdate_Click(object sender, RoutedEventArgs e)
 		{
-			ButtonsEnabled(false);
-			await StartInstaller();
-			ButtonsEnabled(true);
+			CreateJson();
 		}
 
 		private async void BtnInstallModsAndForgeClick(object sender, RoutedEventArgs e)

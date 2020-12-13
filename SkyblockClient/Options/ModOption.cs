@@ -1,39 +1,29 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.ComponentModel;
 using System.Windows;
 
 namespace SkyblockClient.Options
 {
 	public class ModOption : Option, IEquatable<ModOption>, IEquatable<string>
 	{
-		public bool caution { get; set; }
+		[JsonIgnore]
+		public bool caution => IsSet(warning.Trim());
+
+		[DefaultValue("")]
 		public string warning { get; set; }
-		public bool dispersed { get; set; }
+		[JsonIgnore]
+		public bool dispersed => IsSet(dependency.Trim());
+		[DefaultValue("")]
 		public string dependency { get; set; }
+
 		public bool config { get; set; }
-		public bool remote { get; set; }
+		[JsonIgnore]
+		public bool remote => IsSet(url.Trim());
+		[DefaultValue("")]
 		public string url { get; set; }
 
 		public override IDownloadUrl downloadUrl => remote ? (IDownloadUrl)new RemoteDownloadUrl(url) : new InternalDownloadUrl("mods/" + file);
-
-		public override void Create(string line)
-		{
-			var helper = new OptionHelper(line, Index.Guide);
-
-			id = helper.String(Index.ID);
-			enabled = helper.Boolean(Index.Enabled, "Enabled");
-			file = helper.String(Index.File);
-			display = helper.String(Index.Display);
-			description = helper.String(Index.Description);
-			caution = helper.Boolean(Index.Caution, "Caution");
-			warning = helper.String(Index.Warning);
-			hidden = helper.Boolean(Index.Hidden, "Hidden");
-			dispersed = helper.Boolean(Index.Dispersed, "Dispersed");
-			dependency = helper.String(Index.Dependency);
-			config = helper.Boolean(Index.Config, "Config");
-			remote = helper.Boolean(Index.Remote, "Remote");
-			url = helper.String(Index.Url);
-			HasGuide = helper.Boolean(Index.Guide, "Guide");
-		}
 
 		public override string ToString()
 		{
@@ -86,11 +76,6 @@ namespace SkyblockClient.Options
 			{
 				this.enabled = isChecked;
 			}
-		}
-
-		private enum Index
-		{
-			ID, Enabled, File, Display, Description, Caution, Warning, Hidden, Dispersed, Dependency, Config, Remote, Url, Guide
 		}
 	}
 }
