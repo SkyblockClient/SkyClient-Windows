@@ -156,14 +156,29 @@ namespace SkyblockClient
 
 		public async Task StartInstaller()
 		{
-			await InitializeInstall();
-			await Persist();
+			var crashedAt = string.Empty;
+			try
+			{
+				crashedAt = "await InitializeInstall();";
+				await InitializeInstall();
+				crashedAt = "await Persist();";
+				await Persist();
 
-			await Utils.ExecuteAsyncronous(
-				InstallForge(),
-				InstallMods(),
-				InstallPacks()
-			);
+				crashedAt = "await Utils.ExecuteAsyncronous(";
+				await Utils.ExecuteAsyncronous(
+					InstallForge(),
+					InstallMods(),
+					InstallPacks()
+				);
+				crashedAt = "NotifyCompleted";
+				NotifyCompleted("The installation is done!\nNow all that's left is to start the the minecraft launcher and pick the SkyClient profile");
+
+			}
+			catch (Exception e)
+			{
+				Utils.Error(e.Message, "An exception occured during the Installation, the program might not have installed correctly, please submit the log file to the author");
+				Utils.Log(e, "crashAt:"+ crashedAt, "Exception occured at MainWindow.StartInstaller()");
+			}
 		}
 
 		public async Task InstallPacks()

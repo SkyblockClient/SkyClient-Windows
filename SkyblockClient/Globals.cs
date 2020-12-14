@@ -167,15 +167,27 @@ namespace SkyblockClient
 					if (exists)
 						File.Delete(fileDestination);
 
-					using (FileStream lxFS = new FileStream(fileDestination, FileMode.Create))
+					var crashAt = string.Empty;
+					try
 					{
-						while (true)
+						crashAt = "using (FileStream lxFS = new FileStream(fileDestination, FileMode.Create))";
+						using (FileStream lxFS = new FileStream(fileDestination, FileMode.Create))
 						{
-							byte[] lnByte = reader.ReadBytes(1024 * 1024); // 1 mb each package
-							if (lnByte.Length == 0)
-								break;
-							lxFS.Write(lnByte, 0, lnByte.Length);
+							while (true)
+							{
+								crashAt = "byte[] lnByte = reader.ReadBytes(1024 * 1024);";
+								byte[] lnByte = reader.ReadBytes(1024 * 1024); // 1 mb each package
+								if (lnByte.Length == 0)
+									break;
+								crashAt = "lxFS.Write(lnByte, 0, lnByte.Length);";
+								lxFS.Write(lnByte, 0, lnByte.Length);
+							}
 						}
+					}
+					catch (Exception e)
+					{
+						Utils.Error(e.Message, "Failed at creating or Writing to FileStream in Globals.DownloadFileByte");
+						Utils.Log(e, "crashAt:" + crashAt, "Failed at creating or Writing to FileStream in Globals.DownloadFileByte");
 					}
 				}
 			}

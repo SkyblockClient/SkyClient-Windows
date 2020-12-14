@@ -20,41 +20,54 @@ namespace SkyblockClient.Forge
 				return;
 			}
 
-			const string JAVA_LINK = "https://www.java.com/en/download/manual.jsp";
-			bool correctJavaVersion = false;
-
-			var javaProcess = Process.Start(Utils.CreateProcessStartInfo("java.exe", "-version"));
-
-			List<string> jLines = new List<string>();
-
-			while (!javaProcess.StandardError.EndOfStream)
+			try
 			{
-				jLines.Add(javaProcess.StandardError.ReadLine());
+				const string JAVA_LINK = "https://www.java.com/en/download/manual.jsp";
+				bool correctJavaVersion = false;
+
+				var javaProcess = Process.Start(Utils.CreateProcessStartInfo("java.exe", "-version"));
+
+				List<string> jLines = new List<string>();
+
+				while (!javaProcess.StandardError.EndOfStream)
+				{
+					jLines.Add(javaProcess.StandardError.ReadLine());
+				}
+
+				if (jLines.Count == 3 && jLines[0].Split('"')[1].StartsWith("1.8."))
+				{
+					correctJavaVersion = true;
+				}
+				else
+				{
+					correctJavaVersion = false;
+				}
+
+
+				if (!correctJavaVersion)
+				{
+					Utils.Error("You are Using the wrong version of Java.");
+					Utils.Error("Download the newest version here:");
+					Utils.Error(JAVA_LINK);
+					Utils.Error("Select \"Windows Offline (64-Bit)\"");
+					Process.Start(Utils.CreateProcessStartInfo("cmd.exe", $"/c start {JAVA_LINK}"));
+				}
+			}
+			catch (System.ComponentModel.Win32Exception e)
+			{
+				Utils.Error(e.Message, "Win32Exception in ForgeInstaller.Work");
+				Utils.Log(e, "Win32Exception in ForgeInstaller.Work");
+			}
+			catch (Exception e)
+			{
+				Utils.Error(e.Message, "Unknown Exception in ForgeInstaller.Work - please publish the log file to the author");
+				Utils.Log(e, "Win32Exception in ForgeInstaller.Work");
 			}
 
-			if (jLines.Count == 3 && jLines[0].Split('"')[1].StartsWith("1.8."))
-			{
-				correctJavaVersion = true;
-			}
-			else
-			{
-				correctJavaVersion = false;
-				Utils.Error("You are Using the wrong version of Java.");
-				Utils.Error("Download the newest version here:");
-				Utils.Error(JAVA_LINK);
-				Utils.Error("Select \"Windows Offline (64-Bit)\"");
-				Process.Start(Utils.CreateProcessStartInfo("cmd.exe", $"/c start {JAVA_LINK}"));
-			}
-
-			if (correctJavaVersion)
-			{
-				List<Task> tasks = new List<Task>();
-				tasks.Add(Task.Run(() => Profile()));
-				tasks.Add(Task.Run(() => Libraries()));
-				await Task.WhenAll(tasks.ToArray());
-			}
-
-			await Task.CompletedTask;
+			List<Task> tasks = new List<Task>();
+			tasks.Add(Task.Run(() => Profile()));
+			tasks.Add(Task.Run(() => Libraries()));
+			await Task.WhenAll(tasks.ToArray());
 		}
 
 		private static async Task Profile()

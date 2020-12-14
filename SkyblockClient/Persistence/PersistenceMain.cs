@@ -125,7 +125,6 @@ namespace SkyblockClient.Persistence
 		{
 			try
 			{
-				Utils.Error("ENTERED PACK");
 				List<string> lines;
 				if (File.Exists(Globals.skyblockOptionsLocation))
 				{
@@ -241,7 +240,6 @@ namespace SkyblockClient.Persistence
 			{
 				await Utils.InitializeInstall(true);
 				var jsonConvert = JsonConvert.SerializeObject(specifications, Formatting.Indented);
-				Utils.Error("WRITING JSON PERSIST");
 
 				foreach (var item in specifications.mods)
 					Utils.Debug(item.file);
@@ -251,7 +249,6 @@ namespace SkyblockClient.Persistence
 
 				Utils.Debug(jsonConvert);
 				await Task.Run(() => File.WriteAllText(Globals.skyblockPersistenceLocation, jsonConvert));
-				Utils.Error("WRITING JSON PERSIST");
 			}
 			catch (Exception e)
 			{
