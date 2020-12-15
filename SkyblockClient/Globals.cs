@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace SkyblockClient
@@ -13,6 +14,8 @@ namespace SkyblockClient
 		public const string GITHUB_RELEASES = "https://github.com/nacrt/SkyblockClient/releases/latest";
 		public const string PERSISTANCE_JSON_NAME = "skyclient.json";
 
+		public static bool ignoreOutdatedVersion = false;
+		public static Version assembyVersion => Assembly.GetExecutingAssembly().GetName().Version;
 		public static bool isDebugEnabled
 		{
 			get
