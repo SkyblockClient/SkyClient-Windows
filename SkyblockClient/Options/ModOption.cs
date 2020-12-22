@@ -7,6 +7,8 @@ namespace SkyblockClient.Options
 {
 	public class ModOption : Option, IEquatable<ModOption>, IEquatable<string>
 	{
+		public override IDownloadUrl downloadUrl => remote ? (IDownloadUrl)new RemoteDownloadUrl(url) : new InternalDownloadUrl("mods/" + file);
+
 		[JsonIgnore]
 		public bool caution => IsSet(warning.Trim());
 
@@ -18,12 +20,7 @@ namespace SkyblockClient.Options
 		public string dependency { get; set; }
 
 		public bool config { get; set; }
-		[JsonIgnore]
-		public bool remote => IsSet(url.Trim());
-		[DefaultValue("")]
-		public string url { get; set; }
 
-		public override IDownloadUrl downloadUrl => remote ? (IDownloadUrl)new RemoteDownloadUrl(url) : new InternalDownloadUrl("mods/" + file);
 
 		public override string ToString()
 		{

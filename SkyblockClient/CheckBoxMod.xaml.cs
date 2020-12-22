@@ -57,5 +57,10 @@ namespace SkyblockClient
 			var option = this.Tag as Option;
 			option.OpenGuide();
 		}
-	}
+
+        private void image_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+			 
+        }
+    }
 }

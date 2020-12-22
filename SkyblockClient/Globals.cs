@@ -14,6 +14,8 @@ namespace SkyblockClient
 		public const string GITHUB_RELEASES = "https://github.com/nacrt/SkyblockClient/releases/latest";
 		public const string PERSISTANCE_JSON_NAME = "skyclient.json";
 
+		internal static bool appendMissingOptionIcon = true;
+
 		public static bool ignoreOutdatedVersion = false;
 		public static Version assembyVersion => Assembly.GetExecutingAssembly().GetName().Version;
 		public static bool isDebugEnabled
@@ -71,7 +73,7 @@ namespace SkyblockClient
 		public static List<ModOption> modOptions = new List<ModOption>();
 		public static List<PackOption> resourceOptions = new List<PackOption>();
 
-		public static List<ModOption> enabledModOptions => modOptions.Where(mod => mod.enabled).ToList();
+        public static List<ModOption> enabledModOptions => modOptions.Where(mod => mod.enabled).ToList();
 		public static List<PackOption> enabledResourcepackOptions => resourceOptions.Where(pack => pack.enabled).ToList();
 
 		public static List<ModOption> neededMods
@@ -161,6 +163,10 @@ namespace SkyblockClient
 			string endpoint = downloadUrl.Url;
 
 			Utils.Debug(endpoint);
+            if (Globals.isDebugEnabled && Utils.copyEndpointToClipboardOnDebug)
+            {
+				Utils.SetClipboard(endpoint);
+            }
 
 			using (WebResponse webResponse = await Task.Run(() => WebRequest.Create(endpoint).GetResponse()))
 			{

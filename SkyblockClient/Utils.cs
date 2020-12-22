@@ -7,11 +7,13 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Windows;
 
 namespace SkyblockClient
 {
 	class Utils
 	{
+		internal static bool copyEndpointToClipboardOnDebug = true;
 		internal static bool updateProfileOnDebug = false;
 
 		private static TextWriter ErrorOut = Console.Error;
@@ -60,7 +62,7 @@ namespace SkyblockClient
 		}
 		private static Dictionary<string, Options.PackOption> _availablePackOptions;
 
-		private static string logFileName
+        private static string logFileName
 		{
 			get
 			{
@@ -209,5 +211,14 @@ namespace SkyblockClient
 		}
 
 		public static async Task ExecuteAsyncronous(params Task[] tasks) => await Task.WhenAll(tasks);
+
+		/// <summary>
+		/// Sets clipboard to value.
+		/// </summary>
+		/// <param name="value">String to set the clipboard to.</param>
+		public static void SetClipboard(string value)
+		{
+			Clipboard.SetText(value);
+		}
 	}
 }
