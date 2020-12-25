@@ -46,11 +46,6 @@ namespace SkyblockClient
 			{
 				Utils.Info("Thank you for using SkyClient", "This is the output Console and will display information important to the developer!");
 			}
-			var version = Globals.assembyVersion;
-			Utils.Info(version.ToString());
-			Utils.Info(version.Major.ToString());
-			Utils.Info(version.Build.ToString());
-			Utils.Info(version.MajorRevision.ToString());
 		}
 
 		public async void PostConstruct()

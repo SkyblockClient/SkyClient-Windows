@@ -13,18 +13,28 @@
             <Style TargetType="Button">
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="Visibility" Value="Hidden"/>
+                <Setter Property="Grid.Column" Value="4"/>
+            </Style>
+            <Style TargetType="ComboBox">
+                <Setter Property="Visibility" Value="Hidden"/>
+                <Setter Property="Grid.Column" Value="4"/>
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="Visibility" Value="Hidden"/>
             </Style>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition x:Name="gridCol0"/>
             <ColumnDefinition x:Name="gridCol1" Width="10"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="10*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Image x:Name="image" Width="20" Grid.Column="0" MouseDown="image_MouseDown"/>
-        <CheckBox x:Name="checkBox" Click="CheckBox_Click" VerticalAlignment="Center" Grid.Column="2"/>
-        <Rectangle x:Name="rectInfoBorder" RadiusX="9.5" RadiusY="9.5" Width="20" Stroke="#FF587593" RenderTransformOrigin="0.5,0.5" Grid.Column="4"/>
-        <Button x:Name="buttonOpenGuide" Content="?" Width="20" Click="Button_Click" Grid.Column="4"/>
+        <Image x:Name="imgIcon" Width="20" Grid.Column="0"/>
+        <CheckBox x:Name="chkEnabled" Click="CheckBox_Click" VerticalAlignment="Center" Grid.Column="2"/>
+        <ComboBox x:Name="cmbActions" SelectionChanged="cmbActions_SelectionChanged" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="-102,3,65,3" UseLayoutRounding="True"/>
+        <Label x:Name="lblActionButtonDivider" Content="-" Grid.Column="3"/>
+        <Button x:Name="btnAction" Click="btnAction_Click"/>
     </Grid>
 </UserControl>

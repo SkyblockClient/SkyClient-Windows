@@ -220,5 +220,13 @@ namespace SkyblockClient
 		{
 			Clipboard.SetText(value);
 		}
+
+		public static void OpenLinkInBrowser(string link)
+        {
+			Utils.Info($"Opening {link}");
+			var info = Utils.CreateProcessStartInfo("cmd.exe", $"/c start {link}");
+			Process process = new Process() { StartInfo = info };
+			process.Start();
+        }
 	}
 }

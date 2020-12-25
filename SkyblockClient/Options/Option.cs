@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System;
+using System.Collections.Generic;
 
 namespace SkyblockClient.Options
 {
@@ -41,6 +42,9 @@ namespace SkyblockClient.Options
 		[DefaultValue("")]
 		public string icon { get; set; }
 
+		public List<OptionAction> actions { get; set; }
+
+
 		[JsonIgnore]
 		public virtual IDownloadUrl downloadUrl { get; }
 
@@ -54,27 +58,8 @@ namespace SkyblockClient.Options
 				checkBox.Content = display;
 				checkBox.IsChecked = enabled;
 				checkBox.Tag = this;
-				checkBox.HasGuide = guide;
-
-				Utils.Debug("modID:" + id);
-				Utils.Debug("hasIcon:" + hasIcon);
-                if (hasIcon)
-				{
-					BitmapImage bitmap = new BitmapImage();
-					bitmap.BeginInit();
-					bitmap.UriSource = new Uri(new InternalDownloadUrl($"icons/{icon}").Url, UriKind.Absolute);
-					bitmap.EndInit();
-
-					checkBox.image.Source = bitmap;
-				}
-				else
-                {
-                    if (!Globals.appendMissingOptionIcon)
-					{
-						checkBox.gridCol0.Width = new GridLength(0);
-						checkBox.gridCol1.Width = new GridLength(0);
-					}
-				}
+				checkBox.Actions = actions;
+				checkBox.Icon = icon;
 
 				ToolTip toolTip = new ToolTip();
 				toolTip.Content = description;
@@ -105,6 +90,6 @@ namespace SkyblockClient.Options
 			}
 		}
 
-		protected bool IsSet(string value) => !(value == "" || value == "None" || value == "none");
+		protected bool IsSet(string value) => !(value == null || value == "" || value == "None" || value == "none");
 	}
 }
