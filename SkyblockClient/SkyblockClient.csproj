@@ -125,6 +125,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Globals.cs" />
+    <Compile Include="GlobalSettings.cs" />
     <Compile Include="Json\LauncherProfiles.cs" />
     <Compile Include="Json\ProfilesJson.cs" />
     <Compile Include="Json\SkyClientJson.cs" />

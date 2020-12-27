@@ -80,7 +80,7 @@ namespace SkyblockClient
                 }
                 else
                 {
-                    if (!Globals.appendMissingOptionIcon)
+                    if (!Globals.Settings.appendMissingOptionIcon)
                     {
                         gridCol0.Width = new GridLength(0);
                         gridCol1.Width = new GridLength(0);

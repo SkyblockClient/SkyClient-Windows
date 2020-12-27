@@ -4,18 +4,14 @@ using System.Threading;
 using System.IO;
 using System.Reflection;
 using System.Diagnostics;
-using System.Drawing;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Windows;
 
 namespace SkyblockClient
 {
-	class Utils
+    class Utils
 	{
-		internal static bool copyEndpointToClipboardOnDebug = true;
-		internal static bool updateProfileOnDebug = false;
-
 		private static TextWriter ErrorOut = Console.Error;
 		private static TextWriter Out = Console.Out;
 
@@ -49,7 +45,7 @@ namespace SkyblockClient
 				{
 					_availablePackOptions = new Dictionary<string, Options.PackOption>();
 
-					foreach (var item in Globals.resourceOptions)
+					foreach (var item in Globals.packOptions)
 					{
 						if (!AvailablePackOptions.ContainsKey(item.id))
 						{
@@ -218,7 +214,15 @@ namespace SkyblockClient
 		/// <param name="value">String to set the clipboard to.</param>
 		public static void SetClipboard(string value)
 		{
-			Clipboard.SetText(value);
+            try
+			{
+				Clipboard.SetText(value);
+			}
+            catch (Exception e)
+            {
+				Utils.Error("Could not set Clipboard text to " + value);
+				Utils.Debug(e.Message);
+            }
 		}
 
 		public static void OpenLinkInBrowser(string link)
@@ -227,6 +231,25 @@ namespace SkyblockClient
 			var info = Utils.CreateProcessStartInfo("cmd.exe", $"/c start {link}");
 			Process process = new Process() { StartInfo = info };
 			process.Start();
+        }
+		public static void LoadSettings()
+        {
+			string errorAt = "try";
+			try
+            {
+				errorAt = "var response = Globals.DownloadFileString(\"settings.json\");";
+				var response = Globals.DownloadFileString("settings.json");
+				errorAt = "var settings = JsonConvert.DeserializeObject<GlobalSettings>(response, Utils.JsonSerializerSettings);";
+				var settings = JsonConvert.DeserializeObject<GlobalSettings>(response, Utils.JsonSerializerSettings);
+				errorAt = "Globals.Settings = settings;";
+				Globals.Settings = settings;
+
+            }
+            catch (Exception e)
+            {
+				Utils.Error("Error loading Config from Repository");
+				Utils.Log(e, "Error loading Config from Repository", "errorAt:" + errorAt);
+			}
         }
 	}
 }

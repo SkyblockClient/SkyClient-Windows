@@ -83,7 +83,7 @@ namespace SkyblockClient.Forge
 
 				if (launcherProfiles.profiles.ContainsKey("SkyClient"))
 				{
-					if (Globals.isDebugEnabled && !Utils.updateProfileOnDebug)
+					if (Globals.isDebugEnabled && !Globals.Settings.updateProfileOnDebug)
 					{
 						Utils.Error("Profile Exists -> Debug mode is enabled -> not updating");
 					}

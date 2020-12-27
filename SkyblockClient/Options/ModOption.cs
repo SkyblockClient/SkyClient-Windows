@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 
@@ -20,6 +21,8 @@ namespace SkyblockClient.Options
 		public string dependency { get; set; }
 
 		public bool config { get; set; }
+
+		public List<string> packs { get; set; }
 
 
 		public override string ToString()
@@ -72,6 +75,21 @@ namespace SkyblockClient.Options
 			else
 			{
 				this.enabled = isChecked;
+			}
+
+            if (!(packs is null))
+            {
+                foreach (var pack in packs)
+                {
+                    foreach (var packOption in Globals.packOptions)
+                    {
+                        if (packOption.id == pack)
+                        {
+							packOption.enabled = enabled;
+                        }
+                    }
+                }
+				Globals.CauseRefreshPacks();
 			}
 		}
 	}

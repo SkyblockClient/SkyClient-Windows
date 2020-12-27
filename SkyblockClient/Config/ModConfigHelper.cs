@@ -31,14 +31,14 @@ namespace SkyblockClient.Config
 		public async Task<string> DownloadFileString(string file)
 		{
 			string path = $"config/{file}";
-			return await Globals.DownloadFileString(path);
+			return await Globals.DownloadFileStringAsync(path);
 		}
 
 		public async Task<ModConfig> GetModConfig()
 		{
 			if (_config is null)
 			{
-				string responseString = await Globals.DownloadFileString($"config/{modOption.id}.config");
+				string responseString = await Globals.DownloadFileStringAsync($"config/{modOption.id}.config");
 				_config = new ModConfig(modOption.id);
 
 			}

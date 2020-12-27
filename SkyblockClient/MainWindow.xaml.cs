@@ -40,6 +40,8 @@ namespace SkyblockClient
 
 		public MainWindow()
 		{
+			Globals.MainWindow = this;
+			Utils.LoadSettings();
 			InitializeComponent();
 			PostConstruct();
 			if (!Globals.isDebugEnabled)
@@ -72,16 +74,20 @@ namespace SkyblockClient
 				}
 			}
 
-			foreach (ModOption mod in Globals.modOptions)
-			{
-				if (!mod.hidden)
-				{
-					Utils.Debug(mod.display);
-					lbMods.Items.Add(mod.CheckBox);
-				}
-			}
+			RefreshMods();
+			RefreshPacks();
+		}
 
-			foreach (PackOption pack in Globals.resourceOptions)
+		private async Task DownloadResourceFile()
+		{
+			string response = await Globals.DownloadFileStringAsync("packs.json");
+			Globals.packOptions = JsonConvert.DeserializeObject<List<PackOption>>(response, Utils.JsonSerializerSettings);
+		}
+
+		public void RefreshPacks()
+        {
+			lbPacks.Items.Clear();
+			foreach (PackOption pack in Globals.packOptions)
 			{
 				if (!pack.hidden)
 				{
@@ -89,16 +95,21 @@ namespace SkyblockClient
 				}
 			}
 		}
-
-		private async Task DownloadResourceFile()
+		public void RefreshMods()
 		{
-			string response = await Globals.DownloadFileString("packs.json");
-			Globals.resourceOptions = JsonConvert.DeserializeObject<List<PackOption>>(response, Utils.JsonSerializerSettings);
+			lbMods.Items.Clear();
+			foreach (ModOption mod in Globals.modOptions)
+			{
+				if (!mod.hidden)
+				{
+					lbMods.Items.Add(mod.CheckBox);
+				}
+			}
 		}
 
 		private async Task DownloadModsFile()
 		{
-			string response = await Globals.DownloadFileString("mods.json");
+			string response = await Globals.DownloadFileStringAsync("mods.json");
 			Globals.modOptions = JsonConvert.DeserializeObject<List<ModOption>>(response, Utils.JsonSerializerSettings);
 		}
 

@@ -13,11 +13,20 @@ namespace SkyblockClient
 	{
 		public const string GITHUB_RELEASES = "https://github.com/nacrt/SkyblockClient/releases/latest";
 		public const string PERSISTANCE_JSON_NAME = "skyclient.json";
-
-		internal static bool appendMissingOptionIcon = true;
-
-		public static bool ignoreOutdatedVersion = false;
 		public static Version assembyVersion => Assembly.GetExecutingAssembly().GetName().Version;
+
+		public static GlobalSettings Settings
+        {
+			get
+            {
+                if (_settings is null)
+					_settings = new GlobalSettings();
+				return _settings;
+            }
+			set => _settings = value;
+        }
+		private static GlobalSettings _settings;
+		
 		public static bool isDebugEnabled
 		{
 			get
@@ -68,13 +77,19 @@ namespace SkyblockClient
 		public static string skyblockResourceLocation => Path.Combine(skyblockRootLocation, "resourcepacks");
 
 		public static string skyblockPersistenceLocation => Path.Combine(skyblockRootLocation, PERSISTANCE_JSON_NAME);
-		public static string skyblockOptionsLocation => Path.Combine(skyblockRootLocation, "options.txt");
+
+		public static void CauseRefreshPacks()
+        {
+			MainWindow.RefreshPacks();
+        }
+
+        public static string skyblockOptionsLocation => Path.Combine(skyblockRootLocation, "options.txt");
 
 		public static List<ModOption> modOptions = new List<ModOption>();
-		public static List<PackOption> resourceOptions = new List<PackOption>();
+		public static List<PackOption> packOptions = new List<PackOption>();
 
         public static List<ModOption> enabledModOptions => modOptions.Where(mod => mod.enabled).ToList();
-		public static List<PackOption> enabledResourcepackOptions => resourceOptions.Where(pack => pack.enabled).ToList();
+		public static List<PackOption> enabledPackOptions => packOptions.Where(pack => pack.enabled).ToList();
 
 		public static List<ModOption> neededMods
 		{
@@ -114,15 +129,16 @@ namespace SkyblockClient
 		{
 			get
 			{
-				var enabled = enabledResourcepackOptions;
+				var enabled = enabledPackOptions;
 				var result = new List<PackOption>();
 				result.AddRange(enabled);
 				return result;
 			}
 		}
 
+        public static MainWindow MainWindow { get; internal set; }
 
-		public static void InitializeValues()
+        public static void InitializeValues()
 		{
 			string result = "https://github.com/nacrt/SkyblockClient-REPO/blob/main/files/";
 
@@ -146,10 +162,16 @@ namespace SkyblockClient
 			URL = result;
 		}
 
-		public static async Task<string> DownloadFileString(string file)
+		public static async Task<string> DownloadFileStringAsync(string file)
 		{
 			WebResponse myWebResponse = await WebRequest.Create(Globals.URL + file + "?raw=true").GetResponseAsync();
 			return await new StreamReader(myWebResponse.GetResponseStream()).ReadToEndAsync();
+		}
+
+		public static string DownloadFileString(string file)
+		{
+			WebResponse myWebResponse = WebRequest.Create(Globals.URL + file + "?raw=true").GetResponse();
+			return new StreamReader(myWebResponse.GetResponseStream()).ReadToEnd();
 		}
 
 		public static async Task DownloadFileByte(string file, string fileDestination)
@@ -163,43 +185,63 @@ namespace SkyblockClient
 			string endpoint = downloadUrl.Url;
 
 			Utils.Debug(endpoint);
-            if (Globals.isDebugEnabled && Utils.copyEndpointToClipboardOnDebug)
+            if (Globals.isDebugEnabled && Globals.Settings.copyAllEndpointsToClipboardOnDebug)
             {
 				Utils.SetClipboard(endpoint);
             }
 
-			using (WebResponse webResponse = await Task.Run(() => WebRequest.Create(endpoint).GetResponse()))
-			{
-				using (BinaryReader reader = new BinaryReader(webResponse.GetResponseStream()))
+			var errorAt = string.Empty;
+			try
+            {
+				errorAt = "using (WebResponse webResponse = await Task.Run(() => WebRequest.Create(endpoint).GetResponse()))";
+				using (WebResponse webResponse = await Task.Run(() => WebRequest.Create(endpoint).GetResponse()))
 				{
-					bool exists = File.Exists(fileDestination);
-					if (exists)
-						File.Delete(fileDestination);
-
-					var crashAt = string.Empty;
-					try
+					errorAt = "using (BinaryReader reader = new BinaryReader(webResponse.GetResponseStream()))";
+					using (BinaryReader reader = new BinaryReader(webResponse.GetResponseStream()))
 					{
-						crashAt = "using (FileStream lxFS = new FileStream(fileDestination, FileMode.Create))";
-						using (FileStream lxFS = new FileStream(fileDestination, FileMode.Create))
+						errorAt = "bool exists = File.Exists(fileDestination);";
+						bool exists = File.Exists(fileDestination);
+						if (exists)
+                        {
+							errorAt = "File.Delete(fileDestination);";
+							File.Delete(fileDestination);
+						}
+
+						try
 						{
-							while (true)
+							errorAt = "using (FileStream lxFS = new FileStream(fileDestination, FileMode.Create))";
+							using (FileStream lxFS = new FileStream(fileDestination, FileMode.Create))
 							{
-								crashAt = "byte[] lnByte = reader.ReadBytes(1024 * 1024);";
-								byte[] lnByte = reader.ReadBytes(1024 * 1024); // 1 mb each package
-								if (lnByte.Length == 0)
-									break;
-								crashAt = "lxFS.Write(lnByte, 0, lnByte.Length);";
-								lxFS.Write(lnByte, 0, lnByte.Length);
+								while (true)
+								{
+									errorAt = "byte[] lnByte = reader.ReadBytes(1024 * 1024);";
+									byte[] lnByte = reader.ReadBytes(1024 * 1024); // 1 mb each package
+									if (lnByte.Length == 0)
+										break;
+									errorAt = "lxFS.Write(lnByte, 0, lnByte.Length);";
+									lxFS.Write(lnByte, 0, lnByte.Length);
+								}
 							}
 						}
-					}
-					catch (Exception e)
-					{
-						Utils.Error(e.Message, "Failed at creating or Writing to FileStream in Globals.DownloadFileByte");
-						Utils.Log(e, "crashAt:" + crashAt, "Failed at creating or Writing to FileStream in Globals.DownloadFileByte");
+						catch (Exception e)
+						{
+							Utils.Error(e.Message, "Failed at creating or Writing to FileStream in Globals.DownloadFileByte");
+							Utils.Log(e, "Failed at creating or Writing to FileStream in Globals.DownloadFileByte", "errorAt:" + errorAt);
+						}
 					}
 				}
 			}
+            catch (Exception e)
+            {
+				if (Globals.isDebugEnabled && Globals.Settings.copyEndpointToClipboardOnDebugOnError)
+                {
+					Utils.SetClipboard(endpoint);
+                }
+				Utils.Error("Error sending WebRequest");
+				Utils.Log(e, "Error sending WebRequest", "errorAt:" + errorAt);
+				throw new Exception("Error sending WebRequest", e);
+            }
+
 		}
 	}
 }
