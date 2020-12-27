@@ -9,6 +9,7 @@ namespace SkyblockClient
         const bool COPY_ALL_ENDPOINTS_TO_CLIPBOARD_ON_DEBUG_DEFAULT = false;
         const bool UPDATE_PROFILE_ON_DEBUG_DEFAULT = false;
         const bool COPY_ENDPOINT_TO_CLIPBOARD_ON_DEBUG_ON_ERROR_DEFAULT = true;
+        const bool ENABLE_MOD_DEPENDENT_PACKS_ON_ENABLE_DEFAULT = true;
 
         [DefaultValue(APPEND_MISSING_OPTION_ICON_DEFAULT)]
         public bool appendMissingOptionIcon = APPEND_MISSING_OPTION_ICON_DEFAULT;
@@ -24,5 +25,8 @@ namespace SkyblockClient
 
         [DefaultValue(COPY_ENDPOINT_TO_CLIPBOARD_ON_DEBUG_ON_ERROR_DEFAULT)]
         public bool copyEndpointToClipboardOnDebugOnError = COPY_ENDPOINT_TO_CLIPBOARD_ON_DEBUG_ON_ERROR_DEFAULT;
+
+        [DefaultValue(ENABLE_MOD_DEPENDENT_PACKS_ON_ENABLE_DEFAULT)]
+        public bool enableModDependentPacksOnEnable = ENABLE_MOD_DEPENDENT_PACKS_ON_ENABLE_DEFAULT;
     }
 }

@@ -77,7 +77,7 @@ namespace SkyblockClient.Options
 				this.enabled = isChecked;
 			}
 
-            if (!(packs is null))
+            if (!(packs is null) && Globals.Settings.enableModDependentPacksOnEnable)
             {
                 foreach (var pack in packs)
                 {
