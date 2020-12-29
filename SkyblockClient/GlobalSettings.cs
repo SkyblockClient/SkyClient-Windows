@@ -10,6 +10,9 @@ namespace SkyblockClient
         const bool UPDATE_PROFILE_ON_DEBUG_DEFAULT = false;
         const bool COPY_ENDPOINT_TO_CLIPBOARD_ON_DEBUG_ON_ERROR_DEFAULT = true;
         const bool ENABLE_MOD_DEPENDENT_PACKS_ON_ENABLE_DEFAULT = true;
+        const bool INSTALL_FORGE_LIBRARIES_DEFAULT = true;
+        const bool INSTALL_PROFILE_TO_LAUNCHER = true;
+        const bool CHECK_JAVA_VERSION_DEFAULT = false;
 
         [DefaultValue(APPEND_MISSING_OPTION_ICON_DEFAULT)]
         public bool appendMissingOptionIcon = APPEND_MISSING_OPTION_ICON_DEFAULT;
@@ -28,5 +31,14 @@ namespace SkyblockClient
 
         [DefaultValue(ENABLE_MOD_DEPENDENT_PACKS_ON_ENABLE_DEFAULT)]
         public bool enableModDependentPacksOnEnable = ENABLE_MOD_DEPENDENT_PACKS_ON_ENABLE_DEFAULT;
+
+        [DefaultValue(INSTALL_FORGE_LIBRARIES_DEFAULT)]
+        public bool installForgeLibaries = INSTALL_FORGE_LIBRARIES_DEFAULT;
+
+        [DefaultValue(INSTALL_PROFILE_TO_LAUNCHER)]
+        public bool installProfileToLauncher = INSTALL_PROFILE_TO_LAUNCHER;
+
+        [DefaultValue(CHECK_JAVA_VERSION_DEFAULT)]
+        public bool checkJavaVersion = CHECK_JAVA_VERSION_DEFAULT;
     }
 }

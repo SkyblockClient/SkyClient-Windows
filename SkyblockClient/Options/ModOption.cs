@@ -11,19 +11,20 @@ namespace SkyblockClient.Options
 		public override IDownloadUrl downloadUrl => remote ? (IDownloadUrl)new RemoteDownloadUrl(url) : new InternalDownloadUrl("mods/" + file);
 
 		[JsonIgnore]
-		public bool caution => IsSet(warning.Trim());
+		public bool Caution => IsSet(warning.Trim());
 
 		[DefaultValue("")]
 		public string warning { get; set; }
 		[JsonIgnore]
-		public bool dispersed => IsSet(dependency.Trim());
+		public bool Dispersed => IsSet(dependency.Trim());
 		[DefaultValue("")]
 		public string dependency { get; set; }
 
 		public bool config { get; set; }
 
+		[JsonIgnore]
+		public bool HasPacks => IsSet<string>(packs);
 		public List<string> packs { get; set; }
-
 
 		public override string ToString()
 		{
@@ -53,7 +54,7 @@ namespace SkyblockClient.Options
 			var checkBox = sender as CheckBoxMod;
 			var isChecked = checkBox.IsChecked;
 
-			if (caution && isChecked)
+			if (Caution && isChecked)
 			{
 				MessageBoxResult result = MessageBox.Show(warning + "\n\nUse anyway?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 				switch (result)
@@ -73,11 +74,11 @@ namespace SkyblockClient.Options
 				}
 			}
 			else
-			{
+			{	
 				this.enabled = isChecked;
 			}
 
-            if (!(packs is null) && Globals.Settings.enableModDependentPacksOnEnable)
+            if (HasPacks && Globals.Settings.enableModDependentPacksOnEnable)
             {
                 foreach (var pack in packs)
                 {

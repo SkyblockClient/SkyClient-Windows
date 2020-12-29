@@ -91,5 +91,6 @@ namespace SkyblockClient.Options
 		}
 
 		protected bool IsSet(string value) => !(value == null || value == "" || value == "None" || value == "none");
+		protected bool IsSet<T>(List<T> value) => !(value == null || value.Count == 0);
 	}
 }

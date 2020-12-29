@@ -20,48 +20,51 @@ namespace SkyblockClient.Forge
 				return;
 			}
 
-			try
-			{
-				const string JAVA_LINK = "https://www.java.com/en/download/manual.jsp";
-				bool correctJavaVersion = false;
-
-				var javaProcess = Process.Start(Utils.CreateProcessStartInfo("java.exe", "-version"));
-
-				List<string> jLines = new List<string>();
-
-				while (!javaProcess.StandardError.EndOfStream)
+            if (Globals.Settings.checkJavaVersion)
+            {
+				try
 				{
-					jLines.Add(javaProcess.StandardError.ReadLine());
-				}
+					const string JAVA_LINK = "https://www.java.com/en/download/manual.jsp";
+					bool correctJavaVersion = false;
 
-				if (jLines.Count == 3 && jLines[0].Split('"')[1].StartsWith("1.8."))
-				{
-					correctJavaVersion = true;
-				}
-				else
-				{
-					correctJavaVersion = false;
-				}
+					var javaProcess = Process.Start(Utils.CreateProcessStartInfo("java.exe", "-version"));
+
+					List<string> jLines = new List<string>();
+
+					while (!javaProcess.StandardError.EndOfStream)
+					{
+						jLines.Add(javaProcess.StandardError.ReadLine());
+					}
+
+					if (jLines.Count == 3 && jLines[0].Split('"')[1].StartsWith("1.8."))
+					{
+						correctJavaVersion = true;
+					}
+					else
+					{
+						correctJavaVersion = false;
+					}
 
 
-				if (!correctJavaVersion)
-				{
-					Utils.Error("You are Using the wrong version of Java.");
-					Utils.Error("Download the newest version here:");
-					Utils.Error(JAVA_LINK);
-					Utils.Error("Select \"Windows Offline (64-Bit)\"");
-					Process.Start(Utils.CreateProcessStartInfo("cmd.exe", $"/c start {JAVA_LINK}"));
+					if (!correctJavaVersion)
+					{
+						Utils.Error("You are Using the wrong version of Java.");
+						Utils.Error("Download the newest version here:");
+						Utils.Error(JAVA_LINK);
+						Utils.Error("Select \"Windows Offline (64-Bit)\"");
+						Process.Start(Utils.CreateProcessStartInfo("cmd.exe", $"/c start {JAVA_LINK}"));
+					}
 				}
-			}
-			catch (System.ComponentModel.Win32Exception e)
-			{
-				Utils.Error(e.Message, "Win32Exception in ForgeInstaller.Work");
-				Utils.Log(e, "Win32Exception in ForgeInstaller.Work");
-			}
-			catch (Exception e)
-			{
-				Utils.Error(e.Message, "Unknown Exception in ForgeInstaller.Work - please publish the log file to the author");
-				Utils.Log(e, "Win32Exception in ForgeInstaller.Work");
+				catch (System.ComponentModel.Win32Exception e)
+				{
+					Utils.Error(e.Message, "Win32Exception in ForgeInstaller.Work");
+					Utils.Log(e, "Win32Exception in ForgeInstaller.Work");
+				}
+				catch (Exception e)
+				{
+					Utils.Error(e.Message, "Unknown Exception in ForgeInstaller.Work - please publish the log file to the author");
+					Utils.Log(e, "Win32Exception in ForgeInstaller.Work");
+				}
 			}
 
 			List<Task> tasks = new List<Task>();
@@ -72,6 +75,8 @@ namespace SkyblockClient.Forge
 
 		private static async Task Profile()
 		{
+			if (!Globals.Settings.installProfileToLauncher)
+				return;
 			SkyClientJson skyClientJson = null;
 
 			try
@@ -139,32 +144,35 @@ namespace SkyblockClient.Forge
 
 		private static async Task Libraries()
 		{
+			if (!Globals.Settings.installForgeLibaries)
+				return;
+
 			string fileForge = @"forge-1.8.9-11.15.1.2318-1.8.9.jar";
 			string libraryDirectory = Path.Combine(Globals.minecraftLibrariesLocation, "net", "minecraftforge", "forge", "1.8.9-11.15.1.2318-1.8.9");
 
-			string nextCommand = string.Empty;
+			string crashAt = string.Empty;
 
 			try
-			{
-				nextCommand = "if (!File.Exists(Path.Combine(libraryDirectory, fileForge)))";
+			{	
+				crashAt = "if (!File.Exists(Path.Combine(libraryDirectory, fileForge)))";
 				if (!File.Exists(Path.Combine(libraryDirectory, fileForge)))
 				{
-					nextCommand = "if (!Directory.Exists(libraryDirectory))";
+					crashAt = "if (!Directory.Exists(libraryDirectory))";
 					if (!Directory.Exists(libraryDirectory))
 					{
-						nextCommand = "Directory.CreateDirectory(libraryDirectory);";
+						crashAt = "Directory.CreateDirectory(libraryDirectory);";
 						Directory.CreateDirectory(libraryDirectory);
 					}
 
-					nextCommand = "await Globals.DownloadFileByte(\"forge/\" + fileForge, Path.Combine(Globals.tempFolderLocation, fileForge));";
+					crashAt = "await Globals.DownloadFileByte(\"forge/\" + fileForge, Path.Combine(Globals.tempFolderLocation, fileForge));";
 					await Globals.DownloadFileByte("forge/" + fileForge, Path.Combine(Globals.tempFolderLocation, fileForge));
 
-					nextCommand = "File.Move(Path.Combine(Globals.tempFolderLocation, fileForge), Path.Combine(libraryDirectory, fileForge));";
+					crashAt = "File.Move(Path.Combine(Globals.tempFolderLocation, fileForge), Path.Combine(libraryDirectory, fileForge));";
 					File.Move(Path.Combine(Globals.tempFolderLocation, fileForge), Path.Combine(libraryDirectory, fileForge));
 				}
 				else
 				{
-					nextCommand = "Utils.Debug(Path.Combine(libraryDirectory, fileForge) + \" exists\");";
+					crashAt = "Utils.Debug(Path.Combine(libraryDirectory, fileForge) + \" exists\");";
 					Utils.Debug(Path.Combine(libraryDirectory, fileForge) + " exists");
 				}
 			}
@@ -172,13 +180,13 @@ namespace SkyblockClient.Forge
 			{
 				const string CRASH_MESSAGE = "A Win32Exception occured while installing the Forge to your .minecraft";
 				Utils.Error(CRASH_MESSAGE);
-				Utils.Log(win32Exception, CRASH_MESSAGE, "ForgeInstaller.Libraries().Part:Forge", $"nextCommand:'{nextCommand}'");
+				Utils.Log(win32Exception, CRASH_MESSAGE, "ForgeInstaller.Libraries().Part:Forge", $"nextCommand:'{crashAt}'");
 			}
 			catch (Exception e)
 			{
 				const string CRASH_MESSAGE = "An unkown Exception occured while installing the Forge to your .minecraft";
 				Utils.Error(CRASH_MESSAGE);
-				Utils.Log(e, CRASH_MESSAGE, "ForgeInstaller.Profile().Part:Forge", $"nextCommand:'{nextCommand}'");
+				Utils.Log(e, CRASH_MESSAGE, "ForgeInstaller.Profile().Part:Forge", $"crashAt:'{crashAt}'");
 			}
 
 			string fileJson = "1.8.9-forge1.8.9-11.15.1.2318-1.8.9.json";
@@ -186,25 +194,25 @@ namespace SkyblockClient.Forge
 
 			try
 			{
-				nextCommand = "if (!File.Exists(Path.Combine(versionDirectory, fileJson)))";
+				crashAt = "if (!File.Exists(Path.Combine(versionDirectory, fileJson)))";
 				if (!File.Exists(Path.Combine(versionDirectory, fileJson)))
 				{
-					nextCommand = "if (!Directory.Exists(versionDirectory))";
+					crashAt = "if (!Directory.Exists(versionDirectory))";
 					if (!Directory.Exists(versionDirectory))
 					{
-						nextCommand = "Directory.CreateDirectory(versionDirectory);";
+						crashAt = "Directory.CreateDirectory(versionDirectory);";
 						Directory.CreateDirectory(versionDirectory);
 					}
 
-					nextCommand = "await Globals.DownloadFileByte(\"forge/\" + fileJson, Path.Combine(Globals.tempFolderLocation, fileJson));";
+					crashAt = "await Globals.DownloadFileByte(\"forge/\" + fileJson, Path.Combine(Globals.tempFolderLocation, fileJson));";
 					await Globals.DownloadFileByte("forge/" + fileJson, Path.Combine(Globals.tempFolderLocation, fileJson));
 
-					nextCommand = "File.Move(Path.Combine(Globals.tempFolderLocation, fileJson), Path.Combine(versionDirectory, fileJson));";
+					crashAt = "File.Move(Path.Combine(Globals.tempFolderLocation, fileJson), Path.Combine(versionDirectory, fileJson));";
 					File.Move(Path.Combine(Globals.tempFolderLocation, fileJson), Path.Combine(versionDirectory, fileJson));
 				}
 				else
 				{
-					nextCommand = "Utils.Debug(Path.Combine(versionDirectory, fileJson) + \" exists\");";
+					crashAt = "Utils.Debug(Path.Combine(versionDirectory, fileJson) + \" exists\");";
 					Utils.Debug(Path.Combine(versionDirectory, fileJson) + " exists");
 				}
 			}
@@ -212,14 +220,14 @@ namespace SkyblockClient.Forge
 			{
 				const string CRASH_MESSAGE = "A Win32Exception occured while installing the Forge to your .minecraft";
 				Utils.Error(CRASH_MESSAGE);
-				Utils.Log(win32Exception, CRASH_MESSAGE, "ForgeInstaller.Libraries().Part:Json", $"nextCommand:'{nextCommand}'");
+				Utils.Log(win32Exception, CRASH_MESSAGE, "ForgeInstaller.Libraries().Part:Json", $"nextCommand:'{crashAt}'");
 			}
 			catch (Exception e)
 			{
 				const string CRASH_MESSAGE = "An unkown Exception occured while installing the Forge to your .minecraft";
 
 				Utils.Error(CRASH_MESSAGE);
-				Utils.Log(e, CRASH_MESSAGE, "ForgeInstaller.Libraries().Part:Json", $"nextCommand:'{nextCommand}'");
+				Utils.Log(e, CRASH_MESSAGE, "ForgeInstaller.Libraries().Part:Json", $"nextCommand:'{crashAt}'");
 			}
 		}
 

@@ -103,7 +103,7 @@ namespace SkyblockClient
 
 				foreach (var mod in enabled)
 				{
-					if (mod.dispersed)
+					if (mod.Dispersed)
 					{
 						foreach (var library in modOptions)
 						{
