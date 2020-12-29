@@ -75,4 +75,16 @@ namespace SkyblockClient.Config
 			helper.Move(source, Path.Combine(Globals.skyblockConfigLocation, "notenoughupdates", "config.json"));
 		}
 	}
+
+	[ModConfigWorker("apec")]
+	class ModConfigWorkerApec : ModConfigWorkerBase
+	{
+		public override async Task Work()
+		{
+			helper.InitFolders("config", "config/Apec");
+			string source = await helper.DownloadFileByte("apecsettings.txt");
+			helper.Move(source, Path.Combine(Globals.skyblockConfigLocation, "Apec", "Settings.txt"));
+		}
+	}
+
 }

@@ -20,7 +20,7 @@ namespace SkyblockClient
         [DefaultValue(IGNORE_OUTDATED_VERSION_DEFAULT)]
         public bool ignoreOutdatedVersion = IGNORE_OUTDATED_VERSION_DEFAULT;
 
-        [DefaultValue(COPY_ALL_ENDPOINTS_TO_CLIPBOARD_ON_DEBUG_DEFAULT)]
+        [DefaultValue(COPY_ALL_ENDPOINTS_TO_CLIPBOARD_ON_DEBUG_DEFAULT)]    
         public bool copyAllEndpointsToClipboardOnDebug = COPY_ALL_ENDPOINTS_TO_CLIPBOARD_ON_DEBUG_DEFAULT;
 
         [DefaultValue(UPDATE_PROFILE_ON_DEBUG_DEFAULT)]

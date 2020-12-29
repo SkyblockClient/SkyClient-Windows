@@ -81,9 +81,14 @@ namespace SkyblockClient
 		public static void CauseRefreshPacks()
         {
 			MainWindow.RefreshPacks();
-        }
+		}
 
-        public static string skyblockOptionsLocation => Path.Combine(skyblockRootLocation, "options.txt");
+		public static void CauseRefreshMods() 
+		{
+			MainWindow.RefreshMods();
+		}
+
+		public static string skyblockOptionsLocation => Path.Combine(skyblockRootLocation, "options.txt");
 
 		public static List<ModOption> modOptions = new List<ModOption>();
 		public static List<PackOption> packOptions = new List<PackOption>();
