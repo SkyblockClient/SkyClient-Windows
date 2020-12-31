@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using Newtonsoft.Json;
 using SkyblockClient.Options;
 using SkyblockClient.Persistence.Data;
 
 namespace SkyblockClient.Persistence
 {
-	class UpdateSpecification
+	public class PersistenceFile
 	{
 		public List<PersistenceMod> mods { get; set; }
 		public List<PersistencePack> packs { get; set; }
 		
-
 		public void AddRangeSafe(List<ModOption> mods)
 		{
 			if (this.mods is null)
@@ -33,6 +34,13 @@ namespace SkyblockClient.Persistence
 				if (!this.packs.Contains(persistenceItem))
 					this.packs.Add(persistenceItem);
 			}
+		}
+
+		public static PersistenceFile ReadData(string jsonLocation)
+        {
+			Utils.Debug("Reading: " + jsonLocation);
+			var json = File.ReadAllText(jsonLocation);
+			return JsonConvert.DeserializeObject<PersistenceFile>(json, Utils.JsonSerializerSettings);
 		}
 	}
 }

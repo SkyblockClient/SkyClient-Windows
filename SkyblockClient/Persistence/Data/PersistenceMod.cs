@@ -3,7 +3,7 @@ using SkyblockClient.Options;
 
 namespace SkyblockClient.Persistence.Data
 {
-	class PersistenceMod : PersistenceData, IEquatable<ModOption>, IEquatable<PersistenceMod>
+	public class PersistenceMod : PersistenceData, IEquatable<ModOption>, IEquatable<PersistenceMod>
 	{
 		public PersistenceMod() { }
 		public PersistenceMod(Option option)
@@ -11,6 +11,25 @@ namespace SkyblockClient.Persistence.Data
 			id = option.id;
 			file = option.file;
 		}
+		public PersistenceMod(ModOption option)
+		{
+			id = option.id;
+			file = option.file;
+		}
+
+        public override bool UpdateAvailable
+        {
+			get
+            {
+                if (Utils.OptionDataExists(this))
+                {
+					var data = Utils.GetOptionData(this);
+					return data.file != this.file;
+                }
+				return false;
+            }
+        }
+		public override Option Option => Utils.GetOptionData(this);
 
 		public override bool Equals(object obj)
 		{

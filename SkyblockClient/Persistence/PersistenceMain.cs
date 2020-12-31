@@ -12,7 +12,6 @@ namespace SkyblockClient.Persistence
 {
 	class PersistenceMain
 	{
-
 		public static async Task InstallPacks(List<PackOption> packs)
 		{
 			await UpdateMinecraftConfigForPacks(new PersistencePacksList(packs).Packs);
@@ -193,10 +192,10 @@ namespace SkyblockClient.Persistence
 			}
 		}
 
-		public static async Task<UpdateSpecification> CreateSpecificationsAsync(bool readExistingSpecifications)
+		public static async Task<PersistenceFile> CreateSpecificationsAsync(bool readExistingSpecifications)
 		{
 			bool persistanceLocationExists = await Task.Run(() => File.Exists(Globals.skyblockPersistenceLocation));
-			UpdateSpecification specification = null;
+			PersistenceFile specification = null;
 			if (persistanceLocationExists)
 			{
 				if (readExistingSpecifications)
@@ -204,7 +203,7 @@ namespace SkyblockClient.Persistence
 					try
 					{
 						var specificationText = await Task.Run(() => File.ReadAllText(Globals.skyblockPersistenceLocation));
-						specification = await Task.Run(() => JsonConvert.DeserializeObject<UpdateSpecification>(specificationText));
+						specification = await Task.Run(() => JsonConvert.DeserializeObject<PersistenceFile>(specificationText));
 					}
 					catch (JsonReaderException e)
 					{
@@ -214,27 +213,21 @@ namespace SkyblockClient.Persistence
 					{
 						Utils.Error(e.Message, e.StackTrace);
 					}
-					catch
-					{
-						Utils.Error("WE DON'T KNOW WHAT WENT WRONG HERE BUT SOMETHING IS SERIOUSLY MESSED UP");
-					}
 				}
-
-
 				if (specification is null)
-					specification = new UpdateSpecification();
+					specification = new PersistenceFile();
 
 			}
 			else
 			{
-				specification = new UpdateSpecification();
+				specification = new PersistenceFile();
 			}
 			specification.AddRangeSafe(Globals.neededMods);
 			specification.AddRangeSafe(Globals.neededPacks);
 			return specification;
 		}
 
-		public static async Task PersistSpecificationsAsync(UpdateSpecification specifications)
+		public static async Task PersistSpecificationsAsync(PersistenceFile specifications)
 		{
 			try
 			{
@@ -264,7 +257,7 @@ namespace SkyblockClient.Persistence
 			await Update(specs);
 		}
 
-		public static async Task Update(UpdateSpecification specification)
+		public static async Task Update(PersistenceFile specification)
 		{
 			await PersistSpecificationsAsync(specification);
 		}

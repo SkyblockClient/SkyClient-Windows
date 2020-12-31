@@ -165,6 +165,11 @@ namespace SkyblockClient
 			await PersistenceMain.Update();
 		}
 
+		private async Task Startupdate()
+		{
+			await UpdateMain.Update();
+		}
+
 		public async Task StartInstaller()
 		{
 			var crashedAt = string.Empty;
@@ -202,13 +207,9 @@ namespace SkyblockClient
 			await PersistenceMain.InstallMods(Globals.neededMods);
 		}
 
-		private void CreateJson()
+		public void ShowInfo(string text, string title, MessageBoxButton messageBoxButton, MessageBoxImage messageBoxImage)
 		{
-			/*
-			var jsonString = JsonConvert.SerializeObject(Globals.resourceOptions, Utils.JsonSerializerSettings);
-			File.WriteAllText("packs.json", jsonString);
-			Utils.Error(jsonString);
-			*/
+			MessageBox.Show(text, title, messageBoxButton, messageBoxImage);
 		}
 	}
 }

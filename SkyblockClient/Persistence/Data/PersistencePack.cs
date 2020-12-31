@@ -3,7 +3,7 @@ using SkyblockClient.Options;
 
 namespace SkyblockClient.Persistence.Data
 {
-	class PersistencePack : PersistenceData, IEquatable<PackOption>, IEquatable<PersistencePack>
+	public class PersistencePack : PersistenceData, IEquatable<PackOption>, IEquatable<PersistencePack>
 	{
 		public PersistencePack() { }
 		public PersistencePack(Option option)
@@ -11,6 +11,26 @@ namespace SkyblockClient.Persistence.Data
 			id = option.id;
 			file = option.file;
 		}
+		public PersistencePack(PackOption option)
+		{
+			id = option.id;
+			file = option.file;
+		}
+
+		public override bool UpdateAvailable
+		{
+			get
+			{
+				if (Utils.OptionDataExists(this))
+				{
+					var data = Utils.GetOptionData(this);
+					return data.file != this.file;
+				}
+				return false;
+			}
+		}
+
+        public override Option Option => Utils.GetOptionData(this);
 
 		public override bool Equals(object obj)
 		{

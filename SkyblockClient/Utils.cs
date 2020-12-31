@@ -7,6 +7,8 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Windows;
+using SkyblockClient.Persistence.Data;
+using SkyblockClient.Options;
 
 namespace SkyblockClient
 {
@@ -32,7 +34,7 @@ namespace SkyblockClient
 						}
 					}
 				}
-				return AvailableModOptions;
+				return _availableModOptions;
 			}
 		}
 		private static Dictionary<string, Options.ModOption> _availableModOptions;
@@ -57,8 +59,50 @@ namespace SkyblockClient
 			}
 		}
 		private static Dictionary<string, Options.PackOption> _availablePackOptions;
+		public static bool OptionDataExists(PersistenceMod persistenceMod)
+		{
+			return Utils.AvailableModOptions?.ContainsKey(persistenceMod.id) ?? false;
+		}
 
-        private static string logFileName
+		public static bool OptionDataExists(PersistencePack persistencePack)
+		{
+			return Utils.AvailablePackOptions?.ContainsKey(persistencePack.id) ?? false;
+		}
+
+		public static ModOption GetOptionData(PersistenceMod persistenceMod)
+		{
+			return Utils.AvailableModOptions[persistenceMod.id];
+		}
+
+		public static PackOption GetOptionData(PersistencePack persistencePack)
+		{
+			return Utils.AvailablePackOptions[persistencePack.id];
+		}
+
+		public static string DownloadFileTempFolderLocation(Option option) => DownloadFileTempFolderLocation(option.file);
+
+		public static string DownloadFileTempFolderLocation(string option)
+		{
+			var advancedFileName = RandomString() + "_" + option;
+			return Path.Combine(Globals.tempFolderLocation, advancedFileName);
+		}
+
+		public static string RandomString(int length = 5) => RandomString(length, "0123456789");
+		public static string RandomString(string charset) => RandomString(5, charset);
+
+		public static string RandomString(int length, string charset)
+		{
+			var stringChars = new char[length];
+			var random = new Random();
+
+			for (int i = 0; i < stringChars.Length; i++)
+			{
+				stringChars[i] = charset[random.Next(charset.Length)];
+			}
+			return new String(stringChars);
+		}
+
+		private static string logFileName
 		{
 			get
 			{
@@ -82,6 +126,13 @@ namespace SkyblockClient
 			Console.ResetColor();
 		}
 
+		public static void Debug(Exception exception)
+		{
+			if (Globals.isDebugEnabled)
+			{
+				Info(exception.Message, exception.StackTrace);
+			}
+		}
 		public static void Debug(params string[] msgs)
 		{
 			if (Globals.isDebugEnabled)
