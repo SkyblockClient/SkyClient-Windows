@@ -7,6 +7,7 @@
         mc:Ignorable="d" Width="677.667"
         FontFamily="Champagne &amp; Limousines" FontSize="18" Icon="textures/skyclient.png" WindowStyle="None" Height="518" MouseDown="Window_MouseDown"
         MinWidth="400" MinHeight="600" StateChanged="Window_StateChanged"
+        xml:lang="de-DE"
         >
     <Grid>
         <Grid.ColumnDefinitions>

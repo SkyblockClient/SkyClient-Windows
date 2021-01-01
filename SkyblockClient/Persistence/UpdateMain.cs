@@ -23,13 +23,15 @@ namespace SkyblockClient.Persistence
             List<Task> tasks = new List<Task>();
 
             if (Directory.Exists(Globals.skyblockModsLocation))
-                tasks.Add(PersitFiles(update, Globals.skyblockModsLocation, update.PersitenceFile.mods.Cast<PersistenceData>().ToList()));
+            {
+                tasks.Add(PersitFiles(update, Globals.skyblockModsLocation, update.PersitenceFile.mods, Globals.modOptions));
+            }
             else
                 Globals.ShowInfo("No mods folder found in " + Globals.skyblockRootLocation, "Error");
 
             if (Directory.Exists(Globals.skyblockResourceLocation))
             {
-                tasks.Add(PersitFiles(update, Globals.skyblockResourceLocation, update.PersitenceFile.packs.Cast<PersistenceData>().ToList()));
+                tasks.Add(PersitFiles(update, Globals.skyblockResourceLocation, update.PersitenceFile.packs, Globals.packOptions));
                 tasks.Add(PersistenceMain.UpdateMinecraftConfigForPacks(update.PersitenceFile.packs));
             }
             else
@@ -52,7 +54,7 @@ namespace SkyblockClient.Persistence
             }
         }
 
-        private static async Task PersitFiles(UpdateMain update, string location, List<PersistenceData> collection)
+        private static async Task PersitFiles<TData, TOption>(UpdateMain update, string location, List<TData> collection, List<TOption> options) where TData : PersistenceData where TOption : Options.Option
         {
             var localFiles = Directory.GetFiles(location).Select((s, i) => Path.GetFileName(s)).ToArray();
             
@@ -69,10 +71,39 @@ namespace SkyblockClient.Persistence
                 }
             }
 
+            foreach (var item in options)
+            {
+                if (untrackedFiles.Count == 0)
+                    break;
+                if (untrackedFiles.Contains(item.file))
+                {
+                    bool contained = false;
+                    foreach (var data in collection)
+                    {
+                        if (data.id == item.id)
+                        {
+                            data.file = item.file;
+                            contained = true;
+                            untrackedFiles.Remove(item.file);
+                            trackedFiles.Add(data);
+                            break;
+                        }
+                    }
+
+                    if (!contained)
+                    {
+                        var data = PersistenceData.CreateData(item);
+                        untrackedFiles.Remove(item.file);
+                        trackedFiles.Add(data);
+                        collection.Add(data as TData);
+                    }
+                }
+            }
+
             update.UnmanagedFiles.AddRange(untrackedFiles);
 
 
-            foreach (var item in collection)
+            foreach (var item in trackedFiles)
             {
                 string errorAt = string.Empty;
                 try
