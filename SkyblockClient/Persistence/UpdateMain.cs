@@ -99,6 +99,34 @@ namespace SkyblockClient.Persistence
                     }
                 }
             }
+            if (Globals.Settings.checkSimilaritiesOnUpdate && untrackedFiles.Count > 0)
+            {
+                List<int> removeAtIndexes = new List<int>();
+                foreach (var option in options)
+                {
+                    int index = 0;
+                    foreach (var file in untrackedFiles)
+                    {
+                        var calc = new LookalikeCalculator(option.file, file);
+                        var diff = calc.Difference;
+                        if (diff <= Globals.Settings.similaritiesThreshold)
+                        {
+                            Utils.Info("Lookalike detected: " + option.file + " as " + file);
+                            var data = PersistenceData.CreateData(option);
+                            removeAtIndexes.Add(index);
+                            data.file = file;
+                            trackedFiles.Add(data);
+                        }
+                        index++;
+                    }
+                }
+
+                for (int i = removeAtIndexes.Count - 1; i >= 0; i--)
+                {
+                    var removeAtIndex = removeAtIndexes[i];
+                    untrackedFiles.RemoveAt(removeAtIndex);
+                }
+            }
 
             update.UnmanagedFiles.AddRange(untrackedFiles);
 
