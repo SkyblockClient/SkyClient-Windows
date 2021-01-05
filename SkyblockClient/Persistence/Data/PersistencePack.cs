@@ -8,13 +8,13 @@ namespace SkyblockClient.Persistence.Data
 		public PersistencePack() { }
 		public PersistencePack(Option option)
 		{
-			id = option.id;
-			file = option.file;
+			id = option.Id;
+			file = option.File;
 		}
 		public PersistencePack(PackOption option)
 		{
-			id = option.id;
-			file = option.file;
+			id = option.Id;
+			file = option.File;
 		}
 
 		public override bool UpdateAvailable
@@ -24,7 +24,7 @@ namespace SkyblockClient.Persistence.Data
 				if (Utils.OptionDataExists(this))
 				{
 					var data = Utils.GetOptionData(this);
-					return data.file != this.file;
+					return data.File != this.file;
 				}
 				return false;
 			}
@@ -37,11 +37,11 @@ namespace SkyblockClient.Persistence.Data
 			if (obj is PersistencePack)
 				return (obj as PersistencePack).id == this.id;
 			if (obj is PackOption)
-				return (obj as PackOption).id == this.id;
+				return (obj as PackOption).Id == this.id;
 			return false;
 		}
 
-		bool IEquatable<PackOption>.Equals(PackOption other) => this.id == other.id;
+		bool IEquatable<PackOption>.Equals(PackOption other) => this.id == other.Id;
 		bool IEquatable<PersistencePack>.Equals(PersistencePack other) => this.id == other.id;
 	}
 }

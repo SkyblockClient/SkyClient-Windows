@@ -38,8 +38,8 @@ namespace SkyblockClient.Config
 		{
 			if (_config is null)
 			{
-				string responseString = await Globals.DownloadFileStringAsync($"config/{modOption.id}.config");
-				_config = new ModConfig(modOption.id);
+				string responseString = await Globals.DownloadFileStringAsync($"config/{modOption.Id}.config");
+				_config = new ModConfig(modOption.Id);
 
 			}
 			return _config;

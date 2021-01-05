@@ -6,7 +6,7 @@ namespace SkyblockClient.Config
 	{
 		string id;
 		string[] response;
-
+		
 		public string abc = "abc";
 
 		public ModConfig(string responseString)

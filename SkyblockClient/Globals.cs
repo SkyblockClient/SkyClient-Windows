@@ -98,8 +98,8 @@ namespace SkyblockClient
 		public static List<ModOption> modOptions = new List<ModOption>();
 		public static List<PackOption> packOptions = new List<PackOption>();
 
-        public static List<ModOption> enabledModOptions => modOptions.Where(mod => mod.enabled).ToList();
-		public static List<PackOption> enabledPackOptions => packOptions.Where(pack => pack.enabled).ToList();
+        public static List<ModOption> enabledModOptions => modOptions.Where(mod => mod.Enabled).ToList();
+		public static List<PackOption> enabledPackOptions => packOptions.Where(pack => pack.Enabled).ToList();
 
 		public static List<ModOption> neededMods
 		{
@@ -117,7 +117,7 @@ namespace SkyblockClient
 					{
 						foreach (var library in modOptions)
 						{
-							if (mod.dependency == library.id)
+							if (mod.Dependency == library.Id)
 							{
 								if (!libraries.Contains(library))
 								{

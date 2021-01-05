@@ -8,45 +8,45 @@ namespace SkyblockClient.Options
 {
 	public class ModOption : Option, IEquatable<ModOption>, IEquatable<string>
 	{
-		public override IDownloadUrl downloadUrl => remote ? (IDownloadUrl)new RemoteDownloadUrl(url) : new InternalDownloadUrl("mods/" + file);
+		public override IDownloadUrl DownloadUrl => Remote ? (IDownloadUrl)new RemoteDownloadUrl(Url) : new InternalDownloadUrl("mods/" + File);
 
 		[JsonIgnore]
-		public bool Caution => IsSet(warning.Trim());
+		public bool Caution => Utils.IsPropSet(Warning.Trim());
 
 		[DefaultValue("")]
-		public string warning { get; set; }
+		public string Warning { get; set; }
 		[JsonIgnore]
-		public bool Dispersed => IsSet(dependency.Trim());
+		public bool Dispersed => Utils.IsPropSet(Dependency.Trim());
 		[DefaultValue("")]
-		public string dependency { get; set; }
+		public string Dependency { get; set; }
 
-		public bool config { get; set; }
+		public bool Config { get; set; }
 
 		[JsonIgnore]
-		public bool HasPacks => IsSet<string>(packs);
-		public List<string> packs { get; set; }
+		public bool HasPacks => Utils.IsPropSet(Packs);	
+		public List<string> Packs { get; set; }
 
 		public override string ToString()
 		{
-			string result = $"{id}-{display}\n";
-			result += $"\tfile: {file}\n";
-			result += $"\tenabled: {enabled}\n";
-			result += $"\tdescription: {description}\n";
-			result += $"\twarning: {warning}\n";
-			result += $"\tremote: {remote}\n";
-			result += $"\turl: {url}\n";
+			string result = $"{Id}-{Display}\n";
+			result += $"\tfile: {File}\n";
+			result += $"\tenabled: {Enabled}\n";
+			result += $"\tdescription: {Description}\n";
+			result += $"\twarning: {Warning}\n";
+			result += $"\tremote: {Remote}\n";
+			result += $"\turl: {Url}\n";
 
 			return result;
 		}
 
 		public bool Equals(string other)
 		{
-			return id.Equals(other);
+			return Id.Equals(other);
 		}
 
 		bool IEquatable<ModOption>.Equals(ModOption other)
 		{
-			return id.Equals(other.id);
+			return Id.Equals(other.Id);
 		}
 
 		public override void ComboBoxChecked(object sender, RoutedEventArgs e)
@@ -56,37 +56,37 @@ namespace SkyblockClient.Options
 
 			if (Caution && isChecked)
 			{
-				MessageBoxResult result = MessageBox.Show(warning + "\n\nUse anyway?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+				MessageBoxResult result = MessageBox.Show(Warning + "\n\nUse anyway?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 				switch (result)
 				{
 					case MessageBoxResult.Yes:
 						checkBox.IsChecked = true;
-						this.enabled = true;
+						this.Enabled = true;
 						break;
 					case MessageBoxResult.No:
 						checkBox.IsChecked = false;
-						this.enabled = false;
+						this.Enabled = false;
 						break;
 					default:
 						checkBox.IsChecked = false;
-						this.enabled = false;
+						this.Enabled = false;
 						break;
 				}
 			}
 			else
 			{	
-				this.enabled = isChecked;
+				this.Enabled = isChecked;
 			}
 
             if (HasPacks && Globals.Settings.enableModDependentPacksOnEnable)
             {
-                foreach (var pack in packs)
+                foreach (var pack in Packs)
                 {
                     foreach (var packOption in Globals.packOptions)
                     {
-                        if (packOption.id == pack)
+                        if (packOption.Id == pack)
                         {
-							packOption.enabled = enabled;
+							packOption.Enabled = Enabled;
                         }
                     }
                 }

@@ -4,14 +4,14 @@ namespace SkyblockClient.Options
 {
 	public class PackOption : Option
 	{
-		public override IDownloadUrl downloadUrl => remote ? (IDownloadUrl)new RemoteDownloadUrl(url) : new InternalDownloadUrl("packs/" + file);
+		public override IDownloadUrl DownloadUrl => Remote ? (IDownloadUrl)new RemoteDownloadUrl(Url) : new InternalDownloadUrl("packs/" + File);
 		public override string ToString()
 		{
-			string result = $"{id}-{display}\n";
-			result += $"\tfile: {file}\n";
-			result += $"\thidden: {hidden}\n";
-			result += $"\tenabled: {enabled}\n";
-			result += $"\tdescription: {description}\n";
+			string result = $"{Id}-{Display}\n";
+			result += $"\tfile: {File}\n";
+			result += $"\thidden: {Hidden}\n";
+			result += $"\tenabled: {Enabled}\n";
+			result += $"\tdescription: {Description}\n";
 
 			return result;
 		}
@@ -19,7 +19,7 @@ namespace SkyblockClient.Options
 		public override void ComboBoxChecked(object sender, RoutedEventArgs e)
 		{
 			var checkBox = sender as CheckBoxMod;
-			enabled = checkBox.IsChecked;
+			Enabled = checkBox.IsChecked;
 		}
 	}
 }

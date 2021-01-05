@@ -75,16 +75,16 @@ namespace SkyblockClient.Persistence
             {
                 if (untrackedFiles.Count == 0)
                     break;
-                if (untrackedFiles.Contains(item.file))
+                if (untrackedFiles.Contains(item.File))
                 {
                     bool contained = false;
                     foreach (var data in collection)
                     {
-                        if (data.id == item.id)
+                        if (data.id == item.Id)
                         {
-                            data.file = item.file;
+                            data.file = item.File;
                             contained = true;
-                            untrackedFiles.Remove(item.file);
+                            untrackedFiles.Remove(item.File);
                             trackedFiles.Add(data);
                             break;
                         }
@@ -93,7 +93,7 @@ namespace SkyblockClient.Persistence
                     if (!contained)
                     {
                         var data = PersistenceData.CreateData(item);
-                        untrackedFiles.Remove(item.file);
+                        untrackedFiles.Remove(item.File);
                         trackedFiles.Add(data);
                         collection.Add(data as TData);
                     }
@@ -107,11 +107,11 @@ namespace SkyblockClient.Persistence
                     int index = 0;
                     foreach (var file in untrackedFiles)
                     {
-                        var calc = new LookalikeCalculator(option.file, file);
+                        var calc = new LookalikeCalculator(option.File, file);
                         var diff = calc.Difference;
                         if (diff <= Globals.Settings.similaritiesThreshold)
                         {
-                            Utils.Info("Lookalike detected: " + option.file + " as " + file);
+                            Utils.Info("Lookalike detected: " + option.File + " as " + file);
                             var data = PersistenceData.CreateData(option);
                             removeAtIndexes.Add(index);
                             data.file = file;
@@ -149,11 +149,11 @@ namespace SkyblockClient.Persistence
                         errorAt = "var tempfileLocation = Utils.DownloadFileTempFolderLocation(option);";
                         var tempfileLocation = Utils.DownloadFileTempFolderLocation(option);
                         errorAt = "await Globals.DownloadFileByte(option.downloadUrl, tempfileLocation);";
-                        await Globals.DownloadFileByte(option.downloadUrl, tempfileLocation);
+                        await Globals.DownloadFileByte(option.DownloadUrl, tempfileLocation);
                         errorAt = "File.Move(tempfileLocation, Path.Combine(location, option.file));";
-                        File.Move(tempfileLocation, Path.Combine(location, option.file));
+                        File.Move(tempfileLocation, Path.Combine(location, option.File));
                         errorAt = "item.file = option.file;";
-                        item.file = option.file;
+                        item.file = option.File;
                     }
                 }
                 catch (Exception e)

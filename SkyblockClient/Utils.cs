@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Windows;
 using SkyblockClient.Persistence.Data;
 using SkyblockClient.Options;
+using System.Windows.Media.Imaging;
 
 namespace SkyblockClient
 {
@@ -28,9 +29,9 @@ namespace SkyblockClient
 					_availableModOptions = new Dictionary<string, Options.ModOption>();
 					foreach (var item in Globals.modOptions)
 					{
-						if (!AvailableModOptions.ContainsKey(item.id))
+						if (!AvailableModOptions.ContainsKey(item.Id))
 						{
-							AvailableModOptions.Add(item.id, item);
+							AvailableModOptions.Add(item.Id, item);
 						}
 					}
 				}
@@ -49,9 +50,9 @@ namespace SkyblockClient
 
 					foreach (var item in Globals.packOptions)
 					{
-						if (!AvailablePackOptions.ContainsKey(item.id))
+						if (!AvailablePackOptions.ContainsKey(item.Id))
 						{
-							AvailablePackOptions.Add(item.id, item);
+							AvailablePackOptions.Add(item.Id, item);
 						}
 					}
 				}
@@ -79,7 +80,7 @@ namespace SkyblockClient
 			return Utils.AvailablePackOptions[persistencePack.id];
 		}
 
-		public static string DownloadFileTempFolderLocation(Option option) => DownloadFileTempFolderLocation(option.file);
+		public static string DownloadFileTempFolderLocation(Option option) => DownloadFileTempFolderLocation(option.File);
 
 		public static string DownloadFileTempFolderLocation(string option)
 		{
@@ -302,5 +303,23 @@ namespace SkyblockClient
 				Utils.Log(e, "Error loading Config from Repository", "errorAt:" + errorAt);
 			}
         }
+
+		public static BitmapImage GetImageIcon(string icon)
+        {
+			BitmapImage bitmap = new BitmapImage();
+			bitmap.BeginInit();
+			bitmap.UriSource = new Uri(new InternalDownloadUrl($"icons/{icon}").Url, UriKind.Absolute);
+			bitmap.EndInit();
+			return bitmap;
+		}
+
+		public static void SetImage(System.Windows.Controls.Image img, string icon)
+		{
+			img.Source = GetImageIcon(icon);
+		}
+
+		public static bool IsPropSet(string value) => !(value == null || value == "" || value == "None" || value == "none");
+		public static bool IsPropSet<T>(List<T> value) => !(value == null || value.Count == 0);
+		public static bool IsPropSet<T>(T[] value) => !(value == null || value.Length == 0);
 	}
 }

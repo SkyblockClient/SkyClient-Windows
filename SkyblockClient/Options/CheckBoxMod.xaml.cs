@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -54,7 +55,7 @@ namespace SkyblockClient
                 }
                 else
                 {
-                    cmbActions.ItemsSource = Actions;
+                    cmbActions.ItemsSource = Actions.Select(a => a.Item);
 
                     cmbActions.Visibility = Visibility.Visible;
                     btnAction.Visibility = Visibility.Hidden;
@@ -69,14 +70,9 @@ namespace SkyblockClient
             set
             {
                 _icon = value;
-                if (!(Icon == null || Icon == "" || Icon == "None" || Icon == "none"))
+                if (Utils.IsPropSet(Icon))
                 {
-                    BitmapImage bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.UriSource = new Uri(new InternalDownloadUrl($"icons/{Icon}").Url, UriKind.Absolute);
-                    bitmap.EndInit();
-
-                    imgIcon.Source = bitmap;
+                    Utils.SetImage(imgIcon, Icon);
                 }
                 else
                 {

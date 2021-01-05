@@ -42,9 +42,9 @@ namespace SkyblockClient.Config
 
 		public static async Task CreateModConfigWorker(ModOption mod)
 		{
-			if (ConfigWorkers.ContainsKey(mod.id))
+			if (ConfigWorkers.ContainsKey(mod.Id))
 			{
-				var workerCollection = ConfigWorkers[mod.id];
+				var workerCollection = ConfigWorkers[mod.Id];
 				var worker = Activator.CreateInstance(workerCollection.configWorker) as ModConfigWorkerBase;
 				worker.id = workerCollection.workerAttribute.id;
 				worker.mod = mod;

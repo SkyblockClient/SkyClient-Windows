@@ -31,7 +31,7 @@
         <Button x:Name="BtnClose" Content="☓" IsTabStop="False" VerticalAlignment="Top" HorizontalAlignment="Right" Width="25" Height="25" Background="#00000000" BorderBrush="#00000000" Click="BtnClose_Click" FontFamily="MS PGothic" Margin="0,0,11,0" FontWeight="Bold" Grid.Column="1"/>
         <Button x:Name="BtnFullscreen" Content="▢" IsTabStop="False" VerticalAlignment="Top" HorizontalAlignment="Right" Width="25" Height="25" Background="#00000000" BorderBrush="#00000000" Margin="0,0,41,0" Click="BtnFullscreen_Click" FontFamily="Consolas" FontWeight="Bold" Grid.Column="1"/>
         <Button x:Name="BtnMinimize" Content="----" IsTabStop="False" VerticalAlignment="Top" HorizontalAlignment="Right" Width="25" Height="25" Background="#00000000" BorderBrush="#00000000" Margin="0,0,71,0" Click="BtnMinimize_Click" FontFamily="Bauhaus 93" Grid.Column="1" />
-        <ListBox x:Name="lbMods"/>
+        <ListBox x:Name="lbMods" IsSynchronizedWithCurrentItem="False"/>
         <ListBox x:Name="lbPacks" Grid.Column="1"/>
         <Button x:Name="btnInstall"              BorderBrush="#2c3e50" BorderThickness="2,0,2,5" Background="#FF587593" Foreground="White"        Content="Install SkyClient" Margin="15,0,15,15" Grid.ColumnSpan="2" Height="35" VerticalAlignment="Bottom" Click="BtnInstallModsAndForgeClick"/>
         <Button x:Name="btnOpenAdvancedSettings"   BorderBrush="#2c3e50" BorderThickness="2,0,2,5" Background="#FF587593" Foreground="White"      Content="Open Advanced settings" Margin="15,0,10,55" Height="30" VerticalAlignment="Bottom" Click="BtnAdvancedSettinsClick"/>

@@ -55,16 +55,16 @@ namespace SkyblockClient.Persistence
 
 				foreach (var file in enabledOptions)
 				{
-					Utils.Info("Moving " + file.file);
+					Utils.Info("Moving " + file.File);
 					try
 					{
-						File.Move(Path.Combine(Globals.tempFolderLocation, file.file), Path.Combine(location, file.file));
-						Utils.Info("Finished Moving " + file.file);
+						File.Move(Path.Combine(Globals.tempFolderLocation, file.File), Path.Combine(location, file.File));
+						Utils.Info("Finished Moving " + file.File);
 					}
 					catch (Exception e)
 					{
-						Utils.Error("Failed Moving " + file.display);
-						Utils.Log(e, "failed moving " + file.display);
+						Utils.Error("Failed Moving " + file.Display);
+						Utils.Log(e, "failed moving " + file.Display);
 					}
 				}
 
@@ -100,19 +100,19 @@ namespace SkyblockClient.Persistence
 			{
 				try
 				{
-					Utils.Info("Downloading " + mod.display);
-					await Globals.DownloadFileByte(mod.downloadUrl, Globals.tempFolderLocation + mod.file);
-					Utils.Info("Finished Downloading " + mod.display);
+					Utils.Info("Downloading " + mod.Display);
+					await Globals.DownloadFileByte(mod.DownloadUrl, Globals.tempFolderLocation + mod.File);
+					Utils.Info("Finished Downloading " + mod.Display);
 				}
 				catch (WebException webE)
 				{
-					var msg = "Error while Downloading " + mod.display;
+					var msg = "Error while Downloading " + mod.Display;
 					Utils.Error(msg);
 					Utils.Log(webE, "msg:" + msg, "webE.Status:" + webE.Status, "webE.Data:" + webE.Data.ToString());
 				}
 				catch (Exception e)
 				{
-					var msg = "Error while Downloading " + mod.display;
+					var msg = "Error while Downloading " + mod.Display;
 					Utils.Error(msg);
 					Utils.Log(e, msg);
 				}

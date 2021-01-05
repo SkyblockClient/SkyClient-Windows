@@ -31,10 +31,14 @@
             <ColumnDefinition Width="10*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Image x:Name="imgIcon" Width="20" Grid.Column="0"/>
+        <Image x:Name="imgIcon" Width="30" Grid.Column="0"/>
         <CheckBox x:Name="chkEnabled" Click="CheckBox_Click" VerticalAlignment="Center" Grid.Column="2"/>
-        <ComboBox x:Name="cmbActions" SelectionChanged="cmbActions_SelectionChanged" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="-102,3,65,3" UseLayoutRounding="True"/>
-        <Label x:Name="lblActionButtonDivider" Content="-" Grid.Column="3"/>
+        <ComboBox x:Name="cmbActions" SelectionChanged="cmbActions_SelectionChanged" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="-102,3,65,3" UseLayoutRounding="True">
+            <ComboBox.Effect>
+                <DropShadowEffect BlurRadius="10" Color="#FF000000" Direction="315" ShadowDepth="5" Opacity="0.15"/>
+            </ComboBox.Effect>
+        </ComboBox>
+        <Label x:Name="lblActionButtonDivider" VerticalAlignment="Center"  Content="-" Grid.Column="3"/>
         <Button x:Name="btnAction" Click="btnAction_Click"/>
     </Grid>
 </UserControl>

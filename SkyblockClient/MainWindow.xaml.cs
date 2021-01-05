@@ -89,7 +89,7 @@ namespace SkyblockClient
 			lbPacks.Items.Clear();
 			foreach (PackOption pack in Globals.packOptions)
 			{
-				if (!pack.hidden)
+				if (!pack.Hidden)
 				{
 					lbPacks.Items.Add(pack.CheckBox);
 				}
@@ -100,7 +100,7 @@ namespace SkyblockClient
 			lbMods.Items.Clear();
 			foreach (ModOption mod in Globals.modOptions)
 			{
-				if (!mod.hidden)
+				if (!mod.Hidden)
 				{
 					lbMods.Items.Add(mod.CheckBox);
 				}

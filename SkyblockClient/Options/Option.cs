@@ -3,50 +3,48 @@ using System.Diagnostics;
 using System.Windows;
 using System.ComponentModel;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using System;
 using System.Collections.Generic;
 
 namespace SkyblockClient.Options
 {
-	public abstract class Option
+    public abstract class Option
 	{
-		public string id { get; set; }
+		public string Id { get; set; }
 
 		[DefaultValue(false)]
-		public bool enabled { get; set; }
+        public bool Enabled { get; set; }
 
-		public string file { get; set; }
-
-		[DefaultValue("")]
-		public string display { get; set; }
+		public string File { get; set; }
 
 		[DefaultValue("")]
-		public string description { get; set; }
+		public string Display { get; set; }
+
+		[DefaultValue("")]
+		public string Description { get; set; }
 
 		[DefaultValue(false)]
-		public bool hidden { get; set; }
+		public bool Hidden { get; set; }
 
 		[JsonIgnore]
-		public bool remote => IsSet(url.Trim());
+		public bool Remote => Utils.IsPropSet(Url.Trim());
 
 		[DefaultValue("")]
-		public string url { get; set; }
+		public string Url { get; set; }
 
 		[DefaultValue(false)]
-		public bool guide { get; set; }
+		public bool Guide { get; set; }
 
 		[JsonIgnore]
-		public bool hasIcon => IsSet(icon.Trim());
+		public bool HasIcon => Utils.IsPropSet(Icon.Trim());
 
 		[DefaultValue("")]
-		public string icon { get; set; }
+		public string Icon { get; set; }
 
-		public List<OptionAction> actions { get; set; }
+		public List<OptionAction> Actions { get; set; }
 
 
 		[JsonIgnore]
-		public virtual IDownloadUrl downloadUrl { get; }
+		public virtual IDownloadUrl DownloadUrl { get; }
 
 
 		[JsonIgnore]
@@ -55,14 +53,14 @@ namespace SkyblockClient.Options
 			get
 			{
 				CheckBoxMod checkBox = new CheckBoxMod();
-				checkBox.Content = display;
-				checkBox.IsChecked = enabled;
+				checkBox.Content = Display;
+				checkBox.IsChecked = Enabled;
 				checkBox.Tag = this;
-				checkBox.Actions = actions;
-				checkBox.Icon = icon;
+				checkBox.Actions = Actions;
+				checkBox.Icon = Icon;
 
 				ToolTip toolTip = new ToolTip();
-				toolTip.Content = description;
+				toolTip.Content = Description;
 				toolTip.Tag = checkBox;
 
 				checkBox.ToolTip = toolTip;
@@ -76,9 +74,9 @@ namespace SkyblockClient.Options
 
 		public void OpenGuide()
 		{
-			if (guide)
+			if (Guide)
 			{
-				string endpoint = $"{Globals.URL}guides/{id}.md";
+				string endpoint = $"{Globals.URL}guides/{Id}.md";
 				string command = $"/c start {endpoint}";
 				Utils.Debug(command);
 				var processInfo = Utils.CreateProcessStartInfo("cmd.exe", command);
@@ -89,8 +87,5 @@ namespace SkyblockClient.Options
 				Utils.Error("How did we get here?");
 			}
 		}
-
-		protected bool IsSet(string value) => !(value == null || value == "" || value == "None" || value == "none");
-		protected bool IsSet<T>(List<T> value) => !(value == null || value.Count == 0);
 	}
 }
