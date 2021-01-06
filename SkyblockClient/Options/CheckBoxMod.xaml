@@ -7,14 +7,33 @@
              mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
-            <Style TargetType="CheckBox">
-                <Setter Property="Margin" Value="0,0,0,0"/>
-            </Style>
             <Style TargetType="Button">
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="BorderBrush" Value="Transparent"/>
-                <Setter Property="Visibility" Value="Hidden"/>
-                <Setter Property="Grid.Column" Value="4"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                                <Grid>
+                                    <Rectangle x:Name="background"
+                                        Fill="{TemplateBinding Background}"/>
+                                    <ContentPresenter
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="background" Property="Opacity" Value="0.5"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="CheckBox">
+                <Setter Property="Margin" Value="0,0,0,0"/>
             </Style>
             <Style TargetType="ComboBox">
                 <Setter Property="Visibility" Value="Hidden"/>
@@ -31,7 +50,7 @@
             <ColumnDefinition Width="10*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Image x:Name="imgIcon" Width="30" Grid.Column="0"/>
+        <Button x:Name="btnIcon" Width="30" Grid.Column="0" Click="btnIcon_Click"/>
         <CheckBox x:Name="chkEnabled" Click="CheckBox_Click" VerticalAlignment="Center" Grid.Column="2"/>
         <ComboBox x:Name="cmbActions" SelectionChanged="cmbActions_SelectionChanged" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="-102,3,65,3" UseLayoutRounding="True">
             <ComboBox.Effect>
@@ -39,6 +58,6 @@
             </ComboBox.Effect>
         </ComboBox>
         <Label x:Name="lblActionButtonDivider" VerticalAlignment="Center"  Content="-" Grid.Column="3"/>
-        <Button x:Name="btnAction" Click="btnAction_Click"/>
+        <Button x:Name="btnAction" Visibility="Hidden" Grid.Column="4" Click="btnAction_Click"/>
     </Grid>
 </UserControl>

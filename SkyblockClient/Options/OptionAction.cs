@@ -1,10 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace SkyblockClient.Options
 {
@@ -42,7 +38,7 @@ namespace SkyblockClient.Options
         public void Act() => Utils.OpenLinkInBrowser(Link);
 
         [JsonIgnore]
-        public OptionActionItem Item
+        public Button Item
         {
             get
             {
@@ -50,9 +46,17 @@ namespace SkyblockClient.Options
 
                 item.label.Content = Text;
                 Utils.SetImage(item.image, Icon);
-
-                return item;
+                var button = new Button();
+                button.Content = item;
+                button.Click += btnOpenLink_Click;
+                button.Tag = this;
+                return button;
             }
+        }
+
+        private void btnOpenLink_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Utils.OpenLinkInBrowser(((sender as Button).Tag as OptionAction).Link);
         }
     }
 }

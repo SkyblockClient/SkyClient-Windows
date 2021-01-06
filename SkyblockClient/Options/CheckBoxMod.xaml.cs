@@ -72,7 +72,7 @@ namespace SkyblockClient
                 _icon = value;
                 if (Utils.IsPropSet(Icon))
                 {
-                    Utils.SetImage(imgIcon, Icon);
+                    Utils.SetImage(btnIcon, Icon);
                 }
                 else
                 {
@@ -123,6 +123,12 @@ namespace SkyblockClient
             var optionAction = btnAction.Content as OptionAction;
             if (optionAction != null)
                 optionAction.Act();
+        }
+
+        private void btnIcon_Click(object sender, RoutedEventArgs e)
+        {
+            IsChecked = !IsChecked;
+            this.Click?.Invoke(this, new RoutedEventArgs());
         }
     }
 }

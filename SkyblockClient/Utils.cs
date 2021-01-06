@@ -80,7 +80,7 @@ namespace SkyblockClient
 			return Utils.AvailablePackOptions[persistencePack.id];
 		}
 
-		public static string DownloadFileTempFolderLocation(Option option) => DownloadFileTempFolderLocation(option.File);
+        public static string DownloadFileTempFolderLocation(Option option) => DownloadFileTempFolderLocation(option.File);
 
 		public static string DownloadFileTempFolderLocation(string option)
 		{
@@ -316,6 +316,13 @@ namespace SkyblockClient
 		public static void SetImage(System.Windows.Controls.Image img, string icon)
 		{
 			img.Source = GetImageIcon(icon);
+		}
+
+		public static void SetImage(System.Windows.Controls.Button img, string icon)
+		{
+			var image = new System.Windows.Controls.Image();
+			image.Source = GetImageIcon(icon);
+			img.Content = image;
 		}
 
 		public static bool IsPropSet(string value) => !(value == null || value == "" || value == "None" || value == "none");
