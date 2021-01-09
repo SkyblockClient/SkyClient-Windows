@@ -42,6 +42,10 @@ namespace SkyblockClient.Options
 
 		public List<OptionAction> Actions { get; set; }
 
+		[JsonIgnore]
+		public bool HasWarning => Utils.IsPropSet(Warning);
+
+		public ActionWarning Warning { get; set; }
 
 		[JsonIgnore]
 		public virtual IDownloadUrl DownloadUrl { get; }
@@ -70,8 +74,6 @@ namespace SkyblockClient.Options
 			}
 		}
 
-		public abstract void ComboBoxChecked(object sender, RoutedEventArgs e);
-
 		public void OpenGuide()
 		{
 			if (Guide)
@@ -85,6 +87,30 @@ namespace SkyblockClient.Options
 			else
 			{
 				Utils.Error("How did we get here?");
+			}
+		}
+
+		public virtual void ComboBoxChecked(object sender, RoutedEventArgs e)
+		{
+			var checkBox = sender as CheckBoxMod;
+			var isChecked = checkBox.IsChecked;
+
+			if (HasWarning && isChecked)
+			{
+				var messageBoxText = Warning.Message;
+
+				MessageBoxResult result = MessageBox.Show(messageBoxText, Warning.Title, MessageBoxButton.YesNo, Warning.MessageBoxImage);
+				var res = false;
+				switch (result)
+				{
+                    case MessageBoxResult.Yes: res = true; break;
+				}
+				checkBox.IsChecked = res;
+				this.Enabled = res;
+			}
+			else
+			{
+				this.Enabled = isChecked;
 			}
 		}
 	}

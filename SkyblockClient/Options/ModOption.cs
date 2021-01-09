@@ -11,11 +11,6 @@ namespace SkyblockClient.Options
 		public override IDownloadUrl DownloadUrl => Remote ? (IDownloadUrl)new RemoteDownloadUrl(Url) : new InternalDownloadUrl("mods/" + File);
 
 		[JsonIgnore]
-		public bool Caution => Utils.IsPropSet(Warning.Trim());
-
-		[DefaultValue("")]
-		public string Warning { get; set; }
-		[JsonIgnore]
 		public bool Dispersed => Utils.IsPropSet(Dependency.Trim());
 		[DefaultValue("")]
 		public string Dependency { get; set; }
@@ -32,7 +27,6 @@ namespace SkyblockClient.Options
 			result += $"\tfile: {File}\n";
 			result += $"\tenabled: {Enabled}\n";
 			result += $"\tdescription: {Description}\n";
-			result += $"\twarning: {Warning}\n";
 			result += $"\tremote: {Remote}\n";
 			result += $"\turl: {Url}\n";
 
@@ -49,49 +43,24 @@ namespace SkyblockClient.Options
 			return Id.Equals(other.Id);
 		}
 
-		public override void ComboBoxChecked(object sender, RoutedEventArgs e)
-		{
-			var checkBox = sender as CheckBoxMod;
-			var isChecked = checkBox.IsChecked;
+        public override void ComboBoxChecked(object sender, RoutedEventArgs e)
+        {
+            base.ComboBoxChecked(sender, e);
 
-			if (Caution && isChecked)
+			if (HasPacks && Globals.Settings.enableModDependentPacksOnEnable)
 			{
-				MessageBoxResult result = MessageBox.Show(Warning + "\n\nUse anyway?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-				switch (result)
+				foreach (var pack in Packs)
 				{
-					case MessageBoxResult.Yes:
-						checkBox.IsChecked = true;
-						this.Enabled = true;
-						break;
-					case MessageBoxResult.No:
-						checkBox.IsChecked = false;
-						this.Enabled = false;
-						break;
-					default:
-						checkBox.IsChecked = false;
-						this.Enabled = false;
-						break;
-				}
-			}
-			else
-			{	
-				this.Enabled = isChecked;
-			}
-
-            if (HasPacks && Globals.Settings.enableModDependentPacksOnEnable)
-            {
-                foreach (var pack in Packs)
-                {
-                    foreach (var packOption in Globals.packOptions)
-                    {
-                        if (packOption.Id == pack)
-                        {
+					foreach (var packOption in Globals.packOptions)
+					{
+						if (packOption.Id == pack)
+						{
 							packOption.Enabled = Enabled;
-                        }
-                    }
-                }
+						}
+					}
+				}
 				Globals.CauseRefreshPacks();
 			}
 		}
-	}
+    }
 }
