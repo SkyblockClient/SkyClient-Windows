@@ -1,6 +1,4 @@
 ﻿using System.Reflection;
-using System.Resources;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -26,12 +24,12 @@ using System.Windows;
 
 
 [assembly: ThemeInfo(
-	ResourceDictionaryLocation.None, //Speicherort der designspezifischen Ressourcenwörterbücher
-									 //(wird verwendet, wenn eine Ressource auf der Seite nicht gefunden wird,
-									 // oder in den Anwendungsressourcen-Wörterbüchern nicht gefunden werden kann.)
-	ResourceDictionaryLocation.SourceAssembly //Speicherort des generischen Ressourcenwörterbuchs
-											  //(wird verwendet, wenn eine Ressource auf der Seite nicht gefunden wird,
-											  // designspezifischen Ressourcenwörterbuch nicht gefunden werden kann.)
+    ResourceDictionaryLocation.None, //Speicherort der designspezifischen Ressourcenwörterbücher
+                                     //(wird verwendet, wenn eine Ressource auf der Seite nicht gefunden wird,
+                                     // oder in den Anwendungsressourcen-Wörterbüchern nicht gefunden werden kann.)
+    ResourceDictionaryLocation.SourceAssembly //Speicherort des generischen Ressourcenwörterbuchs
+                                              //(wird verwendet, wenn eine Ressource auf der Seite nicht gefunden wird,
+                                              // designspezifischen Ressourcenwörterbuch nicht gefunden werden kann.)
 )]
 
 
@@ -45,5 +43,5 @@ using System.Windows;
 // Sie können alle Werte angeben oder Standardwerte für die Build- und Revisionsnummern verwenden,
 // indem Sie "*" wie unten gezeigt eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0")]
-[assembly: AssemblyFileVersion("1.0")]
+[assembly: AssemblyVersion("1.0.1")]
+[assembly: AssemblyFileVersion("1.0.1")]
