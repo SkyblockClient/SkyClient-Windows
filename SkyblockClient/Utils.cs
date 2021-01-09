@@ -325,9 +325,9 @@ namespace SkyblockClient
 			img.Content = image;
 		}
 
-		public static bool IsPropSet(string value) => !(value == null || value == "" || value == "None" || value == "none");
-		public static bool IsPropSet<T>(List<T> value) => !(value == null || value.Count == 0);
-		public static bool IsPropSet<T>(T[] value) => !(value == null || value.Length == 0);
+		public static bool IsPropSet(string value) => !(value is null || value == "" || value == "None" || value == "none");
+		public static bool IsPropSet<T>(List<T> value) => !(value is null || value.Count == 0);
+		public static bool IsPropSet<T>(T[] value) => !(value is null || value.Length == 0);
 		public static bool IsPropSet(object value) => !(value is null);
 	}
 }
