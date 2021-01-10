@@ -26,10 +26,6 @@ namespace SkyblockClient
 		{
 			var txt = (TextBox)sender;
 			var text = txt.Text;
-			if (!text.EndsWith("/"))
-			{
-				text += "/";
-			}
 			Globals.gameDirectory = text;
 		}
 
