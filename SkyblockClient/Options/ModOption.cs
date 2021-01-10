@@ -12,7 +12,6 @@ namespace SkyblockClient.Options
 
 		[JsonIgnore]
 		public bool HasPackages => Utils.IsPropSet(Packages);
-		[DefaultValue("")]
 		public List<string> Packages { get; set; }
 
 		public bool Config { get; set; }
