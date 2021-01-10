@@ -70,7 +70,15 @@ namespace SkyblockClient
 		public static string minecraftVersionsLocation = Path.Combine(minecraftRootLocation, "versions");
 
 		public static string gameDirectory = "skyclient";
-		public static string skyblockRootLocation => Path.Combine(minecraftRootLocation, gameDirectory);
+		public static string skyblockRootLocation
+        {
+			get
+            {
+				var trim = gameDirectory.Trim();
+				if (trim is "") return minecraftRootLocation;
+				return Path.Combine(minecraftRootLocation, trim);
+			}
+        }
 
 		public static string skyblockConfigLocation => Path.Combine(skyblockRootLocation, "config");
 		public static string skyblockModsLocation => Path.Combine(skyblockRootLocation, "mods");
