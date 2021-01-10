@@ -113,17 +113,20 @@ namespace SkyblockClient
 
 				foreach (var mod in enabled)
 				{
-					if (mod.Dispersed)
+					if (mod.HasPackages)
 					{
-						foreach (var library in modOptions)
-						{
-							if (mod.Dependency == library.Id)
+                        foreach (var package in mod.Packages)
+                        {
+							foreach (var library in modOptions)
 							{
-								if (!libraries.Contains(library))
+								if (package == library.Id)
 								{
-									libraries.Add(library);
+									if (!libraries.Contains(library))
+									{
+										libraries.Add(library);
+									}
+									break;
 								}
-								break;
 							}
 						}
 					}
