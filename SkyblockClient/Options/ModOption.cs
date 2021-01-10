@@ -11,9 +11,9 @@ namespace SkyblockClient.Options
 		public override IDownloadUrl DownloadUrl => Remote ? (IDownloadUrl)new RemoteDownloadUrl(Url) : new InternalDownloadUrl("mods/" + File);
 
 		[JsonIgnore]
-		public bool Dispersed => Utils.IsPropSet(Dependency.Trim());
+		public bool HasPackages => Utils.IsPropSet(Packages);
 		[DefaultValue("")]
-		public string Dependency { get; set; }
+		public List<string> Packages { get; set; }
 
 		public bool Config { get; set; }
 
