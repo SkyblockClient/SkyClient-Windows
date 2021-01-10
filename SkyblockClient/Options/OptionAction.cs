@@ -6,6 +6,9 @@ namespace SkyblockClient.Options
 {
     public class OptionAction
     {
+        [DefaultValue("click")]
+        public string Method { get; set; }
+
         [DefaultValue("invalid.png")]
         public string Icon
         {

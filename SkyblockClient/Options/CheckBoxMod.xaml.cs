@@ -38,28 +38,32 @@ namespace SkyblockClient
                 cmbActions.Items.Clear();
                 btnAction.Content = null;
 
-
-                if (Actions is null || Actions.Count == 0)
+                if (Utils.IsPropSet(Actions))
                 {
-                    cmbActions.Visibility = Visibility.Hidden;
-                    btnAction.Visibility = Visibility.Hidden;
-                    lblActionButtonDivider.Visibility = Visibility.Hidden;
-                }
-                else if (Actions.Count == 1)
-                {
-                    btnAction.Content = Actions[0];
+                    var buttonActions = Actions.Where(a => a.Method == "click").ToList();
 
-                    cmbActions.Visibility = Visibility.Hidden;
-                    btnAction.Visibility = Visibility.Visible;
-                    lblActionButtonDivider.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    cmbActions.ItemsSource = Actions.Select(a => a.Item);
+                    if (buttonActions.Count == 0)
+                    {
+                        cmbActions.Visibility = Visibility.Hidden;
+                        btnAction.Visibility = Visibility.Hidden;
+                        lblActionButtonDivider.Visibility = Visibility.Hidden;
+                    }
+                    else if (buttonActions.Count == 1)
+                    {
+                        btnAction.Content = buttonActions[0];
 
-                    cmbActions.Visibility = Visibility.Visible;
-                    btnAction.Visibility = Visibility.Hidden;
-                    lblActionButtonDivider.Visibility = Visibility.Hidden;
+                        cmbActions.Visibility = Visibility.Hidden;
+                        btnAction.Visibility = Visibility.Visible;
+                        lblActionButtonDivider.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        cmbActions.ItemsSource = buttonActions.Select(a => a.Item);
+
+                        cmbActions.Visibility = Visibility.Visible;
+                        btnAction.Visibility = Visibility.Hidden;
+                        lblActionButtonDivider.Visibility = Visibility.Hidden;
+                    }
                 }
             }
         }
