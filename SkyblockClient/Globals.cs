@@ -96,9 +96,9 @@ namespace SkyblockClient
 			MainWindow.RefreshMods();
 		}
 
-		public static void ShowInfo(string text, string title, System.Windows.MessageBoxButton messageBoxButton = System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage messageBoxImage = System.Windows.MessageBoxImage.Information)
+		public static System.Windows.MessageBoxResult ShowInfo(string text, string title, System.Windows.MessageBoxButton messageBoxButton = System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage messageBoxImage = System.Windows.MessageBoxImage.Information)
         {
-			MainWindow.ShowInfo(text, title, messageBoxButton, messageBoxImage);
+			return MainWindow.ShowInfo(text, title, messageBoxButton, messageBoxImage);
         }
 
 		public static string skyblockOptionsLocation => Path.Combine(skyblockRootLocation, "options.txt");

@@ -295,6 +295,17 @@ namespace SkyblockClient
 				var settings = JsonConvert.DeserializeObject<GlobalSettings>(response, Utils.JsonSerializerSettings);
 				errorAt = "Globals.Settings = settings;";
 				Globals.Settings = settings;
+				var assemblyVersion = Globals.assembyVersion;
+				var version = $"{assemblyVersion.Major}.{assemblyVersion.Minor}.{assemblyVersion.Build}";
+                if ((!Globals.Settings.ignoreOutdatedVersion) && Utils.IsPropSet(Globals.Settings.version) && Globals.Settings.version != version)
+                {
+					var boxtext = "The current SkyClient version may be outdated and not function properly.\n\nDo you wish to update?";
+					var result = Globals.ShowInfo(boxtext, "Warning", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.Yes)
+                    {
+						Utils.OpenLinkInBrowser(Globals.GITHUB_RELEASES);
+                    }
+                }
 
             }
             catch (Exception e)

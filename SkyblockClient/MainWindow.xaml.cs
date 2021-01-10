@@ -207,9 +207,9 @@ namespace SkyblockClient
 			await PersistenceMain.InstallMods(Globals.neededMods);
 		}
 
-		public void ShowInfo(string text, string title, MessageBoxButton messageBoxButton, MessageBoxImage messageBoxImage)
+		public MessageBoxResult ShowInfo(string text, string title, MessageBoxButton messageBoxButton, MessageBoxImage messageBoxImage)
 		{
-			MessageBox.Show(text, title, messageBoxButton, messageBoxImage);
+			return MessageBox.Show(text, title, messageBoxButton, messageBoxImage);
 		}
 	}
 }

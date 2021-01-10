@@ -18,6 +18,8 @@ namespace SkyblockClient
 
         const int SIMILARITIES_THRESHOLD_DEFAULT = 6;
 
+        public string version;
+
         [DefaultValue(APPEND_MISSING_OPTION_ICON_DEFAULT)]
         public bool appendMissingOptionIcon = APPEND_MISSING_OPTION_ICON_DEFAULT;
 
