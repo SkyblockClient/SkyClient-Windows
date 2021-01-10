@@ -14,6 +14,7 @@ namespace SkyblockClient
         const bool INSTALL_PROFILE_TO_LAUNCHER = true;
         const bool CHECK_JAVA_VERSION_DEFAULT = false;
         const bool CHECK_SIMILARITIES_ON_UPDATE = true;
+        const bool IGNORE_MISSING_PERSITENCE = true;
 
         const int SIMILARITIES_THRESHOLD_DEFAULT = 6;
 
@@ -62,5 +63,8 @@ namespace SkyblockClient
         /// </summary>
         [DefaultValue(SIMILARITIES_THRESHOLD_DEFAULT)]
         public int similaritiesThreshold = SIMILARITIES_THRESHOLD_DEFAULT;
+
+        [DefaultValue(IGNORE_MISSING_PERSITENCE)]
+        public bool ignoreMissingPersistence = IGNORE_MISSING_PERSITENCE;
     }
 }

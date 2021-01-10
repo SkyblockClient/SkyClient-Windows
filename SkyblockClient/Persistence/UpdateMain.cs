@@ -17,26 +17,49 @@ namespace SkyblockClient.Persistence
             var update = new UpdateMain(jsonLocation);
             if (!update.IsSkyClientDirectory)
             {
-                Globals.ShowInfo(Globals.skyblockRootLocation + " is not a SkyClient directoy!", "Error");
-                return;
+                if (Globals.Settings.ignoreMissingPersistence)
+                {
+                    Globals.ShowInfo(Globals.skyblockRootLocation + " is not a SkyClient directoy!", "Warning");
+                }
+                else
+                {
+                    Globals.ShowInfo(Globals.skyblockRootLocation + " is not a SkyClient directoy!", "Error");
+                    return;
+                }
             }
             List<Task> tasks = new List<Task>();
 
+            var modsFolderExists = false;
+            var packsFolderExists = false;
+
             if (Directory.Exists(Globals.skyblockModsLocation))
             {
-                tasks.Add(PersitFiles(update, Globals.skyblockModsLocation, update.PersitenceFile.mods, Globals.modOptions));
+                modsFolderExists = true;
             }
-            else
-                Globals.ShowInfo("No mods folder found in " + Globals.skyblockRootLocation, "Error");
 
             if (Directory.Exists(Globals.skyblockResourceLocation))
             {
-                tasks.Add(PersitFiles(update, Globals.skyblockResourceLocation, update.PersitenceFile.packs, Globals.packOptions));
-                tasks.Add(PersistenceMain.UpdateMinecraftConfigForPacks(update.PersitenceFile.packs));
+                packsFolderExists = true;
+            }
+
+            if (modsFolderExists || packsFolderExists)
+            {
+                if (modsFolderExists)
+                {
+                    tasks.Add(PersitFiles(update, Globals.skyblockModsLocation, update.PersitenceFile.mods, Globals.modOptions));
+                }
+                if (packsFolderExists)
+                {
+                    tasks.Add(PersitFiles(update, Globals.skyblockResourceLocation, update.PersitenceFile.packs, Globals.packOptions));
+                    tasks.Add(PersistenceMain.UpdateMinecraftConfigForPacks(update.PersitenceFile.packs));
+                }
             }
             else
-                Globals.ShowInfo("No resourcepacks folder found in " + Globals.skyblockRootLocation, "Error");
-            
+            {
+                Globals.ShowInfo("No mods or resourcepacks folder found in " + Globals.skyblockRootLocation, "Error");
+
+            }
+
             await Task.WhenAll(tasks.ToArray());
 
             await PersistenceMain.PersistSpecificationsAsync(update.PersitenceFile);
@@ -45,7 +68,7 @@ namespace SkyblockClient.Persistence
 
             if (update.UnmanagedFiles.Count > 0)
             {
-                var result = "Warning: there are unmanaged files:\n";
+                var result = "Warning: the following files may not be in the repo and have been ignored:\n";
                 foreach (var item in update.UnmanagedFiles)
                 {
                     result += item + "\n";
@@ -121,10 +144,19 @@ namespace SkyblockClient.Persistence
                     }
                 }
 
-                for (int i = removeAtIndexes.Count - 1; i >= 0; i--)
+                removeAtIndexes.Sort();
+
+                try
                 {
-                    var removeAtIndex = removeAtIndexes[i];
-                    untrackedFiles.RemoveAt(removeAtIndex);
+                    for (int i = removeAtIndexes.Count - 1; i >= 0; i--)
+                    {
+                        var removeAtIndex = removeAtIndexes[i];
+                        untrackedFiles.RemoveAt(removeAtIndex);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utils.Debug(e);
                 }
             }
 
@@ -189,8 +221,6 @@ namespace SkyblockClient.Persistence
                         file.packs = new List<PersistencePack>();
                         _file = file;
 
-                        Utils.Debug(e.Message);
-                        Utils.Debug(e.StackTrace);
                         Utils.Error($"Error reading {Globals.PERSISTANCE_JSON_NAME}");
                         Utils.Log(e, $"Error reading {Globals.PERSISTANCE_JSON_NAME}");
                     }
@@ -221,6 +251,11 @@ namespace SkyblockClient.Persistence
                     }
                     catch (Exception e)
                     {
+                        var file = new PersistenceFile();
+                        file.mods = new List<PersistenceMod>();
+                        file.packs = new List<PersistencePack>();
+                        PersitenceFile = file;
+
                         Utils.Debug(e.Message);
                         Utils.Debug(e.StackTrace);
                         Utils.Error($"Error reading {Globals.PERSISTANCE_JSON_NAME}");
