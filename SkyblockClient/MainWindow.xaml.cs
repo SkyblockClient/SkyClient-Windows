@@ -67,10 +67,7 @@ namespace SkyblockClient
 				Utils.Log(e, "error connecting to github");
 				if (!Globals.isDebugEnabled)
 				{
-					string endpoint = $"{Globals.GITHUB_RELEASES}";
-					string command = $"/c start {endpoint}";
-					var processInfo = Utils.CreateProcessStartInfo("cmd.exe", command);
-					Process.Start(processInfo);
+					Utils.OpenLinkInBrowser(Globals.GITHUB_RELEASES);
 				}
 			}
 

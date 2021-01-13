@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Windows;
 using Newtonsoft.Json;
 using SkyblockClient.Options;
 using SkyblockClient.Persistence.Data;

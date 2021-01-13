@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using SkyblockClient.Persistence.Data;
 
 namespace SkyblockClient.Persistence
@@ -57,7 +58,6 @@ namespace SkyblockClient.Persistence
             else
             {
                 Globals.ShowInfo("No mods or resourcepacks folder found in " + Globals.skyblockRootLocation, "Error");
-
             }
 
             await Task.WhenAll(tasks.ToArray());
@@ -65,7 +65,7 @@ namespace SkyblockClient.Persistence
             await PersistenceMain.PersistSpecificationsAsync(update.PersitenceFile);
 
             Utils.Info("Finised Updating");
-
+            Globals.ShowInfo("Finished Updating.\nEnjoy your updated mods!", "Completed", MessageBoxButton.OK, MessageBoxImage.Information);
             if (update.UnmanagedFiles.Count > 0)
             {
                 var result = "Warning: the following files may not be in the repo and have been ignored:\n";
@@ -131,8 +131,8 @@ namespace SkyblockClient.Persistence
                     foreach (var file in untrackedFiles)
                     {
                         var calc = new LookalikeCalculator(option.File, file);
-                        var diff = calc.Difference;
-                        if (diff <= Globals.Settings.similaritiesThreshold)
+                        var diff = calc.SimilaritiesAndDifferences.Total;
+                        if (diff <= Globals.Settings.similaritiesThresholdAdvanced)
                         {
                             Utils.Info("Lookalike detected: " + option.File + " as " + file);
                             var data = PersistenceData.CreateData(option);

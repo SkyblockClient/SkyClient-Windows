@@ -15,8 +15,10 @@ namespace SkyblockClient
         const bool CHECK_JAVA_VERSION_DEFAULT = false;
         const bool CHECK_SIMILARITIES_ON_UPDATE = true;
         const bool IGNORE_MISSING_PERSITENCE = true;
+        const bool CHECK_SIMILARITIES_ON_UPDATE_ADVANCED = true;
 
         const int SIMILARITIES_THRESHOLD_DEFAULT = 6;
+        const int SIMILARITIES_THRESHOLD_ADVANCED_DEFAULT = 0;
 
         public string version;
 
@@ -68,5 +70,14 @@ namespace SkyblockClient
 
         [DefaultValue(IGNORE_MISSING_PERSITENCE)]
         public bool ignoreMissingPersistence = IGNORE_MISSING_PERSITENCE;
+
+        /// <summary>
+        /// the threshold that decides whether a mod is a known mod or not
+        /// after testing, 0 has revealed itself to be a good value
+        /// if a threshold value is the threshold or lower, it will be accepted
+        /// this threshold is used when checking in a more advanced alogrithm
+        /// </summary>
+        [DefaultValue(SIMILARITIES_THRESHOLD_ADVANCED_DEFAULT)]
+        public int similaritiesThresholdAdvanced = SIMILARITIES_THRESHOLD_ADVANCED_DEFAULT;
     }
 }
