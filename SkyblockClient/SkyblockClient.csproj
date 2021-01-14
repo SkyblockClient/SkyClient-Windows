@@ -94,6 +94,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="MarkdownDocument.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Options\CheckBoxMod.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -106,6 +110,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="MarkdownDocument.xaml.cs">
+      <DependentUpon>MarkdownDocument.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Options\CheckBoxMod.xaml.cs">
       <DependentUpon>CheckBoxMod.xaml</DependentUpon>
     </Compile>
@@ -139,6 +146,7 @@
       <DependentUpon>OptionActionItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Options\PackOption.cs" />
+    <Compile Include="Options\TextMouseEventArgs.cs" />
     <Compile Include="Persistence\Data\PersistenceData.cs" />
     <Compile Include="Persistence\Data\PersistenceMod.cs" />
     <Compile Include="Persistence\Data\PersistenceModsList.cs" />
@@ -201,6 +209,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="skyclient.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Markdown.XAML\src\Markdown.Xaml\Markdown.Xaml.csproj">
+      <Project>{34186c3b-c308-4cae-b462-db7b5f5e378c}</Project>
+      <Name>Markdown.Xaml</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterResolveReferences">

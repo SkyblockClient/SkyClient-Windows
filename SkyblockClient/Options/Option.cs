@@ -69,12 +69,24 @@ namespace SkyblockClient.Options
 
 				checkBox.ToolTip = toolTip;
 				checkBox.Click += ComboBoxChecked;
+                checkBox.HoverEnter += CheckBox_HoverEnter;
+                checkBox.HoverLeave += CheckBox_HoverLeave;
 
 				return checkBox;
 			}
 		}
 
-		public void OpenGuide()
+        private void CheckBox_HoverLeave(object sender, TextMouseEventArgs e)
+        {
+			Globals.MainWindow.ModDocument = e.Text;
+        }
+
+        private void CheckBox_HoverEnter(object sender, TextMouseEventArgs e)
+        {
+			Globals.MainWindow.ModDocument = e.Text;
+		}
+
+        public void OpenGuide()
 		{
 			if (Guide)
 			{

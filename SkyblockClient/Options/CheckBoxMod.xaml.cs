@@ -17,8 +17,15 @@ namespace SkyblockClient
 
         public event ClickEventHandler Click;
 		public delegate void ClickEventHandler(object sender, RoutedEventArgs e);
+       
+        public event TextClickEventHandler HoverEnter;
+        public event TextClickEventHandler HoverLeave;
+        public delegate void TextClickEventHandler(object sender, TextMouseEventArgs e);
 
-		public new object Content
+        public string DocumentText;
+        private bool HasDocument;
+
+        public new object Content
 		{
 			get => chkEnabled.Content;
 			set => chkEnabled.Content = value;
@@ -41,6 +48,19 @@ namespace SkyblockClient
                 if (Utils.IsPropSet(Actions))
                 {
                     var buttonActions = Actions.Where(a => a.Method == "click").ToList();
+                    var hoverActions = Actions.Where(a => a.Method == "hover").ToList();
+
+                    if (hoverActions.Count > 0)
+                    {
+                        var hoverAction = hoverActions[0];
+                        HasDocument = Utils.IsPropSet(hoverAction.Document) && hoverAction.Document != "invalid";
+
+                        if (HasDocument)
+                            DocumentText = Globals.DownloadFileString(new RemoteDownloadUrl(hoverAction.Document));
+                        else
+                            DocumentText = "Invalid";
+
+                    }
 
                     if (buttonActions.Count == 0)
                     {
@@ -133,6 +153,18 @@ namespace SkyblockClient
         {
             IsChecked = !IsChecked;
             this.Click?.Invoke(this, new RoutedEventArgs());
+        }
+
+        private void ActionMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (HasDocument)
+                this.HoverEnter?.Invoke(this, new TextMouseEventArgs(DocumentText, e));
+        }
+
+        private void ActionMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (HasDocument)
+                this.HoverLeave?.Invoke(this, new TextMouseEventArgs("", e));
         }
     }
 }

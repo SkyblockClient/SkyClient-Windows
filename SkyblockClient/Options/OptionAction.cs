@@ -9,6 +9,9 @@ namespace SkyblockClient.Options
         [DefaultValue("click")]
         public string Method { get; set; }
 
+        [DefaultValue("INVALID")]
+        public string Document { get; set; }
+
         [DefaultValue("invalid.png")]
         public string Icon
         {
@@ -25,7 +28,7 @@ namespace SkyblockClient.Options
                         case "Forum": return "forum.png";
                         case "Github": return "github.png";
                         case "Curseforge": return "curseforge.png";
-                    }   
+                    }
                 }
                 return "invalid.png";
             }

@@ -38,6 +38,17 @@ namespace SkyblockClient
 		[DllImport("user32.dll")]
 		public static extern bool ReleaseCapture();
 
+		public string ModDocument
+		{
+			get => this.mdModDocument.Source.Text;
+			set
+			{
+				this.mdModDocument.Source.Text = value ?? "";
+				this.mdModDocument.Visibility = Utils.IsPropSet(value) ? Visibility.Visible : Visibility.Collapsed;
+				this.mdModDocument.flowDocumentScrollViewer.Focus();
+			}
+		}
+
 		public MainWindow()
 		{
 			Globals.MainWindow = this;
@@ -73,6 +84,8 @@ namespace SkyblockClient
 
 			RefreshMods();
 			RefreshPacks();
+
+			ModDocument = "";
 		}
 
 		private async Task DownloadResourceFile()
