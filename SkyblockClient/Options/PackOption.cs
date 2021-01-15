@@ -21,5 +21,14 @@ namespace SkyblockClient.Options
 			var checkBox = sender as CheckBoxMod;
 			Enabled = checkBox.IsChecked;
 		}
+		public override void CheckBox_HoverEnter(object sender, TextMouseEventArgs e)
+		{
+			Globals.MainWindow.PackDocument = e.Text;
+		}
+
+		public override void CheckBox_HoverLeave(object sender, TextMouseEventArgs e)
+		{
+			Globals.MainWindow.PackDocument = e.Text;
+		}
 	}
 }

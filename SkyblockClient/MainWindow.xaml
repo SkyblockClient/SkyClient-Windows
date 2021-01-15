@@ -43,5 +43,8 @@
         <local:MarkdownDocument x:Name="mdModDocument" 
                                 Grid.Column="1"
                                 Visibility="Hidden"/>
+        <local:MarkdownDocument x:Name="mdPackDocument" 
+                                Grid.Column="0"
+                                Visibility="Hidden"/>
     </Grid>
 </Window>

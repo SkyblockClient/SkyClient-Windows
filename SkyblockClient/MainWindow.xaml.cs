@@ -48,6 +48,17 @@ namespace SkyblockClient
 				this.mdModDocument.flowDocumentScrollViewer.Focus();
 			}
 		}
+		public string PackDocument
+		{
+			get => this.mdModDocument.Source.Text;
+			set
+			{
+				this.mdPackDocument.Source.Text = value ?? "";
+				this.mdPackDocument.Visibility = Utils.IsPropSet(value) ? Visibility.Visible : Visibility.Collapsed;
+				this.mdPackDocument.flowDocumentScrollViewer.Focus();
+			}
+		}
+
 
 		public MainWindow()
 		{

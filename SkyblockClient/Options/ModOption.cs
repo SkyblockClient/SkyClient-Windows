@@ -61,5 +61,14 @@ namespace SkyblockClient.Options
 				Globals.CauseRefreshPacks();
 			}
 		}
-    }
+		public override void CheckBox_HoverEnter(object sender, TextMouseEventArgs e)
+		{
+			Globals.MainWindow.ModDocument = e.Text;
+		}
+
+		public override void CheckBox_HoverLeave(object sender, TextMouseEventArgs e)
+		{
+			Globals.MainWindow.ModDocument = e.Text;
+		}
+	}
 }

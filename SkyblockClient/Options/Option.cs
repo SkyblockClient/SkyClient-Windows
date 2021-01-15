@@ -76,25 +76,14 @@ namespace SkyblockClient.Options
 			}
 		}
 
-        private void CheckBox_HoverLeave(object sender, TextMouseEventArgs e)
-        {
-			Globals.MainWindow.ModDocument = e.Text;
-        }
-
-        private void CheckBox_HoverEnter(object sender, TextMouseEventArgs e)
-        {
-			Globals.MainWindow.ModDocument = e.Text;
-		}
+		public abstract void CheckBox_HoverLeave(object sender, TextMouseEventArgs e);
+		public abstract void CheckBox_HoverEnter(object sender, TextMouseEventArgs e);
 
         public void OpenGuide()
 		{
 			if (Guide)
 			{
-				string endpoint = $"{Globals.URL}guides/{Id}.md";
-				string command = $"/c start {endpoint}";
-				Utils.Debug(command);
-				var processInfo = Utils.CreateProcessStartInfo("cmd.exe", command);
-				Process.Start(processInfo);
+				Utils.OpenLinkInBrowser($"{Globals.URL}guides/{Id}.md");
 			}
 			else
 			{
