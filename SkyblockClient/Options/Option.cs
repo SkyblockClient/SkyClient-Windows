@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System.Diagnostics;
 using System.Windows;
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Collections.Generic;
+using SkyblockClient.Options.Events;
 
 namespace SkyblockClient.Options
 {
@@ -57,6 +57,13 @@ namespace SkyblockClient.Options
 			get
 			{
 				CheckBoxMod checkBox = new CheckBoxMod();
+
+				checkBox.Click += ComboBoxChecked;
+				checkBox.HoverEnter += CheckBox_HoverEnter;
+				checkBox.HoverLeave += CheckBox_HoverLeave;
+
+				checkBox.GuideRequest += CheckBox_GuideRequest;
+
 				checkBox.Content = Display;
 				checkBox.IsChecked = Enabled;
 				checkBox.Tag = this;
@@ -68,15 +75,37 @@ namespace SkyblockClient.Options
 				toolTip.Tag = checkBox;
 
 				checkBox.ToolTip = toolTip;
-				checkBox.Click += ComboBoxChecked;
-                checkBox.HoverEnter += CheckBox_HoverEnter;
-                checkBox.HoverLeave += CheckBox_HoverLeave;
+
 
 				return checkBox;
 			}
 		}
 
-		public abstract void CheckBox_HoverLeave(object sender, TextMouseEventArgs e);
+        public virtual async void CheckBox_GuideRequest(object sender, GuideRequestEventArgs e)
+        {
+			var HasDocument = Utils.IsPropSet(e.OptionAction.Document) && e.OptionAction.Document != "invalid";
+
+			if (HasDocument)
+            {
+                try
+                {
+					var documentText = await Globals.DownloadFileStringAsync(new RemoteDownloadUrl(e.OptionAction.Document));
+					Utils.Debug("Loaded guide for " + e.OptionAction.Document);
+					e.CheckBoxMod.DocumentText = documentText;
+					return;
+				}
+				catch (System.Exception ex)
+                {
+					Utils.Debug(ex);
+					Utils.Error("Error loading guide " + e.OptionAction.Document);
+					Utils.Log(ex, "Error loading guide " + e.OptionAction.Document);
+				}
+            }
+			Utils.Debug("Object has no Document");
+			e.CheckBoxMod.DocumentText = "invalid";
+		}
+
+        public abstract void CheckBox_HoverLeave(object sender, TextMouseEventArgs e);
 		public abstract void CheckBox_HoverEnter(object sender, TextMouseEventArgs e);
 
         public void OpenGuide()

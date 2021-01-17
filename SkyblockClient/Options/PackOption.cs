@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using SkyblockClient.Options.Events;
 
 namespace SkyblockClient.Options
 {

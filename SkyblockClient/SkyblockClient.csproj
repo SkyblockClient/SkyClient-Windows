@@ -140,13 +140,14 @@
     <Compile Include="LookalikeCalculator.cs" />
     <Compile Include="MainWindow.triggers.cs" />
     <Compile Include="Options\ActionWarning.cs" />
+    <Compile Include="Options\Events\GuideRequestEventArgs.cs" />
     <Compile Include="Options\Option.cs" />
     <Compile Include="Options\OptionAction.cs" />
     <Compile Include="Options\OptionActionItem.xaml.cs">
       <DependentUpon>OptionActionItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Options\PackOption.cs" />
-    <Compile Include="Options\TextMouseEventArgs.cs" />
+    <Compile Include="Options\Events\TextMouseEventArgs.cs" />
     <Compile Include="Persistence\Data\PersistenceData.cs" />
     <Compile Include="Persistence\Data\PersistenceMod.cs" />
     <Compile Include="Persistence\Data\PersistenceModsList.cs" />

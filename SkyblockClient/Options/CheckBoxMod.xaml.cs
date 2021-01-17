@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 using SkyblockClient.Options;
+using SkyblockClient.Options.Events;
 
 namespace SkyblockClient
 {
@@ -22,8 +20,11 @@ namespace SkyblockClient
         public event TextClickEventHandler HoverLeave;
         public delegate void TextClickEventHandler(object sender, TextMouseEventArgs e);
 
+        public event GuideRequestEventHandler GuideRequest;
+        public delegate void GuideRequestEventHandler(object sender, GuideRequestEventArgs e);
+
         public string DocumentText;
-        private bool HasDocument;
+        private bool HasDocument => Utils.IsPropSet(DocumentText) && DocumentText != "invalid";
 
         public new object Content
 		{
@@ -53,13 +54,9 @@ namespace SkyblockClient
                     if (hoverActions.Count > 0)
                     {
                         var hoverAction = hoverActions[0];
-                        HasDocument = Utils.IsPropSet(hoverAction.Document) && hoverAction.Document != "invalid";
-
-                        if (HasDocument)
-                            DocumentText = Globals.DownloadFileString(new RemoteDownloadUrl(hoverAction.Document));
-                        else
-                            DocumentText = "Invalid";
-
+                        this.GuideRequest?.Invoke(this, new GuideRequestEventArgs(this, hoverAction));
+                        if (GuideRequest is null)
+                            Utils.Debug("GuideRequest is null");
                     }
 
                     if (buttonActions.Count == 0)

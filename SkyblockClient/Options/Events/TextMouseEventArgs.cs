@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace SkyblockClient.Options
+namespace SkyblockClient.Options.Events
 {
     public class TextMouseEventArgs : MouseEventArgs
     {

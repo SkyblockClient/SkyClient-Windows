@@ -185,9 +185,14 @@ namespace SkyblockClient
 
 		public static async Task<string> DownloadFileStringAsync(string file)
 		{
-			WebResponse myWebResponse = await WebRequest.Create(Globals.URL + file + "?raw=true").GetResponseAsync();
+			return await DownloadFileStringAsync(new InternalDownloadUrl(file));
+		}
+		public static async Task<string> DownloadFileStringAsync(IDownloadUrl url)
+		{
+			WebResponse myWebResponse = await WebRequest.Create(url.Url).GetResponseAsync();
 			return await new StreamReader(myWebResponse.GetResponseStream()).ReadToEndAsync();
 		}
+
 
 		public static string DownloadFileString(string file)
 		{
