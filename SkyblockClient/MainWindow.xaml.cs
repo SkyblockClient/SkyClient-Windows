@@ -62,14 +62,15 @@ namespace SkyblockClient
 
 		public MainWindow()
 		{
+			if (Globals.isDebugEnabled)
+			{
+				Utils.Info("Thank you for using SkyClient", "This is the output Console and will display information important to the developer!");
+			}
+
 			Globals.MainWindow = this;
 			Utils.LoadSettings();
 			InitializeComponent();
 			PostConstruct();
-			if (!Globals.isDebugEnabled)
-			{
-				Utils.Info("Thank you for using SkyClient", "This is the output Console and will display information important to the developer!");
-			}
 		}
 
 		public async void PostConstruct()
@@ -196,6 +197,13 @@ namespace SkyblockClient
 			var crashedAt = string.Empty;
 			try
 			{
+				if (File.Exists(Globals.skyblockPersistenceLocation))
+				{
+					var text = "SkyClient is already installed.\nInstalling it again will wipe your Mods and Packs folder, and reset Mod configs\n\nInstall anyway?";
+					if (Globals.ShowInfo(text, "Warning", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+						return;
+				}
+
 				crashedAt = "await InitializeInstall();";
 				await InitializeInstall();
 				crashedAt = "await Persist();";
