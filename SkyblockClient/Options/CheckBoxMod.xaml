@@ -48,7 +48,7 @@
         </Grid.ColumnDefinitions>
         <Button x:Name="btnIcon" Width="30" Grid.Column="0" Click="btnIcon_Click" MouseEnter="ActionMouseEnter" MouseLeave="ActionMouseLeave"/>
         <CheckBox x:Name="chkEnabled" Click="CheckBox_Click" VerticalAlignment="Center" Grid.Column="2"  MouseEnter="ActionMouseEnter" MouseLeave="ActionMouseLeave"/>
-        <ComboBox x:Name="cmbActions" SelectionChanged="cmbActions_SelectionChanged" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="-102,3,65,3" UseLayoutRounding="True">
+        <ComboBox x:Name="cmbActions" SelectionChanged="cmbActions_SelectionChanged" Visibility="Hidden" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="-102,3,65,3" UseLayoutRounding="True">
             <ComboBox.Effect>
                 <DropShadowEffect BlurRadius="10" Color="#FF000000" Direction="315" ShadowDepth="5" Opacity="0.15"/>
             </ComboBox.Effect>
