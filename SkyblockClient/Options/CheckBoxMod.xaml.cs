@@ -112,7 +112,7 @@ namespace SkyblockClient
 		public CheckBoxMod()
 		{
 			InitializeComponent();
-		}
+        }
 
 		private void CheckBox_Click(object sender, RoutedEventArgs e)
 		{

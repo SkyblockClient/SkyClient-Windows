@@ -41,10 +41,12 @@
         <Button x:Name="btnOpenAdvancedSettings"   BorderBrush="#2c3e50" BorderThickness="2,0,2,5" Background="#FF587593" Foreground="White"      Content="Open Advanced settings" Margin="15,0,10,55" Height="30" VerticalAlignment="Bottom" Click="BtnAdvancedSettinsClick"/>
         <Button x:Name="btnUpdate" Content="Update" Grid.Column="1" Margin="10,0,15,55" BorderBrush="#2c3e50" BorderThickness="2,0,2,5" Background="#FF587593" Foreground="White" Click="BtnUpdate_Click" Height="30" VerticalAlignment="Bottom"/>
         <local:MarkdownDocument x:Name="mdModDocument" 
-                                Grid.Column="1"
+                                Grid.Column="1" 
+                                Margin="0,0,10,10"
                                 Visibility="Hidden"/>
         <local:MarkdownDocument x:Name="mdPackDocument" 
-                                Grid.Column="0"
+                                Grid.Column="0" 
+                                Margin="10,0,0,10"
                                 Visibility="Hidden"/>
     </Grid>
 </Window>
