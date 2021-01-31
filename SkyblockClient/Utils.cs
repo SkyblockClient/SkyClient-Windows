@@ -10,6 +10,7 @@ using System.Windows;
 using SkyblockClient.Persistence.Data;
 using SkyblockClient.Options;
 using System.Windows.Media.Imaging;
+using System.Net;
 
 namespace SkyblockClient
 {
@@ -286,6 +287,12 @@ namespace SkyblockClient
         }
 		public static void LoadSettings()
         {
+			ServicePointManager.Expect100Continue = true;
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+				   | SecurityProtocolType.Tls11
+				   | SecurityProtocolType.Tls12
+				   | SecurityProtocolType.Ssl3;
+
 			string errorAt = "try";
 			try
             {
@@ -296,10 +303,12 @@ namespace SkyblockClient
 				errorAt = "Globals.Settings = settings;";
 				Globals.Settings = settings;
 				var assemblyVersion = Globals.assembyVersion;
+
 				var version = $"{assemblyVersion.Major}.{assemblyVersion.Minor}.{assemblyVersion.Build}";
+				
                 if ((!Globals.Settings.ignoreOutdatedVersion) && Utils.IsPropSet(Globals.Settings.version) && Globals.Settings.version != version)
                 {
-					var boxtext = "The current SkyClient version may be outdated and not function properly.\n\nDo you wish to update?";
+					var boxtext = $"The current SkyClient version may be outdated and not function properly.\nYour Version: {version}\nLatest version: {Globals.Settings.version}\n\nDo you wish to update?";
 					var result = Globals.ShowInfo(boxtext, "Warning", MessageBoxButton.YesNo);
                     if (result == MessageBoxResult.Yes)
                     {

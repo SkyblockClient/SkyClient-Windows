@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Navigation;
 
 namespace SkyblockClient
@@ -18,6 +10,7 @@ namespace SkyblockClient
 	{
 		protected override void OnLoadCompleted(NavigationEventArgs e)
 		{
+
 			base.OnLoadCompleted(e);
 		}
 	}

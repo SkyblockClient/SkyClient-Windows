@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -62,6 +61,7 @@ namespace SkyblockClient
 
 		public MainWindow()
 		{
+
 			if (Globals.isDebugEnabled)
 			{
 				Utils.Info("Thank you for using SkyClient", "This is the output Console and will display information important to the developer!");
