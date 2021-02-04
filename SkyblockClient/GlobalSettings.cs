@@ -20,6 +20,8 @@ namespace SkyblockClient
         const int SIMILARITIES_THRESHOLD_DEFAULT = 6;
         const int SIMILARITIES_THRESHOLD_ADVANCED_DEFAULT = 0;
 
+        const string JAVA_ARGS_DEFAULT = "-Xmx3G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M";
+
         public string version;
 
         [DefaultValue(APPEND_MISSING_OPTION_ICON_DEFAULT)]
@@ -79,5 +81,8 @@ namespace SkyblockClient
         /// </summary>
         [DefaultValue(SIMILARITIES_THRESHOLD_ADVANCED_DEFAULT)]
         public int similaritiesThresholdAdvanced = SIMILARITIES_THRESHOLD_ADVANCED_DEFAULT;
+
+        [DefaultValue(JAVA_ARGS_DEFAULT)]
+        public string javaArgs = JAVA_ARGS_DEFAULT;
     }
 }

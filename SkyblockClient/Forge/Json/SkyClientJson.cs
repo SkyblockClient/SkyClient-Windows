@@ -21,7 +21,7 @@ namespace SkyblockClient.Json
 
 			SkyClientJson skyClientJson = new SkyClientJson();
 			skyClientJson.gameDir = Globals.skyblockRootLocation;
-			skyClientJson.javaArgs = JAVA_ARGS;
+			skyClientJson.javaArgs = Globals.Settings.javaArgs;
 			skyClientJson.name = "SkyClient";
 			skyClientJson.type = "custom";
 			skyClientJson.lastVersionId = "1.8.9-forge1.8.9-11.15.1.2318-1.8.9";
@@ -29,7 +29,5 @@ namespace SkyblockClient.Json
 
 			return skyClientJson;
 		}
-
-		public const string JAVA_ARGS = "-Xmx4G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M";
 	}
 }
