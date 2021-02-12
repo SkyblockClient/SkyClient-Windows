@@ -16,8 +16,6 @@ namespace SkyblockClient.Json
 
 		public static async Task<SkyClientJson> Create()
 		{
-			const string IMAGE_NAME = "SkyblockClient128.png";
-			await Globals.DownloadFileByte($"images/{IMAGE_NAME}", System.IO.Path.Combine(Globals.tempFolderLocation, IMAGE_NAME));
 
 			SkyClientJson skyClientJson = new SkyClientJson();
 			skyClientJson.gameDir = Globals.skyblockRootLocation;
@@ -25,8 +23,17 @@ namespace SkyblockClient.Json
 			skyClientJson.name = "SkyClient";
 			skyClientJson.type = "custom";
 			skyClientJson.lastVersionId = "1.8.9-forge1.8.9-11.15.1.2318-1.8.9";
-			skyClientJson.icon = "data:image/png;base64," + Utils.Base64Image(System.IO.Path.Combine(Globals.tempFolderLocation, IMAGE_NAME));
 
+			if (Globals.Settings.SkyClientJsonUseCloudImage)
+			{
+				const string IMAGE_NAME = "skyclient128apng.png";
+				await Globals.DownloadFileByte($"images/{IMAGE_NAME}", System.IO.Path.Combine(Globals.tempFolderLocation, IMAGE_NAME));
+				skyClientJson.icon = "data:image/png;base64," + Utils.Base64Image(System.IO.Path.Combine(Globals.tempFolderLocation, IMAGE_NAME));
+			}
+			else
+			{
+				skyClientJson.icon = Globals.Settings.imageBase64;
+			}
 			return skyClientJson;
 		}
 	}
