@@ -116,7 +116,6 @@
     <Compile Include="Options\CheckBoxMod.xaml.cs">
       <DependentUpon>CheckBoxMod.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Config\ConfigUtil.cs" />
     <Compile Include="Config\ModConfigWorkerBase.cs" />
     <Compile Include="Config\ModConfig.cs" />
     <Compile Include="Config\ModConfigHelper.cs" />
@@ -159,6 +158,7 @@
     <Compile Include="Persistence\UnmanagedFilesManagerWindow.xaml.cs">
       <DependentUpon>UnmanagedFilesManagerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Config\ConfigUtil.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
