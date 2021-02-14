@@ -8,6 +8,26 @@ using SkyblockClient.Options;
 
 namespace SkyblockClient.Config
 {
+	[ModConfigWorker("minecraft")]
+	class ModConfigWorkerMinecraft : ModConfigWorkerBase
+	{
+		public override async Task Work()
+		{
+			string optionsFile = await helper.DownloadFileByte("minecraftoptions.txt");
+			helper.Move(optionsFile, Path.Combine(Globals.skyblockRootLocation, "options.txt"));
+		}
+	}
+
+	[ModConfigWorker("optifine")]
+	class ModConfigWorkerOptifine : ModConfigWorkerBase
+	{
+		public override async Task Work()
+		{
+			string optionsFile = await helper.DownloadFileByte("optifinetoptions.txt");
+			helper.Move(optionsFile, Path.Combine(Globals.skyblockRootLocation, "optionsof.txt"));
+		}
+	}
+
 	[ModConfigWorker("itlt")]
 	class ModConfigWorkerITLT : ModConfigWorkerBase
 	{

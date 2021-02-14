@@ -64,5 +64,14 @@ namespace SkyblockClient.Config
 				this.workerAttribute = workerAttribute;
 			}
 		}
+
+		public static async Task StartWorker(string id)
+		{
+			if (Utils.AvailableModOptions.ContainsKey(id))
+			{
+				var mod = Utils.AvailableModOptions[id];
+				await CreateModConfigWorker(mod);
+			}
+		}
 	}
 }

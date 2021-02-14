@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Windows;
 using Newtonsoft.Json;
 using SkyblockClient.Options;
 using SkyblockClient.Persistence.Data;
@@ -15,6 +14,7 @@ namespace SkyblockClient.Persistence
 	{
 		public static async Task InstallPacks(List<PackOption> packs)
 		{
+			await Config.ConfigUtils.StartWorker("minecraft");
 			await UpdateMinecraftConfigForPacks(new PersistencePacksList(packs).Packs);
 			await InstallUniversal(Globals.skyblockResourceLocation, packs.ToArray(), "resourcepacks", false);
 		}
@@ -71,12 +71,12 @@ namespace SkyblockClient.Persistence
 
 				if (isMods && setAutoconfig)
 				{
+					List<Task> tasks1 = new List<Task>();
 					foreach (ModOption mod in enabledOptions)
 					{
-						List<Task> tasks1 = new List<Task>();
 						try
 						{
-							tasks1.Add(Config.ConfigUtils.CreateModConfigWorker(mod));
+							tasks1.Add(Config.ConfigUtils.StartWorker(mod.Id));
 						}
 						catch (Exception e)
 						{
@@ -84,8 +84,8 @@ namespace SkyblockClient.Persistence
 							Utils.Error("An Unknown error occured, please submit the log file");
 							Utils.Log(e, "unkown error in Installer():if(isMods)");
 						}
-						await Task.WhenAll(tasks1.ToArray());
 					}
+					await Task.WhenAll(tasks1.ToArray());
 				}
 			}
 			catch (Exception e)
