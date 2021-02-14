@@ -54,6 +54,6 @@
             </ComboBox.Effect>
         </ComboBox>
         <Label x:Name="lblActionButtonDivider" VerticalAlignment="Center"  Content="-" Grid.Column="3"/>
-        <Button x:Name="btnAction" Visibility="Hidden" Grid.Column="4" Click="btnAction_Click" MouseEnter="ActionMouseEnter" MouseLeave="ActionMouseLeave"/>
+        <Button x:Name="btnAction" Width="30" Visibility="Hidden" Grid.Column="4" Click="btnAction_Click" MouseEnter="ActionMouseEnter" MouseLeave="ActionMouseLeave"/>
     </Grid>
 </UserControl>

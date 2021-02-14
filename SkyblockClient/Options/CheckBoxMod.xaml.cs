@@ -67,7 +67,7 @@ namespace SkyblockClient
                     }
                     else if (buttonActions.Count == 1)
                     {
-                        btnAction.Content = buttonActions[0];
+						Utils.SetImage(btnAction, buttonActions[0].Icon);
 
                         cmbActions.Visibility = Visibility.Hidden;
                         btnAction.Visibility = Visibility.Visible;
