@@ -68,6 +68,7 @@ namespace SkyblockClient
                     else if (buttonActions.Count == 1)
                     {
 						Utils.SetImage(btnAction, buttonActions[0].Icon);
+                        btnAction.Tag = buttonActions[0];
 
                         cmbActions.Visibility = Visibility.Hidden;
                         btnAction.Visibility = Visibility.Visible;
@@ -141,7 +142,7 @@ namespace SkyblockClient
 
         private void btnAction_Click(object sender, RoutedEventArgs e)
         {
-            var optionAction = btnAction.Content as OptionAction;
+            var optionAction = btnAction.Tag as OptionAction;
             if (optionAction != null)
                 optionAction.Act();
         }
