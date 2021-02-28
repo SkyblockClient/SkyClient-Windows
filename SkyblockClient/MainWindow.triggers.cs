@@ -62,6 +62,12 @@ namespace SkyblockClient
 
 		private async void BtnUpdate_Click(object sender, RoutedEventArgs e)
 		{
+			if (!Globals.Settings.enableUpdateButton)
+			{
+				Utils.Info("The update function is temporarily unavailable");
+				Globals.ShowInfo("The update function is temporarily unavailable", "Info");
+				return;
+			}
 			ButtonsEnabled(false);
 			await Startupdate();
 			ButtonsEnabled(true);

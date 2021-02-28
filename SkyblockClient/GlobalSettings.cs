@@ -17,6 +17,7 @@ namespace SkyblockClient
         const bool IGNORE_MISSING_PERSITENCE = true;
         const bool CHECK_SIMILARITIES_ON_UPDATE_ADVANCED = true;
         const bool SKYCLIENT_JSON_USE_CLOUD_IMAGE = false;
+		const bool ENABLE_UPDATE_BUTTON_DEFAULT = true;
 
         const int SIMILARITIES_THRESHOLD_DEFAULT = 6;
         const int SIMILARITIES_THRESHOLD_ADVANCED_DEFAULT = 0;
@@ -52,6 +53,9 @@ namespace SkyblockClient
 
         [DefaultValue(CHECK_JAVA_VERSION_DEFAULT)]
         public bool checkJavaVersion = CHECK_JAVA_VERSION_DEFAULT;
+
+		[DefaultValue(ENABLE_UPDATE_BUTTON_DEFAULT)]
+		public bool enableUpdateButton = ENABLE_UPDATE_BUTTON_DEFAULT;
 
         /// <summary>
         /// when the users presses update, this will check if there are files in the same 

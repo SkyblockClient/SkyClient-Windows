@@ -326,11 +326,22 @@ namespace SkyblockClient
 
 		public static BitmapImage GetImageIcon(string icon)
         {
-			BitmapImage bitmap = new BitmapImage();
-			bitmap.BeginInit();
-			bitmap.UriSource = new Uri(new InternalDownloadUrl($"icons/{icon}").Url, UriKind.Absolute);
-			bitmap.EndInit();
-			return bitmap;
+			try
+			{
+				BitmapImage bitmap = new BitmapImage();
+				bitmap.BeginInit();
+				bitmap.UriSource = new Uri(new InternalDownloadUrl($"icons/{icon}").Url, UriKind.Absolute);
+				bitmap.EndInit();
+				return bitmap;
+			}
+			catch (Exception e) 
+			{
+				Utils.Error("Fatal error loading image");
+				Utils.Log(e, "Fatal error loading image");
+
+				var bitma2p = new BitmapImage(new Uri("pack://application:,,,/SkyblockClient;component/textures/error.png", UriKind.Absolute));
+				return bitma2p;
+			}
 		}
 
 		public static void SetImage(System.Windows.Controls.Image img, string icon)
