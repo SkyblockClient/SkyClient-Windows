@@ -61,16 +61,28 @@ namespace SkyblockClient
 
 		public MainWindow()
 		{
-
-			if (Globals.isDebugEnabled)
+			if (!Globals.isDebugEnabled)
 			{
 				Utils.Info("Thank you for using SkyClient", "This is the output Console and will display information important to the developer!");
 			}
 
 			Globals.MainWindow = this;
-			Utils.LoadSettings();
-			InitializeComponent();
-			PostConstruct();
+
+			var errorAt = "try";
+			try
+			{
+				errorAt = "Utils.LoadSettings();";
+				Utils.LoadSettings();
+				errorAt = "InitializeComponent();";
+				InitializeComponent();
+				errorAt = "PostConstruct();";
+				PostConstruct();
+			}
+			catch (Exception e)
+			{
+				Utils.Error("UNKOWN FATAL ERROR INITIALIZING INSTALLER");
+				Utils.Log(e, "errorAt: " + errorAt, "unkown fatal error initizialing installer");
+			}
 		}
 
 		public async void PostConstruct()
