@@ -11,6 +11,7 @@ using SkyblockClient.Persistence.Data;
 using SkyblockClient.Options;
 using System.Windows.Media.Imaging;
 using System.Net;
+using System.Windows.Controls;
 
 namespace SkyblockClient
 {
@@ -20,6 +21,7 @@ namespace SkyblockClient
 		private static TextWriter Out = Console.Out;
 
 		public static string exeLocation = Assembly.GetEntryAssembly().Location;
+		public static readonly string AssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
 
 		public static Dictionary<string, Options.ModOption> AvailableModOptions
 		{
@@ -328,30 +330,32 @@ namespace SkyblockClient
         {
 			try
 			{
-				BitmapImage bitmap = new BitmapImage();
-				bitmap.BeginInit();
-				bitmap.UriSource = new Uri(new InternalDownloadUrl($"icons/{icon}").Url, UriKind.Absolute);
-				bitmap.EndInit();
-				return bitmap;
+				return new BitmapImage(new Uri($"pack://application:,,,/{AssemblyName};component/icons/{icon}", UriKind.Absolute));
 			}
-			catch (Exception e) 
+			catch (Exception)
 			{
-				Utils.Error("Fatal error loading image");
-				Utils.Log(e, "Fatal error loading image");
+				try
+				{
+					return new BitmapImage(new Uri(new InternalDownloadUrl($"icons/{icon}").Url, UriKind.Absolute));
+				}
+				catch (Exception e)
+				{
+					Utils.Error("Fatal error loading image");
+					Utils.Log(e, "Fatal error loading image");
 
-				var bitma2p = new BitmapImage(new Uri("pack://application:,,,/SkyblockClient;component/textures/error.png", UriKind.Absolute));
-				return bitma2p;
+					return new BitmapImage(new Uri($"pack://application:,,,/{AssemblyName};component/icons/error.png", UriKind.Absolute));
+				}
 			}
 		}
 
-		public static void SetImage(System.Windows.Controls.Image img, string icon)
+		public static void SetImage(Image img, string icon)
 		{
 			img.Source = GetImageIcon(icon);
 		}
 
-		public static void SetImage(System.Windows.Controls.Button img, string icon)
+		public static void SetImage(Button img, string icon)
 		{
-			var image = new System.Windows.Controls.Image();
+			var image = new Image();
 			image.Source = GetImageIcon(icon);
 			img.Content = image;
 		}

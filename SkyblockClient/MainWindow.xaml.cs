@@ -120,25 +120,28 @@ namespace SkyblockClient
 
 		public void RefreshPacks()
         {
-			lbPacks.Items.Clear();
+			var list = new List<CheckBoxMod>();
 			foreach (PackOption pack in Globals.packOptions)
 			{
 				if (!pack.Hidden)
 				{
-					lbPacks.Items.Add(pack.CheckBox);
+					list.Add(pack.CheckBox);
 				}
 			}
+
+			tabPacks.ItemSource = list;
 		}
 		public void RefreshMods()
 		{
-			lbMods.Items.Clear();
+			var list = new List<CheckBoxMod>();
 			foreach (ModOption mod in Globals.modOptions)
 			{
 				if (!mod.Hidden)
 				{
-					lbMods.Items.Add(mod.CheckBox);
+					list.Add(mod.CheckBox);
 				}
 			}
+			tabMods.ItemSource = list;
 		}
 
 		private async Task DownloadModsFile()

@@ -12,6 +12,7 @@ namespace SkyblockClient
 	/// </summary>
 	public partial class CheckBoxMod : UserControl
 	{
+		public string[] Categories { get; set; }
 
         public event ClickEventHandler Click;
 		public delegate void ClickEventHandler(object sender, RoutedEventArgs e);
@@ -94,7 +95,7 @@ namespace SkyblockClient
                 _icon = value;
                 if (Utils.IsPropSet(Icon))
                 {
-                    Utils.SetImage(btnIcon, Icon);
+					Utils.SetImage(btnIcon, Icon);
                 }
                 else
                 {

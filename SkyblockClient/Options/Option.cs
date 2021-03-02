@@ -7,12 +7,12 @@ using SkyblockClient.Options.Events;
 
 namespace SkyblockClient.Options
 {
-    public abstract class Option
+	public abstract class Option
 	{
 		public string Id { get; set; }
 
 		[DefaultValue(false)]
-        public bool Enabled { get; set; }
+		public bool Enabled { get; set; }
 
 		public string File { get; set; }
 
@@ -43,6 +43,11 @@ namespace SkyblockClient.Options
 		public List<OptionAction> Actions { get; set; }
 
 		[JsonIgnore]
+		public bool HasCategories => Utils.IsPropSet(Categories);
+
+		public string[] Categories { get; set; }
+
+		[JsonIgnore]
 		public bool HasWarning => Utils.IsPropSet(Warning);
 
 		public ActionWarning Warning { get; set; }
@@ -57,6 +62,8 @@ namespace SkyblockClient.Options
 			get
 			{
 				CheckBoxMod checkBox = new CheckBoxMod();
+
+				checkBox.Categories = HasCategories ? Categories : new string[] { "99;Other" };
 
 				checkBox.Click += ComboBoxChecked;
 				checkBox.HoverEnter += CheckBox_HoverEnter;
