@@ -63,12 +63,12 @@ namespace SkyblockClient.Options
 		}
 		public override void CheckBox_HoverEnter(object sender, TextMouseEventArgs e)
 		{
-			Globals.MainWindow.ModDocument = e.Text;
+			Globals.MainWindow.ModDocument = e.OptionPreview;
 		}
 
 		public override void CheckBox_HoverLeave(object sender, TextMouseEventArgs e)
 		{
-			Globals.MainWindow.ModDocument = e.Text;
+			Globals.MainWindow.ModDocument = e.OptionPreview;
 		}
 	}
 }
