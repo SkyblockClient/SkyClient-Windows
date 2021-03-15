@@ -10,13 +10,12 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
                             <Border BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
+                                    BorderThickness="{TemplateBinding BorderThickness}">
                                 <Grid>
                                     <Rectangle x:Name="background"
-                                        Fill="{TemplateBinding Background}"/>
-                                    <ContentPresenter
-                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                               Fill="{TemplateBinding Background}"/>
+                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                                 </Grid>
                             </Border>
                             <ControlTemplate.Triggers>
@@ -31,29 +30,134 @@
             <Style TargetType="CheckBox">
                 <Setter Property="Margin" Value="0,0,0,0"/>
             </Style>
-            <Style TargetType="ComboBox">
-                <Setter Property="Visibility" Value="Hidden"/>
-                <Setter Property="Grid.Column" Value="4"/>
-            </Style>
             <Style TargetType="Label">
                 <Setter Property="Visibility" Value="Hidden"/>
             </Style>
+            <Style TargetType="{x:Type ComboBox}">
+                <Setter Property="Foreground" Value="{DynamicResource TextColor}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Darker}" />
+                <Setter Property="Background" Value="{DynamicResource LessDark}" />
+                <Setter Property="SnapsToDevicePixels" Value="true"/>
+                <Setter Property="OverridesDefaultStyle" Value="true"/>
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+                <Setter Property="MinWidth" Value="50"/>
+                <Setter Property="MinHeight" Value="32"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ComboBox">
+                            <Grid>
+                                <ToggleButton Name="ToggleButton"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    Background="{TemplateBinding Background}"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    Grid.Column="2"
+                                    Focusable="false"
+                                    IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                                    ClickMode="Press"/>
+                                <ContentPresenter Name="ContentSite"
+                                              IsHitTestVisible="False"
+                                              Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                              Margin="10,0,0,0"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Left"/>
+                                <TextBox x:Name="PART_EditableTextBox"
+                                     Style="{x:Null}"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     Margin="3,3,23,3"
+                                     Focusable="True"                               
+                                     Visibility="Hidden"
+                                     IsReadOnly="{TemplateBinding IsReadOnly}"/>
+                                <Popup Name="Popup"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                    <Grid Name="DropDown"
+                                      SnapsToDevicePixels="True"               
+                                      MinWidth="{TemplateBinding ActualWidth}"
+                                      MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                        <Border
+                                        x:Name="DropDownBorder"
+                                        Background="{DynamicResource LessDark}"
+                                        BorderThickness="1"
+                                        BorderBrush="{DynamicResource Dark}"/>
+                                        <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                            <StackPanel IsItemsHost="True" 
+                                                    KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                        </ScrollViewer>
+                                    </Grid>
+                                </Popup>
+
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="HasItems" Value="false">
+                                    <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
+                                </Trigger>
+                                <Trigger Property="IsGrouping" Value="true">
+                                    <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                                </Trigger>
+                                <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
+                                    <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="0"/>
+                                    <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0"/>
+                                </Trigger>
+                                <Trigger Property="IsEditable" Value="true">
+                                    <Setter Property="IsTabStop" Value="false"/>
+                                    <Setter TargetName="PART_EditableTextBox" Property="Visibility"    Value="Visible"/>
+                                    <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="gridCol0"/>
-            <ColumnDefinition x:Name="gridCol1" Width="10"/>
+            <ColumnDefinition Width="30" x:Name="gridCol0"/>
+            <ColumnDefinition Width="10" x:Name="gridCol1"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="10*"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="30"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="btnIcon" Width="30" Grid.Column="0" Click="btnIcon_Click" MouseEnter="ActionMouseEnter" MouseLeave="ActionMouseLeave"/>
-        <CheckBox x:Name="chkEnabled" Click="CheckBox_Click" VerticalAlignment="Center" Grid.Column="2"  MouseEnter="ActionMouseEnter" MouseLeave="ActionMouseLeave"/>
-        <ComboBox x:Name="cmbActions" SelectionChanged="cmbActions_SelectionChanged" Visibility="Hidden" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="-102,3,65,3" UseLayoutRounding="True">
-            <ComboBox.Effect>
-                <DropShadowEffect BlurRadius="10" Color="#FF000000" Direction="315" ShadowDepth="5" Opacity="0.15"/>
-            </ComboBox.Effect>
-        </ComboBox>
-        <Label x:Name="lblActionButtonDivider" VerticalAlignment="Center"  Content="-" Grid.Column="3"/>
-        <Button x:Name="btnAction" Width="30" Visibility="Hidden" Grid.Column="4" Click="btnAction_Click" MouseEnter="ActionMouseEnter" MouseLeave="ActionMouseLeave"/>
+        <Button x:Name="btnIcon"
+                Grid.Column="0" 
+                Click="btnIcon_Click" 
+                MouseEnter="ActionMouseEnter" 
+                MouseLeave="ActionMouseLeave"/>
+        <CheckBox x:Name="chkEnabled"
+                  Click="CheckBox_Click"
+                  VerticalAlignment="Bottom"
+                  Grid.Column="2" 
+                  Foreground="{DynamicResource TextColor}"
+                  Background="{DynamicResource LessDark}"
+                  BorderBrush="{DynamicResource Darker}"
+                  MouseEnter="ActionMouseEnter"
+                  MouseLeave="ActionMouseLeave">
+        </CheckBox>
+        <ComboBox x:Name="cmbActions" 
+                  Grid.Column="4"
+                  SelectionChanged="cmbActions_SelectionChanged" 
+                  HorizontalAlignment="Center"
+                  Visibility="Hidden"
+                  VerticalAlignment="Center" 
+                  UseLayoutRounding="True"/>
+        <Label x:Name="lblActionButtonDivider"
+               VerticalAlignment="Center"  
+               Content="-" 
+               Grid.Column="3"
+               Foreground="{DynamicResource TextColor}"/>
+        <Button x:Name="btnAction" 
+                Width="30" 
+                Visibility="Hidden"
+                Foreground="{DynamicResource TextColor}"
+                Grid.Column="4" 
+                Click="btnAction_Click" 
+                MouseEnter="ActionMouseEnter" 
+                MouseLeave="ActionMouseLeave"/>
     </Grid>
 </UserControl>

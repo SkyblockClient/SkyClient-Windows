@@ -155,13 +155,15 @@ namespace SkyblockClient
         }
 
         private void ActionMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            if (HasDocument)
+		{
+			Utils.Debug("Enter");
+			if (HasDocument)
                 this.HoverEnter?.Invoke(this, new TextMouseEventArgs(this.Tag as Option, DocumentText, e));
         }
 
         private void ActionMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
+			Utils.Debug("Leave");
             if (HasDocument)
                 this.HoverLeave?.Invoke(this, new TextMouseEventArgs(this.Tag as Option, "", e));
         }

@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Runtime.InteropServices;
 using SkyblockClient.Options;
 using SkyblockClient.Persistence;
-using Newtonsoft.Json;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace SkyblockClient
 {
@@ -18,6 +17,11 @@ namespace SkyblockClient
 	{
 		public const int WM_NCLBUTTONDOWN = 0xA1;
 		public const int HT_CAPTION = 0x2;
+
+		[DllImport("user32.dll")]
+		public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+		[DllImport("user32.dll")]
+		public static extern bool ReleaseCapture();
 
 		IntPtr Handle
 		{
@@ -32,13 +36,9 @@ namespace SkyblockClient
 		}
 		IntPtr _handle = IntPtr.Zero;
 
-		[DllImport("user32.dll")]
-		public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-		[DllImport("user32.dll")]
-		public static extern bool ReleaseCapture();
-
 		public OptionPreview ModDocument
 		{
+			get => this.mdModDocument.Document;
 			set
 			{
 				this.mdModDocument.Document = value;
@@ -47,11 +47,14 @@ namespace SkyblockClient
 		}
 		public OptionPreview PackDocument
 		{
+			get => this.mdPackDocument.Document;
 			set
 			{
+				Utils.Debug("Set");
 				this.mdPackDocument.Document = value;
 				this.mdPackDocument.Visibility = Utils.IsPropSet(value.Content) ? Visibility.Visible : Visibility.Collapsed;
-				this.mdPackDocument.Focus();
+
+				Utils.Debug("Visibility: " + this.mdPackDocument.Visibility.ToString());
 			}
 		}
 
@@ -128,8 +131,11 @@ namespace SkyblockClient
 
 		private void ButtonsEnabled(bool enabled)
 		{
+			//TODO: add those buttons
+			/*
 			btnUpdate.IsEnabled = enabled;
 			btnInstall.IsEnabled = enabled;
+			*/
 		}
 
 		private async Task InitializeInstall()

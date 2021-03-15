@@ -18,6 +18,7 @@ namespace SkyblockClient
 
 		public OptionPreview Document
 		{
+			get => _document;
 			set
 			{
 				_document = value;
@@ -31,8 +32,9 @@ namespace SkyblockClient
 						var val = prop.GetValue(option).ToString();
 						html = ReplacePladeholder(html, "OPTION." + prop.Name.ToUpper(), val);
 					}
-					browser.NavigateToString(html);
+					Utils.Debug("HERE");
 					Utils.Debug(html);
+					browser.NavigateToString(html);
 				}
 			}
 		}
