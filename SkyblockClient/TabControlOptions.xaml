@@ -219,7 +219,7 @@
                                     <Setter TargetName="Border" Property="Background" Value="{DynamicResource Darker}"/>
                                 </Trigger>
                                 <Trigger Property="IsSelected" Value="False">
-                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource Dark}"/>
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource LessDark}"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>

@@ -3,11 +3,101 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <SolidColorBrush x:Key="TextColor" Color="AntiqueWhite"/>
+        <SolidColorBrush x:Key="TextColor" Color="White"/>
         <SolidColorBrush x:Key="LessDark" Color="#39385D"/>
         <SolidColorBrush x:Key="Dark" Color="#181735"/>
         <SolidColorBrush x:Key="Darker" Color="#0F0F2D"/>
         <SolidColorBrush x:Key="Red" Color="#FE6584"/>
         <SolidColorBrush x:Key="Reder" Color="#FF4C70"/>
+
+        <Style TargetType="FlowDocument" x:Key="DocumentStyle">
+            <Setter Property="FontFamily"
+                Value="Calibri" />
+            <Setter Property="TextAlignment"
+                Value="Left" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource TextColor}"/>
+        </Style>
+
+        <Style x:Key="H1Style"
+               TargetType="Paragraph">
+            <Setter Property="FontSize"
+                    Value="42"/>
+            <Setter Property="Foreground"
+                    Value="{DynamicResource TextColor}"/>
+            <Setter Property="FontWeight"
+                    Value="Light" />
+        </Style>
+
+        <Style x:Key="H2Style"
+               TargetType="Paragraph">
+            <Setter Property="FontSize"
+                    Value="20" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource TextColor}"/>
+            <Setter Property="FontWeight"
+                    Value="Light" />
+        </Style>
+
+        <Style x:Key="H3Style"
+               TargetType="Paragraph">
+            <Setter Property="FontSize"
+                    Value="20" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource TextColor}"/>
+            <Setter Property="FontWeight"
+                    Value="Light" />
+        </Style>
+
+        <Style x:Key="H4Style"
+               TargetType="Paragraph">
+            <Setter Property="FontSize"
+                    Value="14" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource TextColor}"/>
+            <Setter Property="FontWeight"
+                    Value="Light" />
+        </Style>
+
+        <Style x:Key="LinkStyle"
+               TargetType="Hyperlink">
+            <Setter Property="TextDecorations"
+                    Value="None" />
+        </Style>
+
+        <Style x:Key="ImageStyle"
+               TargetType="Image">
+            <Setter Property="RenderOptions.BitmapScalingMode"
+                    Value="NearestNeighbor" />
+            <Style.Triggers>
+                <Trigger Property="Tag"
+                         Value="imageright">
+                    <Setter Property="Margin" 
+                            Value="20,0,0,0" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SeparatorStyle"
+               TargetType="Separator">
+        </Style>
+        
+        <Style x:Key="TableStyle" TargetType="Table">
+            <Setter Property="CellSpacing" Value="0"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Darker}"/>
+            <Style.Resources>
+                <Style TargetType="TableCell">
+                    <Setter Property="BorderThickness" Value="0.5"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource Darker}"/>
+                    <Setter Property="Padding" Value="2"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style x:Key="TableHeaderStyle" TargetType="TableRowGroup">
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Background" Value="{DynamicResource LessDark}"/>
+        </Style>
+
     </Application.Resources>
 </Application>

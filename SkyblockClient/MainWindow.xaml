@@ -9,7 +9,7 @@
         Icon="textures/skyclient.png" 
         WindowStyle="None"
         ResizeMode="CanResize"
-        AllowsTransparency="False"
+        AllowsTransparency="True"
         Height="672"
         StateChanged="Window_StateChanged"
         Background="{DynamicResource Dark}"
@@ -30,6 +30,30 @@
                 <Style TargetType="{x:Type TextBlock}">
                     <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
                 </Style>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="10,0,0,0"/>
+                    <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                    <Setter Property="Background" Value="{DynamicResource LessDark}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border CornerRadius="1"
+                                            Background="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center"
+                                                          HorizontalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource Darker}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="False">
+                                        <Setter Property="Background" Value="{DynamicResource LessDark}"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
             </Grid.Resources>
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -49,9 +73,10 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="66"/>
-                <ColumnDefinition Width="66"/>
-                <ColumnDefinition Width="66"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="5"/>
             </Grid.ColumnDefinitions>
             
             <Image Source="textures/skyclient.png"
@@ -65,7 +90,6 @@
                        Grid.Column="1"
                        Grid.ColumnSpan="2"
                        Grid.RowSpan="3"
-                       Foreground="{DynamicResource TextColor}"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"/>
 
@@ -73,54 +97,19 @@
                     Click="BtnClose_Click"
                     Grid.Column="14"
                     Grid.Row="1"
-                    Margin="10,0,10,0"
-                    Foreground="{DynamicResource TextColor}"
                     Background="{DynamicResource Reder}">
-                <Button.Template>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border CornerRadius="12"
-                                Background="{TemplateBinding Background}">
-                            <ContentPresenter VerticalAlignment="Center"
-                                              HorizontalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
                 <Image Source="textures/button_icon_close3.png"/>
             </Button>
             <Button x:Name="btnFullscreen"
                     Click="BtnFullscreen_Click"
                     Grid.Column="13"
-                    Grid.Row="1"
-                    Margin="10,0,0,0"
-                    Foreground="{DynamicResource TextColor}"
-                    Background="{DynamicResource LessDark}">
-                <Button.Template>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border CornerRadius="12"
-                                Background="{TemplateBinding Background}">
-                            <ContentPresenter VerticalAlignment="Center"
-                                              HorizontalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
+                    Grid.Row="1">
                 <Image Source="textures/button_icon_maximize.png"/>
             </Button>
             <Button x:Name="btnMinimize"
                     Click="BtnMinimize_Click"
                     Grid.Column="12"
-                    Grid.Row="1"
-                    Margin="10,0,0,0"
-                    Foreground="{DynamicResource TextColor}"
-                    Background="{DynamicResource LessDark}">
-                <Button.Template>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border CornerRadius="12"
-                                Background="{TemplateBinding Background}">
-                            <ContentPresenter VerticalAlignment="Center"
-                                              HorizontalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
+                    Grid.Row="1">
                 <Image Source="textures/button_icon_minimize.png"/>
             </Button>
 
@@ -136,6 +125,66 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            <Grid Grid.Row="1"
+                  Grid.RowSpan="2"
+                  Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="10,10,10,10"/>
+                        <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+                        <Setter Property="Background" Value="{DynamicResource LessDark}"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border CornerRadius="12"
+                                            BorderThickness="2"
+                                            BorderBrush="{DynamicResource Darker}"
+                                            Background="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center"
+                                                          HorizontalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource Darker}"/>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="False">
+                                            <Setter Property="Background" Value="{DynamicResource LessDark}"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Grid.Resources>
+
+                <Button x:Name="btnAdvancedSettings"
+                        Content="Advanced Settings"
+                        Click="BtnAdvancedSettinsClick"
+                        Grid.Column="0"
+                        Grid.Row="0"/>
+
+                <Button x:Name="btnUpdate"
+                        Content="Update Mods and Texturepacks"
+                        Click="BtnUpdate_Click"
+                        Grid.Column="1"
+                        Grid.Row="0"/>
+
+                <Button x:Name="btnInstall"
+                        Content="Install SkyClient"
+                        Click="BtnInstallModsAndForgeClick"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="1"/>
+            </Grid>
             <Grid Grid.Column="0" 
                   Grid.RowSpan="3"
                   Margin="10,10,10,10">
@@ -145,10 +194,9 @@
                 </Grid.RowDefinitions>
                 <local:TabControlOptions x:Name="tabMods"/>
                 <local:MarkdownDocument x:Name="mdPackDocument"
-                                        Panel.ZIndex="1000"
                                         Grid.RowSpan="3"
                                         Grid.Column="0"
-                                        Visibility="Hidden"/>
+                                        Visibility="Collapsed"/>
             </Grid>
             <Grid Grid.Column="1"
                   Grid.RowSpan="3"
@@ -159,10 +207,9 @@
                 </Grid.RowDefinitions>
                 <local:TabControlOptions x:Name="tabPacks"/>
                 <local:MarkdownDocument x:Name="mdModDocument"
-                                        Panel.ZIndex="1000"
                                         Grid.RowSpan="3"
                                         Grid.Column="1"
-                                        Visibility="Hidden"/>
+                                        Visibility="Collapsed"/>
             </Grid>
         </Grid>
     </Grid>

@@ -50,11 +50,8 @@ namespace SkyblockClient
 			get => this.mdPackDocument.Document;
 			set
 			{
-				Utils.Debug("Set");
 				this.mdPackDocument.Document = value;
 				this.mdPackDocument.Visibility = Utils.IsPropSet(value.Content) ? Visibility.Visible : Visibility.Collapsed;
-
-				Utils.Debug("Visibility: " + this.mdPackDocument.Visibility.ToString());
 			}
 		}
 

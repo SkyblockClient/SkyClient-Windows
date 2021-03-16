@@ -1,5 +1,4 @@
-﻿using Markdig;
-using SkyblockClient.Options;
+﻿using SkyblockClient.Options;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Controls;
@@ -14,8 +13,6 @@ namespace SkyblockClient
 		private static PropertyInfo[] stringProperties = typeof(Option).GetProperties()
 			.ToList().Where(prop => prop.PropertyType == typeof(string)).ToArray();
 
-		MarkdownPipeline pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
-
 		public OptionPreview Document
 		{
 			get => _document;
@@ -24,17 +21,7 @@ namespace SkyblockClient
 				_document = value;
 				if (!string.IsNullOrEmpty(value.Content))
 				{
-					var html = Globals.PreviewHtmlBase;
-					html = ReplacePladeholder(html, "CONTENT", Markdown.ToHtml(value.Content, pipeline));
-					var option = value.Option;
-					foreach (var prop in stringProperties)
-					{
-						var val = prop.GetValue(option).ToString();
-						html = ReplacePladeholder(html, "OPTION." + prop.Name.ToUpper(), val);
-					}
-					Utils.Debug("HERE");
-					Utils.Debug(html);
-					browser.NavigateToString(html);
+					this.editSource.Text = value.Content;
 				}
 			}
 		}
@@ -43,12 +30,6 @@ namespace SkyblockClient
 		public MarkdownDocument()
         {
             InitializeComponent();
-			browser.NavigateToString("Loading...");
-		}
-
-		private string ReplacePladeholder(string baseText, string key, string value)
-		{
-			return baseText.Replace("{{{" + key + "}}}", value);
 		}
     }
 }

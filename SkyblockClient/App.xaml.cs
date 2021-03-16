@@ -13,6 +13,8 @@ namespace SkyblockClient
 	/// </summary>
 	public partial class App : Application
 	{
+		public static string ResourceDirectory = $"pack://application:,,,/{Utils.AssemblyName};component/";
+
 		protected override async void OnStartup(StartupEventArgs e)
 		{
 			base.OnStartup(e);

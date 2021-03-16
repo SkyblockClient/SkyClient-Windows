@@ -1,8 +1,33 @@
 ﻿<UserControl x:Class="SkyblockClient.MarkdownDocument"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             >
+             xmlns:local="clr-namespace:SkyblockClient"
+             xmlns:md="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml"
+             Background="{DynamicResource Dark}">
     <Grid>
-        <WebBrowser x:Name="browser"/>
+        <Grid.Resources>
+            <md:Markdown x:Key="Markdown"
+                        DocumentStyle="{DynamicResource DocumentStyle}"
+                        Heading1Style="{DynamicResource H1Style}"
+                        Heading2Style="{DynamicResource H2Style}"
+                        Heading3Style="{DynamicResource H3Style}"
+                        Heading4Style="{DynamicResource H4Style}"
+                        LinkStyle="{DynamicResource LinkStyle}"
+                        ImageStyle="{DynamicResource ImageStyle}"
+                        SeparatorStyle="{DynamicResource SeparatorStyle}"
+                        TableStyle="{DynamicResource TableStyle}"
+                        TableHeaderStyle="{DynamicResource TableHeaderStyle}"
+                        AssetPathRoot="{x:Static local:App.ResourceDirectory}"/>
+
+            <md:TextToFlowDocumentConverter x:Key="TextToFlowDocumentConverter" 
+                                           Markdown="{StaticResource Markdown}"/>
+        </Grid.Resources>
+        <TextBox x:Name="editSource"
+                 Visibility="Collapsed"/>
+
+        <FlowDocumentScrollViewer Document="{Binding ElementName=editSource, Path=Text, Converter={StaticResource TextToFlowDocumentConverter}}" 
+                                  VerticalScrollBarVisibility="Hidden"
+                                  />
+
     </Grid>
 </UserControl>
