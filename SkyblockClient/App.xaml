@@ -4,9 +4,9 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <SolidColorBrush x:Key="TextColor" Color="White"/>
-        <SolidColorBrush x:Key="LessDark" Color="#39385D"/>
-        <SolidColorBrush x:Key="Dark" Color="#181735"/>
-        <SolidColorBrush x:Key="Darker" Color="#0F0F2D"/>
+        <SolidColorBrush x:Key="LessDark" Color="#333333"/>
+        <SolidColorBrush x:Key="Dark" Color="#232323"/>
+        <SolidColorBrush x:Key="Darker" Color="#181818"/>
         <SolidColorBrush x:Key="Red" Color="#FE6584"/>
         <SolidColorBrush x:Key="Reder" Color="#FF4C70"/>
 
