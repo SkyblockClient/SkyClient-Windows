@@ -11,7 +11,7 @@ We have ![mods](https://img.shields.io/badge/mods-31-brightgreen?style=flat-squa
 
 Does this work on mac / linux?
 
-> [ask on discord for the jar vesrion](https://github.com/nacrt/SkyblockClient/new/main#discord)
+> [ask on discord for the jar vesrion](https://github.com/nacrt/SkyblockClient#discord)
 
 Were do i download it?
 
