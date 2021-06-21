@@ -172,12 +172,6 @@
                         Grid.Column="0"
                         Grid.Row="0"/>
 
-                <Button x:Name="btnUpdate"
-                        Content="Update Mods and Texturepacks"
-                        Click="BtnUpdate_Click"
-                        Grid.Column="1"
-                        Grid.Row="0"/>
-
                 <Button x:Name="btnInstall"
                         Content="Install SkyClient"
                         Click="BtnInstallModsAndForgeClick"
