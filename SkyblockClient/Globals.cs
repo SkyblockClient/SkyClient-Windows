@@ -71,7 +71,7 @@ namespace SkyblockClient
 			OnContentLoaded?.Invoke(app, new EventArgs());
 		}
 
-		public static string launcherProfilesLocation = Path.Combine(minecraftRootLocation, "launcher_profiles.json");
+		public static string launcherProfilesLocation = Path.Combine(minecraftRootLocation, "launcher_profiles_microsoft_store.json");
 		public static string minecraftLibrariesLocation = Path.Combine(minecraftRootLocation, "libraries");
 		public static string minecraftVersionsLocation = Path.Combine(minecraftRootLocation, "versions");
 
