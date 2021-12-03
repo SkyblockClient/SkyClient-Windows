@@ -189,14 +189,14 @@ namespace SkyblockClient
 		{
 			try
 			{
-				if (File.Exists(Path.Combine(path, "launcher_profiles.json")))
+				if (File.Exists(Path.Combine(path, "launcher_profiles_microsoft_store.json")))
 				{
 					return true;
 				}
 			}
 			catch (IOException e)
 			{
-				Utils.Log(e, "Error accessing" + Path.Combine(path, "launcher_profiles.json"));
+				Utils.Log(e, "Error accessing" + Path.Combine(path, "launcher_profiles_microsoft_store.json"));
 			}
 			return false;
 		}
