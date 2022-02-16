@@ -11,7 +11,7 @@ namespace SkyblockClient
 {
 	public static class Globals
 	{
-		public const string GITHUB_RELEASES = "https://github.com/nacrt/SkyblockClient/releases/latest";
+		public const string GITHUB_RELEASES = "https://github.com/SkyblockClient/SkyblockClient/releases/latest";
 		public const string PERSISTANCE_JSON_NAME = "skyclient.json";
 		public static Version assembyVersion => Assembly.GetExecutingAssembly().GetName().Version;
 

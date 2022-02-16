@@ -8,8 +8,8 @@
     <ProjectGuid>{2DEA9CD8-419E-4F59-82D9-D089DC282BB7}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>SkyblockClient</RootNamespace>
-    <AssemblyName>SkyblockClient-1.3.9</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <AssemblyName>SkyblockClient-1.3.11</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -17,6 +17,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -350,19 +351,17 @@
     <Resource Include="textures\skyclient.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="skyclient.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Markdown.XAML\src\Markdown.Xaml\Markdown.Xaml.csproj">
+    <ProjectReference Include="..\..\theunrepentantgeek\Markdown.XAML\src\Markdown.Xaml\Markdown.Xaml.csproj">
       <Project>{34186c3b-c308-4cae-b462-db7b5f5e378c}</Project>
       <Name>Markdown.Xaml</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icons\error.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="icons\sbov.png" />
+    <Resource Include="icons\drm.png" />
+    <Resource Include="icons\dungeonsguide.jpg" />
+    <Resource Include="icons\hypixelplus.png" />
+    <Resource Include="icons\da.png" />
+    <Resource Include="icons\evergreen.png" />
     <Resource Include="icons\actuallyassets.png" />
     <Resource Include="icons\actuallymobs.png" />
     <Resource Include="icons\apec.png" />
@@ -379,6 +378,7 @@
     <Resource Include="icons\dsm logo cropped.png" />
     <Resource Include="icons\dungeon texturepack 1024x.png" />
     <Resource Include="icons\en.jpg" />
+    <Resource Include="icons\error.png" />
     <Resource Include="icons\faithful team logo.png" />
     <Resource Include="icons\faithful.png" />
     <Resource Include="icons\forum.png" />
@@ -387,31 +387,38 @@
     <Resource Include="icons\github.png" />
     <Content Include="icons\github.svg" />
     <Resource Include="icons\guide.png" />
-    <Resource Include="icons\hq16f.png" />
-    <Resource Include="icons\hq32f.png" />
     <Resource Include="icons\hsb.png" />
     <Resource Include="icons\invalid.png" />
+    <Resource Include="icons\isxander.png" />
     <Resource Include="icons\itlt.png" />
+    <Resource Include="icons\kmp.png" />
     <Resource Include="icons\mob packet.png" />
+    <Resource Include="icons\monkey.png" />
     <Resource Include="icons\moulberrys bush.png" />
+    <Resource Include="icons\nameless.png" />
     <Resource Include="icons\neulogo.png" />
     <Resource Include="icons\optifine.png" />
-    <Resource Include="icons\packshq 512x.png" />
     <Resource Include="icons\packshq.png" />
     <Resource Include="icons\patcher.png" />
     <Resource Include="icons\phq dark overlay big.png" />
     <Resource Include="icons\phq dark overlay.png" />
     <Resource Include="icons\planetminecraft.png" />
     <Resource Include="icons\rnbw.png" />
+    <Resource Include="icons\rnbw_hq.png" />
     <Resource Include="icons\sba.png" />
+    <Resource Include="icons\sbhlogo.png" />
+    <Resource Include="icons\sbov.png" />
+    <Resource Include="icons\sbp.png" />
     <Resource Include="icons\sk1er monkey.png" />
     <Resource Include="icons\skyclient.png" />
     <Resource Include="icons\skymobs.png" />
     <Resource Include="icons\skytils.png" />
     <Resource Include="icons\smol_icons.png" />
     <Resource Include="icons\smooth scrolling everywhere.png" />
+    <Resource Include="icons\unknown.png" />
     <Resource Include="icons\vtays.png" />
     <Resource Include="icons\worldsandbeyond.png" />
+    <Resource Include="icons\wyvest.png" />
     <Resource Include="icons\youtube.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

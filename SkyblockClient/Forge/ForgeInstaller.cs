@@ -86,7 +86,7 @@ namespace SkyblockClient.Forge
 
 				skyClientJson = await SkyClientJson.Create();
 
-				if (launcherProfiles.profiles.ContainsKey("SkyClient"))
+				if (launcherProfiles.profiles.ContainsKey("skyclientskyclientskyclientskycl"))
 				{
 					if (Globals.isDebugEnabled && !Globals.Settings.updateProfileOnDebug)
 					{
@@ -95,13 +95,13 @@ namespace SkyblockClient.Forge
 					else
 					{
 						Utils.Info("Profile Exists -> Updating");
-						launcherProfiles.profiles["SkyClient"] = skyClientJson;
+						launcherProfiles.profiles["skyclientskyclientskyclientskycl"] = skyClientJson;
 					}
 				}
 				else
 				{
 					Utils.Info("SkyClient does not exist -> Creating");
-					launcherProfiles.profiles.Add("SkyClient", skyClientJson);
+					launcherProfiles.profiles.Add("skyclientskyclientskyclientskycl", skyClientJson);
 				}
 				string outp = JsonConvert.SerializeObject(launcherProfiles, Formatting.Indented);
 				File.WriteAllText(Globals.launcherProfilesLocation, outp);

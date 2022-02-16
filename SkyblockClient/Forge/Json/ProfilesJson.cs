@@ -8,6 +8,6 @@ namespace SkyblockClient.Json
 {
 	public class ProfilesJson
 	{
-		public SkyClientJson SkyClient { get; set; }
+		public SkyClientJson skyclientskyclientskyclientskycl { get; set; }
 	}
 }

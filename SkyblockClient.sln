@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyblockClient", "SkyblockC
 		{34186C3B-C308-4CAE-B462-DB7B5F5E378C} = {34186C3B-C308-4CAE-B462-DB7B5F5E378C}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markdown.Xaml", "..\Markdown.XAML\src\Markdown.Xaml\Markdown.Xaml.csproj", "{34186C3B-C308-4CAE-B462-DB7B5F5E378C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markdown.Xaml", "..\theunrepentantgeek\Markdown.XAML\src\Markdown.Xaml\Markdown.Xaml.csproj", "{34186C3B-C308-4CAE-B462-DB7B5F5E378C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

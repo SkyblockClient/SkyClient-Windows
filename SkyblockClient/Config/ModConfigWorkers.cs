@@ -23,6 +23,16 @@ namespace SkyblockClient.Config
 	{
 		public override async Task Work()
 		{
+			string optionsFile = await helper.DownloadFileByte("craftify.toml");
+			helper.Move(optionsFile, Path.Combine(Globals.skyblockRootLocation, "craftify.toml"));
+		}
+	}
+
+	[ModConfigWorker("craftify")]
+	class ModConfigWorkerCraftify : ModConfigWorkerBase
+	{
+		public override async Task Work()
+		{
 			string optionsFile = await helper.DownloadFileByte("optifinetoptions.txt");
 			helper.Move(optionsFile, Path.Combine(Globals.skyblockRootLocation, "optionsof.txt"));
 		}
