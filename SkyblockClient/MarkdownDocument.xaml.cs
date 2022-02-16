@@ -1,28 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SkyblockClient.Options;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+using System.Reflection;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SkyblockClient
 {
-    /// <summary>
-    /// Interaktionslogik für MarkdownDocument.xaml
-    /// </summary>
-    public partial class MarkdownDocument : UserControl
-    {
-        public MarkdownDocument()
+	/// <summary>
+	/// Interaktionslogik für MarkdownDocument.xaml
+	/// </summary>
+	public partial class MarkdownDocument : UserControl
+	{
+		private static PropertyInfo[] stringProperties = typeof(Option).GetProperties()
+			.ToList().Where(prop => prop.PropertyType == typeof(string)).ToArray();
+
+		public OptionPreview Document
+		{
+			get => _document;
+			set
+			{
+				_document = value;
+				if (!string.IsNullOrEmpty(value.Content))
+				{
+					this.editSource.Text = value.Content;
+				}
+			}
+		}
+		private OptionPreview _document;
+
+		public MarkdownDocument()
         {
             InitializeComponent();
-        }
+		}
     }
 }

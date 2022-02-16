@@ -129,7 +129,6 @@ namespace SkyblockClient
 
         private void imgIcon_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-			Utils.Debug("mouse down");
 			this.Click?.Invoke(this, new RoutedEventArgs());
 		}
 
@@ -155,15 +154,15 @@ namespace SkyblockClient
         }
 
         private void ActionMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            if (HasDocument)
-                this.HoverEnter?.Invoke(this, new TextMouseEventArgs(DocumentText, e));
+		{
+			if (HasDocument)
+                this.HoverEnter?.Invoke(this, new TextMouseEventArgs(this.Tag as Option, DocumentText, e));
         }
 
         private void ActionMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if (HasDocument)
-                this.HoverLeave?.Invoke(this, new TextMouseEventArgs("", e));
+                this.HoverLeave?.Invoke(this, new TextMouseEventArgs(this.Tag as Option, "", e));
         }
     }
 }

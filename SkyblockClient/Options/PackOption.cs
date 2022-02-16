@@ -24,12 +24,12 @@ namespace SkyblockClient.Options
 		}
 		public override void CheckBox_HoverEnter(object sender, TextMouseEventArgs e)
 		{
-			Globals.MainWindow.PackDocument = e.Text;
+			Globals.MainWindow.PackDocument = e.OptionPreview;
 		}
 
 		public override void CheckBox_HoverLeave(object sender, TextMouseEventArgs e)
 		{
-			Globals.MainWindow.PackDocument = e.Text;
+			Globals.MainWindow.PackDocument = e.OptionPreview;
 		}
 	}
 }

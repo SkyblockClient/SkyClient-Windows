@@ -9,14 +9,15 @@ namespace SkyblockClient.Options.Events
 {
     public class TextMouseEventArgs : MouseEventArgs
     {
-        public string Text;
-        public TextMouseEventArgs(string text, MouseDevice mouse, int timestamp) : base(mouse, timestamp)
+        public OptionPreview OptionPreview;
+
+        public TextMouseEventArgs(Option option, string text, MouseDevice mouse, int timestamp) : base(mouse, timestamp)
         {
-            this.Text = text;
+            this.OptionPreview = new OptionPreview(option, text);
         }
-        public TextMouseEventArgs(string text, MouseEventArgs e) : base(e.MouseDevice, e.Timestamp)
-        {
-            this.Text = text;
-        }
+        public TextMouseEventArgs(Option option, string text, MouseEventArgs e) : base(e.MouseDevice, e.Timestamp)
+		{
+			this.OptionPreview = new OptionPreview(option, text);
+		}
     }
 }

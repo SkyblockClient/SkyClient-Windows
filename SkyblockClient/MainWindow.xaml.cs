@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Runtime.InteropServices;
 using SkyblockClient.Options;
 using SkyblockClient.Persistence;
-using Newtonsoft.Json;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace SkyblockClient
 {
@@ -18,6 +17,11 @@ namespace SkyblockClient
 	{
 		public const int WM_NCLBUTTONDOWN = 0xA1;
 		public const int HT_CAPTION = 0x2;
+
+		[DllImport("user32.dll")]
+		public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+		[DllImport("user32.dll")]
+		public static extern bool ReleaseCapture();
 
 		IntPtr Handle
 		{
@@ -32,51 +36,36 @@ namespace SkyblockClient
 		}
 		IntPtr _handle = IntPtr.Zero;
 
-		[DllImport("user32.dll")]
-		public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-		[DllImport("user32.dll")]
-		public static extern bool ReleaseCapture();
-
-		public string ModDocument
+		public OptionPreview ModDocument
 		{
-			get => this.mdModDocument.Source.Text;
+			get => this.mdModDocument.Document;
 			set
 			{
-				this.mdModDocument.Source.Text = value ?? "";
-				this.mdModDocument.Visibility = Utils.IsPropSet(value) ? Visibility.Visible : Visibility.Collapsed;
-				this.mdModDocument.flowDocumentScrollViewer.Focus();
+				this.mdModDocument.Document = value;
+				this.mdModDocument.Visibility = Utils.IsPropSet(value.Content) ? Visibility.Visible : Visibility.Collapsed;
 			}
 		}
-		public string PackDocument
+		public OptionPreview PackDocument
 		{
-			get => this.mdModDocument.Source.Text;
+			get => this.mdPackDocument.Document;
 			set
 			{
-				this.mdPackDocument.Source.Text = value ?? "";
-				this.mdPackDocument.Visibility = Utils.IsPropSet(value) ? Visibility.Visible : Visibility.Collapsed;
-				this.mdPackDocument.flowDocumentScrollViewer.Focus();
+				this.mdPackDocument.Document = value;
+				this.mdPackDocument.Visibility = Utils.IsPropSet(value.Content) ? Visibility.Visible : Visibility.Collapsed;
 			}
 		}
 
 
 		public MainWindow()
 		{
-			if (!Globals.isDebugEnabled)
-			{
-				Utils.Info("Thank you for using SkyClient", "This is the output Console and will display information important to the developer!");
-			}
-
+			Globals.OnContentLoaded += Globals_OnContentLoaded;
 			Globals.MainWindow = this;
 
 			var errorAt = "try";
 			try
 			{
-				errorAt = "Utils.LoadSettings();";
-				Utils.LoadSettings();
 				errorAt = "InitializeComponent();";
 				InitializeComponent();
-				errorAt = "PostConstruct();";
-				PostConstruct();
 			}
 			catch (Exception e)
 			{
@@ -85,37 +74,29 @@ namespace SkyblockClient
 			}
 		}
 
-		public async void PostConstruct()
+		private bool _loaded = false;
+		public void Globals_OnContentLoaded(object sender, EventArgs e)
 		{
-			await Utils.InitLog();
-
-			try
+			if (!_loaded)
 			{
-				List<Task> tasks = new List<Task>();
-				tasks.Add(DownloadModsFile());
-				tasks.Add(DownloadResourceFile());
-				await Task.WhenAll(tasks.ToArray());
+				_loaded = true;
+				RefreshContentList(Globals.packOptions, tabPacks);
+				RefreshContentList(Globals.modOptions, tabMods);
 			}
-			catch (Exception e)
+		}
+
+		public void RefreshContentList<OptionType>(List<OptionType> list, TabControlOptions tabControl) where OptionType : Option
+		{
+			var newlist = new List<CheckBoxMod>();
+			foreach (OptionType option in list)
 			{
-				Utils.Error("ERROR CONNECTING TO GITHUB", "\tAre you using a proxy?","\tYou might also be using an outdated version! Update!");
-				Utils.Log(e, "error connecting to github");
-				if (!Globals.isDebugEnabled)
+				if (!option.Hidden)
 				{
-					Utils.OpenLinkInBrowser(Globals.GITHUB_RELEASES);
+					newlist.Add(option.CheckBox);
 				}
 			}
 
-			RefreshMods();
-			RefreshPacks();
-
-			ModDocument = "";
-		}
-
-		private async Task DownloadResourceFile()
-		{
-			string response = await Globals.DownloadFileStringAsync("packs.json");
-			Globals.packOptions = JsonConvert.DeserializeObject<List<PackOption>>(response, Utils.JsonSerializerSettings);
+			tabControl.ItemSource = newlist;
 		}
 
 		public void RefreshPacks()
@@ -131,6 +112,7 @@ namespace SkyblockClient
 
 			tabPacks.ItemSource = list;
 		}
+
 		public void RefreshMods()
 		{
 			var list = new List<CheckBoxMod>();
@@ -144,16 +126,13 @@ namespace SkyblockClient
 			tabMods.ItemSource = list;
 		}
 
-		private async Task DownloadModsFile()
-		{
-			string response = await Globals.DownloadFileStringAsync("mods.json");
-			Globals.modOptions = JsonConvert.DeserializeObject<List<ModOption>>(response, Utils.JsonSerializerSettings);
-		}
-
 		private void ButtonsEnabled(bool enabled)
 		{
+			//TODO: add those buttons
+			/*
 			btnUpdate.IsEnabled = enabled;
 			btnInstall.IsEnabled = enabled;
+			*/
 		}
 
 		private async Task InitializeInstall()

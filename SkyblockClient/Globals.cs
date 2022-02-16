@@ -65,6 +65,12 @@ namespace SkyblockClient
 
 		public static string tempFolderLocation => Utils.exeLocation + @".temp\";
 		public static string minecraftRootLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft");
+
+		internal static void InvokeContentLoaded(App app)
+		{
+			OnContentLoaded?.Invoke(app, new EventArgs());
+		}
+
 		public static string launcherProfilesLocation = Path.Combine(minecraftRootLocation, "launcher_profiles.json");
 		public static string minecraftLibrariesLocation = Path.Combine(minecraftRootLocation, "libraries");
 		public static string minecraftVersionsLocation = Path.Combine(minecraftRootLocation, "versions");
@@ -158,8 +164,11 @@ namespace SkyblockClient
 		}
 
         public static MainWindow MainWindow { get; internal set; }
+		public static string PreviewHtmlBase { get; internal set; }
 
-        public static void InitializeValues()
+		public static event EventHandler OnContentLoaded;
+
+		public static void InitializeValues()
 		{
 			string result = "https://github.com/nacrt/SkyblockClient-REPO/blob/main/files/";
 
@@ -271,7 +280,6 @@ namespace SkyblockClient
 				Utils.Log(e, "Error sending WebRequest", "errorAt:" + errorAt);
 				throw new Exception("Error sending WebRequest", e);
             }
-
 		}
 	}
 }

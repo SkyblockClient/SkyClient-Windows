@@ -22,6 +22,7 @@ namespace SkyblockClient
 
 		public static string exeLocation = Assembly.GetEntryAssembly().Location;
 		public static readonly string AssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+		public static readonly Assembly ExecutingAssembly = Assembly.GetExecutingAssembly();
 
 		public static Dictionary<string, Options.ModOption> AvailableModOptions
 		{
