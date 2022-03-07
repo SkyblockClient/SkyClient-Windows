@@ -11,7 +11,7 @@ We have ![mods](https://img.shields.io/badge/mods-31-brightgreen?style=flat-squa
 
 Does this work on Mac / Linux?
 
-> [ask on discord for the jar version](https://github.com/nacrt/SkyblockClient#discord)
+> [You can find the universal installer here.](https://github.com/SkyblockClient/Skyclient-installer-Java)
 
 Where do I download it?
 
