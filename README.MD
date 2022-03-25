@@ -1,25 +1,48 @@
-# SkyblockClient
-![GitHub all releases](https://img.shields.io/github/downloads/nacrt/SkyblockClient/total?style=flat-square) ![GitHub release (latest by date)](https://img.shields.io/github/downloads/nacrt/SkyblockClient/latest/total?style=flat-square)
-### SkyblockClient is a skyblock oriented forge mod installer
-How do I use it you may ask?
-> Just launch it, select your mods and packs, and press install!
-> They are going to be installed for you, so you dont need to search for these mods by yourself.
+<h1 align = "center">SkyblockClient</h1>
+<h3 align = "center">A Hypixel SkyBlock oriented Forge mod installer</h3>
 
-We have ![mods](https://img.shields.io/badge/mods-31-brightgreen?style=flat-square) and ![packs](https://img.shields.io/badge/packs-20-brightgreen?style=flat-square) to offer
+![GitHub all releases](https://img.shields.io/github/downloads/nacrt/SkyblockClient/total?style=flat-square) ![GitHub release (latest by date)](https://img.shields.io/github/downloads/nacrt/SkyblockClient/latest/total?style=flat-square)
+
+
+## How to use
+1. [Download the latest release](https://github.com/SkyblockClient/SkyblockClient/releases/latest).
+2. Run the `SkyblockClient-x.x.x.exe` file.
+3. Select your mods and packs
+4. Press install!
+
+
+
+They are going to be installed for you, so you dont need to search for these mods by yourself. Enjoy!
+
+
+
+
 
 ## FAQ
 
+How many mods/packs does this have?
+
+> We have ![Mod Count](https://img.shields.io/badge/-31-lightgrey?style=flat-square) mods and ![Pack Count](https://img.shields.io/badge/-20-lightgrey?style=flat-square) texturepacks to offer.
+<br/>
+
 Does this work on Mac / Linux?
 
-> [ask on discord for the jar version](https://github.com/nacrt/SkyblockClient#discord)
+> Check out the [universial installer](https://github.com/SkyblockClient/Skyclient-installer-Java/releases/latest)!
+<br/>
+
+
 
 Where do I download it?
 
-> [here](https://github.com/nacrt/SkyblockClient/releases/latest)
+> [Here](https://github.com/nacrt/SkyblockClient/releases/latest).
+<br/>
+
+
 
 Is this safe?
 
-> Yes, why we would add malware to OPEN SOURCE code
+> Of course it's safe, why would we add malware to OPEN SOURCE code.
+<br/>
 
 ## Discord
 
