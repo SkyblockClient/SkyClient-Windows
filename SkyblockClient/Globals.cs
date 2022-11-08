@@ -75,7 +75,7 @@ namespace SkyblockClient
 		public static string minecraftLibrariesLocation = Path.Combine(minecraftRootLocation, "libraries");
 		public static string minecraftVersionsLocation = Path.Combine(minecraftRootLocation, "versions");
 
-		public static string gameDirectory = "";
+		public static string gameDirectory = "skyclient";
 		public static string skyblockRootLocation
         {
 			get
