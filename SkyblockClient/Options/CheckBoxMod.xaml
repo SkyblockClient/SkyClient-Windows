@@ -34,6 +34,7 @@
             <Style TargetType="ComboBox">
                 <Setter Property="Visibility" Value="Hidden"/>
                 <Setter Property="Grid.Column" Value="4"/>
+                <Setter Property="Background" Value="Aqua"/>
             </Style>
             <Style TargetType="Label">
                 <Setter Property="Visibility" Value="Hidden"/>
@@ -47,13 +48,16 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Button x:Name="btnIcon" Width="30" RenderOptions.BitmapScalingMode="NearestNeighbor" Grid.Column="0" Click="btnIcon_Click" MouseEnter="ActionMouseEnter" MouseLeave="ActionMouseLeave"/>
-        <CheckBox x:Name="chkEnabled" Click="CheckBox_Click" VerticalAlignment="Center" Grid.Column="2"  MouseEnter="ActionMouseEnter" MouseLeave="ActionMouseLeave"/>
+        <CheckBox x:Name="chkEnabled" Click="CheckBox_Click" VerticalAlignment="Center" Grid.Column="2"  MouseEnter="ActionMouseEnter" MouseLeave="ActionMouseLeave" Foreground="{DynamicResource TextColor}"/>
         <ComboBox x:Name="cmbActions" SelectionChanged="cmbActions_SelectionChanged" Visibility="Hidden" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="-102,3,65,3" UseLayoutRounding="True">
             <ComboBox.Effect>
                 <DropShadowEffect BlurRadius="10" Color="#FF000000" Direction="315" ShadowDepth="5" Opacity="0.15"/>
             </ComboBox.Effect>
+            <ComboBox.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#333333"/>
+            </ComboBox.Resources>
         </ComboBox>
-        <Label x:Name="lblActionButtonDivider" VerticalAlignment="Center"  Content="-" Grid.Column="3"/>
+        <Label x:Name="lblActionButtonDivider" VerticalAlignment="Center"  Content="-" Grid.Column="3" Foreground="{DynamicResource TextColor}"/>
         <Button x:Name="btnAction" Width="30" Visibility="Hidden" Grid.Column="4" Click="btnAction_Click" MouseEnter="ActionMouseEnter" MouseLeave="ActionMouseLeave"/>
     </Grid>
 </UserControl>
