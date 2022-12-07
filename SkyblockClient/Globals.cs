@@ -232,8 +232,11 @@ namespace SkyblockClient
 			var errorAt = string.Empty;
 			try
             {
-				errorAt = "using (WebResponse webResponse = await Task.Run(() => WebRequest.Create(endpoint).GetResponse()))";
-				using (WebResponse webResponse = await Task.Run(() => WebRequest.Create(endpoint).GetResponse()))
+				errorAt = "WebRequest webRequest = WebRequest.Create(endpoint);"
+				WebRequest webRequest = WebRequest.Create(endpoint);
+				webRequest.UserAgent = "github.com/SkyblockClient (windows)";
+				errorAt = "using (WebResponse webResponse = await Task.Run(() => webRequest.GetResponse()))";
+				using (WebResponse webResponse = await Task.Run(() => WebRequest.GetResponse()))
 				{
 					errorAt = "using (BinaryReader reader = new BinaryReader(webResponse.GetResponseStream()))";
 					using (BinaryReader reader = new BinaryReader(webResponse.GetResponseStream()))
