@@ -280,6 +280,7 @@
     <Compile Include="Options\OptionActionItem.xaml.cs">
       <DependentUpon>OptionActionItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Options\OptionPreview.cs" />
     <Compile Include="Options\PackOption.cs" />
     <Compile Include="Options\Events\TextMouseEventArgs.cs" />
     <Compile Include="Persistence\Data\PersistenceData.cs" />
@@ -351,7 +352,7 @@
     <Resource Include="textures\skyclient.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\theunrepentantgeek\Markdown.XAML\src\Markdown.Xaml\Markdown.Xaml.csproj">
+    <ProjectReference Include="..\Markdown.XAML\src\Markdown.Xaml\Markdown.Xaml.csproj">
       <Project>{34186c3b-c308-4cae-b462-db7b5f5e378c}</Project>
       <Name>Markdown.Xaml</Name>
     </ProjectReference>
@@ -429,12 +430,12 @@
       </EmbeddedResource>
     </ItemGroup>
   </Target>
-  <Import Project="..\packages\Fody.6.3.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.3.0\build\Fody.targets')" />
+  <Import Project="..\packages\Fody.6.4.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.4.0\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
-      <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
+      <ErrorText>This project references one or more NuGet packages that are missing from this machine. Use NuGet package recovery to download the missing files. For more information, see "http://go.microsoft.com/fwlink/?LinkID=322105". The missing file is "{0}".</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Fody.6.3.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.3.0\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Fody.6.4.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.4.0\build\Fody.targets'))" />
     <Error Condition="!Exists('..\packages\Costura.Fody.5.0.2\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.5.0.2\build\Costura.Fody.props'))" />
   </Target>
 </Project>
