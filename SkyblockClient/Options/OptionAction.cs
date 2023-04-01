@@ -37,7 +37,7 @@ namespace SkyblockClient.Options
         [DefaultValue("Invalid")]
         public string Text { get; set; }
 
-        [DefaultValue("https://github.com/nacrt/SkyblockClient-REPO/blob/main/files/guides/invalid.md")]
+        [DefaultValue("https://github.com/SkyblockClient/SkyblockClient-REPO/blob/main/files/guides/invalid.md")]
         public string Link { get; set; }
         public override string ToString() => Text;
 

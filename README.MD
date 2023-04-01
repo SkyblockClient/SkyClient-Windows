@@ -1,7 +1,7 @@
 <h1 align = "center">SkyblockClient</h1>
 <h3 align = "center">A Hypixel SkyBlock oriented Forge mod installer</h3>
 
-![GitHub all releases](https://img.shields.io/github/downloads/nacrt/SkyblockClient/total?style=flat-square) ![GitHub release (latest by date)](https://img.shields.io/github/downloads/nacrt/SkyblockClient/latest/total?style=flat-square)
+![GitHub all releases](https://img.shields.io/github/downloads/SkyblockClient/SkyblockClient/total?style=flat-square) ![GitHub release (latest by date)](https://img.shields.io/github/downloads/SkyblockClient/SkyblockClient/latest/total?style=flat-square)
 
 
 ## How to use
@@ -34,7 +34,7 @@ Does this work on Mac / Linux?
 
 Where do I download it?
 
-> [Here](https://github.com/nacrt/SkyblockClient/releases/latest).
+> [Here](https://github.com/SkyblockClient/SkyblockClient/releases/latest).
 <br/>
 
 
