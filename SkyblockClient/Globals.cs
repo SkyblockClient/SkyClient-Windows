@@ -170,7 +170,7 @@ namespace SkyblockClient
 
 		public static void InitializeValues()
 		{
-			string result = "https://github.com/nacrt/SkyblockClient-REPO/blob/main/files/";
+			string result = "https://github.com/SkyblockClient/SkyblockClient-REPO/blob/main/files/";
 
 			try
 			{
