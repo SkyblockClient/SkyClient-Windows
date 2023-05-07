@@ -15,7 +15,6 @@ shallow_clone: true
 
 build_script:
   - cmd: nuget restore
-  - cmd: cd SkyblockClient
   - cmd: msbuild /p:Configuration=Release /p:Platform="Any CPU"
 
 test: off
