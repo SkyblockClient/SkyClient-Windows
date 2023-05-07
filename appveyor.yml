@@ -6,8 +6,6 @@ pull_requests:
 branches:
   only:
   - main
-  
-skip_non_tags: true
 
 image: Visual Studio 2019
 
