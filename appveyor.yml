@@ -11,8 +11,6 @@ skip_non_tags: true
 
 image: Visual Studio 2019
 
-shallow_clone: true
-
 install:
 - ps: |
     function install-devpack ($version, $location) {
