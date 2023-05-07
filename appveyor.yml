@@ -26,7 +26,7 @@ install:
         Write-Host "Installed" -ForegroundColor Green
     }
     install-devpack -version "4.8" -location "https://download.visualstudio.microsoft.com/download/pr/7afca223-55d2-470a-8edc-6a1739ae3252/c8c829444416e811be84c5765ede6148/ndp48-devpack-enu.exe"
-    install-devpath -version "4.7.2" -location "https://download.visualstudio.microsoft.com/download/pr/158dce74-251c-4af3-b8cc-4608621341c8/9c1e178a11f55478e2112714a3897c1a/ndp472-devpack-enu.exe"
+    install-devpack -version "4.7.2" -location "https://download.visualstudio.microsoft.com/download/pr/158dce74-251c-4af3-b8cc-4608621341c8/9c1e178a11f55478e2112714a3897c1a/ndp472-devpack-enu.exe"
     Write-Host "Restarting build VM..."
     sleep 5
     Restart-Computer -Force
