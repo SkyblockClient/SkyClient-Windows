@@ -9,8 +9,6 @@ branches:
   
 skip_non_tags: true
 
-shallow_clone: true
-
 image: Visual Studio 2019
 
 install:
