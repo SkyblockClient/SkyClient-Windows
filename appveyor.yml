@@ -32,6 +32,7 @@ install:
     Write-Host "Restarted" -ForegroundColor Green
 
 build_script:
+  - cmd: git submodule update --init --recursive
   - cmd: nuget restore
   - cmd: msbuild /p:Configuration=Release /p:Platform="Any CPU"
 
