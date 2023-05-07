@@ -19,5 +19,4 @@ build_script:
 test: off
 
 artifacts:
-  - path: 'SkyblockClient\bin\Release'
-    name: SkyblockClient
+  - path: 'SkyblockClient\bin\Release\*.exe'
