@@ -16,5 +16,10 @@ build_script:
 
 test: off
 
+cache:
+  - packages -> **\packages.config
+  - '%LocalAppData%\NuGet\Cache'
+  - '%LocalAppData%\NuGet\v3-cache'
+
 artifacts:
   - path: 'SkyblockClient\bin\Release\*.exe'
