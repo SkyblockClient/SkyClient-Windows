@@ -1,0 +1,25 @@
+version: "{build}"
+
+pull_requests:
+  do_not_increment_build_number: true
+  
+branches:
+  only:
+  - main
+
+image: Visual Studio 2019
+
+build_script:
+  - cmd: git submodule update --init --recursive
+  - cmd: nuget restore
+  - cmd: msbuild /p:Configuration=Release /p:Platform="Any CPU"
+
+test: off
+
+cache:
+  - packages -> **\packages.config
+  - '%LocalAppData%\NuGet\Cache'
+  - '%LocalAppData%\NuGet\v3-cache'
+
+artifacts:
+  - path: 'SkyblockClient\bin\Release\*.exe'
