@@ -12,7 +12,7 @@ image: Visual Studio 2019
 build_script:
   - cmd: git submodule update --init --recursive
   - cmd: nuget restore
-  - cmd: msbuild /p:Configuration=Release /p:Platform="Any CPU"
+  - cmd: msbuild /p:Configuration=Debug /p:Platform="Any CPU"
 
 test: off
 
