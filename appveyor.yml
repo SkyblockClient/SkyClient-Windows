@@ -12,7 +12,7 @@ image: Visual Studio 2019
 build_script:
   - cmd: git submodule update --init --recursive
   - cmd: nuget restore
-  - cmd: msbuild /p:Configuration=Debug /p:Platform="Any CPU"
+  - cmd: msbuild /p:Configuration=%BUILD_CONFIG% /p:Platform="Any CPU"
 
 test: off
 
@@ -22,7 +22,7 @@ cache:
   - '%LocalAppData%\NuGet\v3-cache'
 
 artifacts:
-  - path: 'SkyblockClient\bin\Release\*.exe'
+  - path: 'SkyblockClient\bin\%BUILD_CONFIG%\*.exe'
 
 environment:
   SIGNPATH_SIGNING_POLICY: test-signing
@@ -31,6 +31,7 @@ environment:
     secure: UIKay6EIQiemn7u2dSl44bk1Cz4Ex97tqqsGlmdUx4wjv9uBGKMqMLFTOxvwunRn
   SIGNPATH_ORGANIZATION_ID: 4602a4d1-1183-4694-b015-e8276ccaeb42
   SIGNPATH_PROJECT: SkyblockClient
+  BUILD_CONFIG: Debug
   
 
 # for:
