@@ -23,3 +23,25 @@ cache:
 
 artifacts:
   - path: 'SkyblockClient\bin\Release\*.exe'
+
+environment:
+  SIGNPATH_SIGNING_POLICY: test-signing
+  ARTIFACT_CONFIGURATION: initial
+  SIGNPATH_CI_USER_TOKEN:
+    secure: UIKay6EIQiemn7u2dSl44bk1Cz4Ex97tqqsGlmdUx4wjv9uBGKMqMLFTOxvwunRn
+  SIGNPATH_ORGANIZATION_ID: 4602a4d1-1183-4694-b015-e8276ccaeb42
+  SIGNPATH_PROJECT: SkyblockClient
+  
+
+# for:
+#   -
+#     branches:
+#       only:
+#         - release
+#     environment:
+#       SIGNPATH_SIGNING_POLICY: release-signing
+
+deploy:
+  - provider: Webhook
+    url: https://app.signpath.io/API/v1/%SIGNPATH_ORGANIZATION_ID%/Integrations/AppVeyor?ProjectSlug=%SIGNPATH_PROJECT%&SigningPolicySlug=%SIGNPATH_SIGNING_POLICY%&ArtifactConfigurationSlug=%ARTIFACT_CONFIGURATION%
+    authorization: 'Bearer %SIGNPATH_CI_USER_TOKEN%'
