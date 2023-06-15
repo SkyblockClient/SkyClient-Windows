@@ -9,6 +9,183 @@ branches:
 
 image: Visual Studio 2019
 
+before_build:
+  - ps: |
+      if ("$env:APPVEYOR_BUILD_TAG" -ne "") {
+        Write-Host "Setting SIGN_TYPE to prod"
+        $env:SIGN_TYPE = "prod"
+      } else {
+        Write-Host "Setting SIGN_TYPE to dev"
+        $env:SIGN_TYPE = "dev"
+      }
+
+build:
+  project: YourProject.sln
+
+test_script:
+  # Add your testing commands here
+
+after_build:
+  # Add any post-build commands or scripts here
+
+In the script above, we define the APPVEYOR_BUILD_TAG environment variable and set it to an empty value initially. The before_build script block checks if the APPVEYOR_BUILD_TAG is non-empty, indicating that the build was executed via a tag. If it's non-empty, the SIGN_TYPE environment variable is set to prod. Otherwise, it is set to dev.
+
+You can replace the YourProject.sln placeholder with the actual path to your project solution file. Additionally, you can customize the test_script and after_build sections to include any specific testing or post-build actions you require.
+
+Make sure to place this script in your AppVeyor configuration file (usually named appveyor.yml) in the root of your repository.
+User
+Would it be possible to do it using for
+ChatGPT
+
+Certainly! If you have multiple tags and want to handle them using a loop, you can modify the script to iterate over the tags and set the SIGN_TYPE environment variable accordingly. Here's an updated version of the script that uses a loop:
+
+yaml
+
+version: 1.0.{build}
+
+environment:
+  matrix:
+    - APPVEYOR_BUILD_TAGS: ''
+
+before_build:
+  - ps: |
+      $tags = $env:APPVEYOR_BUILD_TAGS -split ','
+      $env:SIGN_TYPE = "dev"
+
+      foreach ($tag in $tags) {
+        if ($tag -ne "") {
+          Write-Host "Setting SIGN_TYPE to prod for tag: $tag"
+          $env:SIGN_TYPE = "prod"
+        }
+      }
+
+build:
+  project: YourProject.sln
+
+test_script:
+  # Add your testing commands here
+
+after_build:
+  # Add any post-build commands or scripts here
+
+In this updated script, we define the APPVEYOR_BUILD_TAGS environment variable, which should contain a comma-separated list of tags associated with the build. The before_build script block splits the APPVEYOR_BUILD_TAGS into individual tags using the -split operator and stores them in the $tags array.
+
+The script initializes the SIGN_TYPE environment variable to dev. Then, it loops through each tag in the $tags array. If a tag is non-empty, it sets the SIGN_TYPE to prod and prints a message indicating the tag being processed.
+
+Remember to replace YourProject.sln with the actual path to your project solution file, and customize the test_script and after_build sections as needed.
+
+Please note that for the loop to work as expected, you need to provide a comma-separated list of tags in the APPVEYOR_BUILD_TAGS environment variable when triggering the build in AppVeyor.
+User
+No i meant appveyor for
+ChatGPT
+
+I apologize for the confusion. The AppVeyor build configuration file (appveyor.yml) does not support loops or iterations directly. However, you can achieve a similar result by using the environment section to define multiple build configurations, each targeting a specific tag, and setting the SIGN_TYPE environment variable accordingly. Here's an example:
+
+yaml
+
+version: 1.0.{build}
+
+environment:
+  matrix:
+    - SIGN_TYPE: dev
+      TAG: ''
+
+    - SIGN_TYPE: prod
+      TAG: v1.0.0
+
+    - SIGN_TYPE: prod
+      TAG: v2.0.0
+
+    # Add more configurations for additional tags as needed
+
+before_build:
+  - ps: |
+      if ($env:TAG -ne "") {
+        Write-Host "Setting SIGN_TYPE to $env:SIGN_TYPE for tag: $env:TAG"
+      } else {
+        Write-Host "Setting SIGN_TYPE to $env:SIGN_TYPE for non-tag build"
+      }
+
+build:
+  project: YourProject.sln
+
+test_script:
+  # Add your testing commands here
+
+after_build:
+  # Add any post-build commands or scripts here
+
+In this example, we define multiple build configurations under the environment section. Each configuration consists of a SIGN_TYPE environment variable and a TAG variable. The SIGN_TYPE variable is set to either dev or prod depending on the desired behavior. The TAG variable holds the specific tag you want to target for the configuration.
+
+In the before_build script block, we check the value of the TAG environment variable. If it is non-empty, we print a message indicating the current tag and the associated SIGN_TYPE value. If the TAG is empty, it means the build was not triggered by a tag, and we print a message indicating the SIGN_TYPE value for non-tag builds.
+
+You can add more configurations for additional tags by following the same pattern. Remember to replace YourProject.sln with the actual path to your project solution file and customize the test_script and after_build sections as needed.
+
+Please note that with this approach, you would trigger different builds manually for each specific tag configuration you want to target.
+User
+please remove any references to appveyor yaml and just focus on that ps script, also it's APPVEYOR_REPO_TAG which can be only true or false
+ChatGPT
+
+Apologies for the confusion. If you want to focus on the PowerShell script without the AppVeyor YAML configuration, here's an updated script that sets the SIGN_TYPE environment variable to prod if the build was executed via a tag (APPVEYOR_REPO_TAG is true):
+
+powershell
+
+if ($env:APPVEYOR_REPO_TAG -eq "true") {
+    Write-Host "Setting SIGN_TYPE to prod"
+    $env:SIGN_TYPE = "prod"
+} else {
+    Write-Host "Setting SIGN_TYPE to dev"
+    $env:SIGN_TYPE = "dev"
+}
+
+This script checks the value of the APPVEYOR_REPO_TAG environment variable. If it is set to "true", indicating that the build was executed via a tag, it sets the SIGN_TYPE environment variable to "prod". Otherwise, it sets it to "dev".
+
+You can use this script as a part of your AppVeyor build pipeline or execute it directly within your PowerShell environment. Remember to replace any references to YourProject.sln with the appropriate paths or commands you need for your specific scenario.
+
+Please note that the script assumes you have the necessary environment variables provided by AppVeyor. If you are running it outside of AppVeyor, make sure to set up the environment variables appropriately for the script to work as expected.
+User
+Please replace sign type with SIGNPATH_SIGNING_POLICY and prod with release-signing and dev with test-signing
+ChatGPT
+
+Certainly! Here's the updated PowerShell script that sets the SIGNPATH_SIGNING_POLICY environment variable to release-signing if the build was executed via a tag (APPVEYOR_REPO_TAG is true), and to test-signing otherwise:
+
+powershell
+
+if ($env:APPVEYOR_REPO_TAG -eq "true") {
+    Write-Host "Setting SIGNPATH_SIGNING_POLICY to release-signing"
+    $env:SIGNPATH_SIGNING_POLICY = "release-signing"
+} else {
+    Write-Host "Setting SIGNPATH_SIGNING_POLICY to test-signing"
+    $env:SIGNPATH_SIGNING_POLICY = "test-signing"
+}
+
+In this script, we use SIGNPATH_SIGNING_POLICY as the environment variable and set it to release-signing if the build was triggered by a tag. Otherwise, it is set to test-signing.
+
+Remember to adjust the script according to your specific requirements and replace any references to YourProject.sln or other placeholders with the appropriate values in your context.
+User
+please covert this back to a appveyor script 
+ChatGPT
+
+Certainly! Here's the equivalent AppVeyor script that incorporates the PowerShell code to set the SIGNPATH_SIGNING_POLICY environment variable based on whether the build was executed via a tag (APPVEYOR_REPO_TAG is true):
+
+yaml
+
+version: 1.0.{build}
+
+environment:
+  matrix:
+    - SIGNPATH_SIGNING_POLICY: ''
+
+before_build:
+  - ps: |
+      if ($env:APPVEYOR_REPO_TAG -eq "true") {
+          Write-Host "Setting SIGNPATH_SIGNING_POLICY to release-signing"
+          $env:SIGNPATH_SIGNING_POLICY = "release-signing"
+      } else {
+          Write-Host "Setting SIGNPATH_SIGNING_POLICY to test-signing"
+          $env:SIGNPATH_SIGNING_POLICY = "test-signing"
+      }
+
 build_script:
   - cmd: git submodule update --init --recursive
   - cmd: nuget restore
@@ -25,7 +202,7 @@ artifacts:
   - path: 'SkyblockClient\bin\%BUILD_CONFIG%\*.exe'
 
 environment:
-  SIGNPATH_SIGNING_POLICY: test-signing
+#  SIGNPATH_SIGNING_POLICY: test-signing
   ARTIFACT_CONFIGURATION: initial
   SIGNPATH_CI_USER_TOKEN:
     secure: UIKay6EIQiemn7u2dSl44bk1Cz4Ex97tqqsGlmdUx4wjv9uBGKMqMLFTOxvwunRn
