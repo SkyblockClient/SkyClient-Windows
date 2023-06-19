@@ -12,16 +12,14 @@ image: Visual Studio 2019
 before_build:
   - ps: |
       if ($env:APPVEYOR_REPO_TAG -eq "true") {
-          Write-Host "Setting SIGNPATH_SIGNING_POLICY to release-signing"
           $env:SIGNPATH_SIGNING_POLICY = "release-signing"
-          Write-Host "Setting BUILD_CONFIG to Release"
           $env:BUILD_CONFIG = "Release"
       } else {
-          Write-Host "Setting SIGNPATH_SIGNING_POLICY to test-signing"
           $env:SIGNPATH_SIGNING_POLICY = "test-signing"
-          Write-Host "Setting BUILD_CONFIG to Debug"
           $env:BUILD_CONFIG = "Debug"
       }
+      Write-Host "Set SIGNPATH_SIGNING_POLICY to $($env:SIGNPATH_SIGNING_POLICY)"
+      Write-Host "Set BUILD_CONFIG to $($env:BUILD_CONFIG)"
 
 build_script:
   - cmd: git submodule update --init --recursive
