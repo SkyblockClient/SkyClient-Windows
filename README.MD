@@ -48,3 +48,8 @@ Is this safe?
 
 <a href="https://discord.gg/VH6fdBYzQQ"><img src="https://discordapp.com/api/guilds/780181693100982273/widget.png?style=banner2" alt="Join our Discord"/></a>
 
+## Other
+
+This program uses free code signing provided by [SignPath.io](https://signpath.io?utm_source=foundation&utm_medium=github&utm_campaign=skyblockclient), and a free code signing certificate by the [SignPath Foundation](https://signpath.org?utm_source=foundation&utm_medium=github&utm_campaign=skyblockclient)
+
+[![Capture](https://user-images.githubusercontent.com/3874087/128503363-9c39f8cd-9900-4a8b-83f2-81359d4fc731.PNG)](https://about.signpath.io?utm_source=foundation&utm_medium=github&utm_campaign=skyblockclient)
