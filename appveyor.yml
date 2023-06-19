@@ -14,9 +14,13 @@ before_build:
       if ($env:APPVEYOR_REPO_TAG -eq "true") {
           Write-Host "Setting SIGNPATH_SIGNING_POLICY to release-signing"
           $env:SIGNPATH_SIGNING_POLICY = "release-signing"
+          Write-Host "Setting BUILD_CONFIG to Release"
+          $env:BUILD_CONFIG = "Release"
       } else {
           Write-Host "Setting SIGNPATH_SIGNING_POLICY to test-signing"
           $env:SIGNPATH_SIGNING_POLICY = "test-signing"
+          Write-Host "Setting BUILD_CONFIG to Debug"
+          $env:BUILD_CONFIG = "Debug"
       }
 
 build_script:
@@ -41,16 +45,6 @@ environment:
     secure: UIKay6EIQiemn7u2dSl44bk1Cz4Ex97tqqsGlmdUx4wjv9uBGKMqMLFTOxvwunRn
   SIGNPATH_ORGANIZATION_ID: 4602a4d1-1183-4694-b015-e8276ccaeb42
   SIGNPATH_PROJECT: SkyblockClient
-  BUILD_CONFIG: Debug
-  
-
-# for:
-#   -
-#     branches:
-#       only:
-#         - release
-#     environment:
-#       SIGNPATH_SIGNING_POLICY:  release-signing
 
 deploy:
   - provider: Webhook
