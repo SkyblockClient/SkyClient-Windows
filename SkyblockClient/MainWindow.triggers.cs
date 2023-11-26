@@ -56,17 +56,10 @@ namespace SkyblockClient
 			*/
 		}
 
-		private async void BtnUpdate_Click(object sender, RoutedEventArgs e)
+		private void BtnUpdate_Click(object sender, RoutedEventArgs e)
 		{
-			if (!Globals.Settings.enableUpdateButton)
-			{
-				Utils.Info("The update function is temporarily unavailable");
-				Globals.ShowInfo("The update function is temporarily unavailable", "Info");
-				return;
-			}
-			ButtonsEnabled(false);
-			await Startupdate();
-			ButtonsEnabled(true);
+			Utils.Info("The update function is no longer available, please use the SkyClientUpdater Mod instead!");
+			Globals.ShowInfo("The update function is no longer available, please use the SkyClientUpdater Mod instead!", "Info");
 		}
 
         private async void BtnInstallModsAndForgeClick(object sender, RoutedEventArgs e)
