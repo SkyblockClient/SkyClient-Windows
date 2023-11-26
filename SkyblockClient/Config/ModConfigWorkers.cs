@@ -17,8 +17,8 @@ namespace SkyblockClient.Config
 			helper.Move(optionsFile, Path.Combine(Globals.skyblockRootLocation, "options.txt"));
 		}
 	}
-
-	[ModConfigWorker("optifine")]
+	
+	[ModConfigWorker("craftify")]
 	class ModConfigWorkerOptifine : ModConfigWorkerBase
 	{
 		public override async Task Work()
@@ -28,7 +28,7 @@ namespace SkyblockClient.Config
 		}
 	}
 
-	[ModConfigWorker("craftify")]
+	[ModConfigWorker("optifine")]
 	class ModConfigWorkerCraftify : ModConfigWorkerBase
 	{
 		public override async Task Work()
