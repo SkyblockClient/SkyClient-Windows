@@ -118,8 +118,8 @@
               Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -139,7 +139,7 @@
 
                 <Grid.Resources>
                     <Style TargetType="Button">
-                        <Setter Property="Margin" Value="10,10,10,10"/>
+                        <Setter Property="Margin" Value="6,1,6, 4"/>
                         <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
                         <Setter Property="Background" Value="{DynamicResource LessDark}"/>
                         <Setter Property="Template">
@@ -169,13 +169,15 @@
                 <Button x:Name="btnAdvancedSettings"
                         Content="Advanced Settings"
                         Click="BtnAdvancedSettinsClick"
-                        Grid.Column="0"
+                        Margin="6,4,6,1"
+                        Grid.Column="1"
                         Grid.Row="0"/>
 
                 <Button x:Name="btnJoinDiscord"
                         Content="Join Discord"
                         Click="BtnJoinDiscord_Click"
-                        Grid.Column="1"
+                        Margin="6,4,6,1"
+                        Grid.Column="0"
                         Grid.Row="0"/>
 
                 <Button x:Name="btnInstall"
@@ -190,7 +192,7 @@
                   Margin="10,10,10,10">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
-                    <RowDefinition Height="120"/>
+                    <RowDefinition Height="73"/>
                 </Grid.RowDefinitions>
                 <local:TabControlOptions x:Name="tabMods"/>
                 <local:MarkdownDocument x:Name="mdPackDocument"
@@ -203,7 +205,7 @@
                   Margin="10,10,10,10">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
-                    <RowDefinition Height="120"/>
+                    <RowDefinition Height="73"/>
                 </Grid.RowDefinitions>
                 <local:TabControlOptions x:Name="tabPacks"/>
                 <local:MarkdownDocument x:Name="mdModDocument"

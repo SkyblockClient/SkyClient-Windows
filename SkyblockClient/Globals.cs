@@ -234,8 +234,8 @@ namespace SkyblockClient
 			try
             {
 				errorAt = "WebRequest webRequest = WebRequest.Create(endpoint);";
-				WebRequest webRequest = WebRequest.Create(endpoint);
-				webRequest.Headers.Add("User-Agent", "github.com/SkyblockClient (Windows)");
+				HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(endpoint);
+				webRequest.UserAgent = "github.com/SkyblockClient (Windows)";
 				errorAt = "using (WebResponse webResponse = await Task.Run(() => webRequest.GetResponse()))";
 				using (WebResponse webResponse = await Task.Run(() => webRequest.GetResponse()))
 				{
