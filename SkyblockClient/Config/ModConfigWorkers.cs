@@ -19,7 +19,7 @@ namespace SkyblockClient.Config
 	}
 	
 	[ModConfigWorker("craftify")]
-	class ModConfigWorkerOptifine : ModConfigWorkerBase
+	class ModConfigWorkerCraftify : ModConfigWorkerBase
 	{
 		public override async Task Work()
 		{
@@ -29,7 +29,7 @@ namespace SkyblockClient.Config
 	}
 
 	[ModConfigWorker("optifine")]
-	class ModConfigWorkerCraftify : ModConfigWorkerBase
+	class ModConfigWorkerOptifine : ModConfigWorkerBase
 	{
 		public override async Task Work()
 		{
