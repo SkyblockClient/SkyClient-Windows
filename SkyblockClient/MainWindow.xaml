@@ -172,9 +172,9 @@
                         Grid.Column="0"
                         Grid.Row="0"/>
 
-                <Button x:Name="btnUpdate"
-                        Content="Update Mods and Texturepacks"
-                        Click="BtnUpdate_Click"
+                <Button x:Name="btnJoinDiscord"
+                        Content="Join Discord"
+                        Click="BtnJoinDiscord_Click"
                         Grid.Column="1"
                         Grid.Row="0"/>
 

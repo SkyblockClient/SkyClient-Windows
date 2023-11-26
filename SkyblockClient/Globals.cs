@@ -13,6 +13,7 @@ namespace SkyblockClient
 	{
 		public const string GITHUB_RELEASES = "https://github.com/SkyblockClient/SkyblockClient/releases/latest";
 		public const string PERSISTANCE_JSON_NAME = "skyclient.json";
+		public const string DISCORD_INVITE = "https://discord.gg/skyclient-780181693100982273";
 		public static Version assembyVersion => Assembly.GetExecutingAssembly().GetName().Version;
 
 		public static GlobalSettings Settings

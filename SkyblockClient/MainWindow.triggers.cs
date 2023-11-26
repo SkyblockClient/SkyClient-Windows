@@ -62,6 +62,11 @@ namespace SkyblockClient
 			Globals.ShowInfo("The update function is no longer available, please use the SkyClientUpdater Mod instead!", "Info");
 		}
 
+		private async void BtnJoinDiscord_Click(object sender, RoutedEventArgs e)
+		{
+			Utils.OpenLinkInBrowser(Globals.DISCORD_INVITE);
+		}
+
         private async void BtnInstallModsAndForgeClick(object sender, RoutedEventArgs e)
 		{
 			ButtonsEnabled(false);
