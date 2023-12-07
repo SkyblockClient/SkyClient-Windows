@@ -15,7 +15,7 @@ before_build:
           $env:SIGNPATH_SIGNING_POLICY = "release-signing"
           $env:BUILD_CONFIG = "Release"
       } else {
-          $env:SIGNPATH_SIGNING_POLICY = "test-signing"
+          $env:SIGNPATH_SIGNING_POLICY = "disabled"
           $env:BUILD_CONFIG = "Debug"
       }
       Write-Host "Set SIGNPATH_SIGNING_POLICY to $($env:SIGNPATH_SIGNING_POLICY)"
@@ -48,3 +48,5 @@ deploy:
   - provider: Webhook
     url: https://app.signpath.io/API/v1/%SIGNPATH_ORGANIZATION_ID%/Integrations/AppVeyor?ProjectSlug=%SIGNPATH_PROJECT%&SigningPolicySlug=%SIGNPATH_SIGNING_POLICY%&ArtifactConfigurationSlug=%ARTIFACT_CONFIGURATION%
     authorization: 'Bearer %SIGNPATH_CI_USER_TOKEN%'
+    on:
+      APPVEYOR_REPO_TAG: true
