@@ -11,7 +11,7 @@ image: Visual Studio 2019
 
 before_build:
   - ps: |
-      if ($env:APPVEYOR_REPO_TAG -eq "true") {
+      if ($env:APPVEYOR_REPO_COMMIT_MESSAGE -match "^(\[release\]).*$") {
           $env:SIGNPATH_SIGNING_POLICY = "release-signing"
           $env:BUILD_CONFIG = "Release"
       } else {
