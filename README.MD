@@ -6,7 +6,7 @@
 
 ## How to use
 1. [Download the latest release](https://github.com/SkyblockClient/SkyblockClient/releases/latest).
-2. Run the `SkyblockClient-x.x.x.exe` file.
+2. Run the `SkyClient-x.x.x.exe` file.
 3. Select your mods and packs
 4. Press install!
 
