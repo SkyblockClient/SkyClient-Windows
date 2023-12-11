@@ -74,7 +74,7 @@ namespace SkyblockClient.Config
 		{
 			helper.InitFolders("config", "config/CustomMainMenu");
 
-			string[] custommainmenu = new string[] { "mainmenu.json", "play.json" };
+			string[] custommainmenu = new string[] { "mainmenu.json" };
 			foreach (var file in custommainmenu)
 			{
 				string source = await helper.DownloadFileByte(file);
