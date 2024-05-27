@@ -1,4 +1,4 @@
-<h1 align = "center">SkyblockClient</h1>
+<h1 align = "center">SkyClient</h1>
 <h3 align = "center">A Hypixel-oriented Forge mod installer</h3>
 
 ![GitHub all releases](https://img.shields.io/github/downloads/SkyblockClient/SkyblockClient/total?style=flat-square)
