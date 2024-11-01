@@ -179,10 +179,8 @@ namespace SkyblockClient
 				if (directory == "Debug")
 				{
 					Globals.setValues = true;
-					result = "http://localhost/files/";
 					isDebugEnabled = true;
 					gameDirectory = "skytest";
-					Utils.Info("Connect domain:", result);
 					Utils.Info("Debug mode enabled");
 				}
 			}
