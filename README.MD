@@ -27,7 +27,7 @@ How many mods/packs does this have?
 
 Does this work on Mac / Linux?
 
-> Check out the [universial installer](https://github.com/SkyblockClient/Skyclient-installer-Java/releases/latest)!
+> Check out the [universial installer](https://github.com/SkyblockClient/Skyclient-installer-Java/releases/latest) or [Mart (browser version of SkyClient)](https://mart.skyclient.co/)!
 <br/>
 
 
