@@ -1,5 +1,5 @@
 <h1 align = "center">SkyClient</h1>
-<h3 align = "center">A Hypixel-oriented Forge mod installer</h3>
+<h3 align = "center">A Hypixel-oriented Forge mod and pack installer</h3>
 
 ![GitHub all releases](https://img.shields.io/github/downloads/SkyblockClient/SkyClient-Windows/total?style=flat-square)
 
