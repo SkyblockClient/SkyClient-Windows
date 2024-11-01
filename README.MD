@@ -1,11 +1,11 @@
 <h1 align = "center">SkyClient</h1>
 <h3 align = "center">A Hypixel-oriented Forge mod installer</h3>
 
-![GitHub all releases](https://img.shields.io/github/downloads/SkyblockClient/SkyblockClient/total?style=flat-square)
+![GitHub all releases](https://img.shields.io/github/downloads/SkyblockClient/SkyClient-Windows/total?style=flat-square)
 
 
 ## How to use
-1. [Download the latest release](https://github.com/SkyblockClient/SkyblockClient/releases/latest).
+1. [Download the latest release](https://github.com/SkyblockClient/SkyClient-Windows/releases/latest).
 2. Run the `SkyClient-x.x.x.exe` file.
 3. Select your mods and packs
 4. Press install!
@@ -34,7 +34,7 @@ Does this work on Mac / Linux?
 
 Where do I download it?
 
-> [Here](https://github.com/SkyblockClient/SkyblockClient/releases/latest).
+> [Here](https://github.com/SkyblockClient/SkyClient-Windows/releases/latest).
 <br/>
 
 
