@@ -1,5 +1,20 @@
-<h1 align = "center">SkyClient</h1>
-<h3 align = "center">A Hypixel-oriented Forge mod and pack installer</h3>
+If you've been living under a rock, **Hypixel has ended 1.8 support on SkyBlock.** This is great news for the future of the gamemode and we (SkyClient and Polyfrost) are very excited to see what possibilities this holds for them.
+
+Because of the way SkyClient is coded, it would be virtually impossible for us to support 1.21 without a rewrite. The good news is that we've been working hard on OneClient for the last couple of months.
+
+## What is OneClient?
+
+**OneClient is the easiest way to play anything 1.21,** whether on Hypixel SkyBlock, Hoplite, etc. To achieve a mod folder with 14 mods in 1.8 requires nearly 100+ on Fabric; __OneClient installs and manages it all for you.__
+
+__Like SkyClient, it allows you to select mods chosen by the Polyfrost team__, and it's __based off Fabric__, giving you full control. The great thing about OneClient, however, is that **__it has its own launcher,__** making things even more convenient for you.
+
+# Please use OneClient 1.21 instead of SkyClient, linked here:
+
+https://polyfrost.org/projects/oneclient
+
+Please join discord.gg/polyfrost for more information. **SkyClient will not be supported and is deprecated until further notice.**
+
+----
 
 ![GitHub all releases](https://img.shields.io/github/downloads/SkyblockClient/SkyClient-Windows/total?style=flat-square)
 
